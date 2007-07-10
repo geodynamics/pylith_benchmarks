@@ -1,14 +1,25 @@
 Quasi-static strike-slip (no gravity) benchmark
 
+======================================================================
 FILES
+======================================================================
 
 pylithapp.cfg - General parameters for problem
+
 strikeslip_cubit.cfg - Parameters common to CUBIT generated meshes
 strikeslip_hex8_1000m.cfg - Parameters specific to hex8 1000m resolution sim
 strikeslip_hex8_0500m.cfg - Parameters specific to hex8 500m resolution sim
 strikeslip_hex8_0250m.cfg - Parameters specific to hex8 250m resolution sim
 
+strikeslip_lagrit.cfg - Parameters common to LaGriT generated meshes
+strikeslip_tet4_1000m.cfg - Parameters specific to tet4 1000m resolution sim
+strikeslip_tet4_0500m.cfg - Parameters specific to tet4 500m resolution sim
+strikeslip_tet4_0250m.cfg - Parameters specific to tet4 250m resolution sim
+
+
+======================================================================
 TO RUN SIMULATIONS
+======================================================================
 
 hex8 @ 1000m resolution
 
@@ -21,3 +32,15 @@ hex8 @ 500m resolution
 hex8 @ 250m resolution
 
   pylith strikeslip_cubit.cfg strikeslip_hex8_0250m.cfg
+
+tet4 @ 1000m resolution
+
+  pylith strikeslip_lagrit.cfg strikeslip_tet4_1000m.cfg
+
+tet4 @ 500m resolution
+
+  pylith strikeslip_lagrit.cfg strikeslip_tet4_0500m.cfg
+
+tet4 @ 250m resolution
+
+  pylith strikeslip_lagrit.cfg strikeslip_tet4_0250m.cfg
