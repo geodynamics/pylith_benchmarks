@@ -6,6 +6,8 @@ FILES
 
 pylithapp.cfg - General parameters for problem
 
+timedep.cfg - Parameters for time-dependent problem
+
 strikeslip_cubit.cfg - Parameters common to CUBIT generated meshes
 strikeslip_hex8_1000m.cfg - Parameters specific to hex8 1000m resolution sim
 strikeslip_hex8_0500m.cfg - Parameters specific to hex8 500m resolution sim
@@ -44,3 +46,42 @@ tet4 @ 500m resolution
 tet4 @ 250m resolution
 
   pylith strikeslip_lagrit.cfg strikeslip_tet4_0250m.cfg
+
+
+======================================================================
+All of the simulations above are for a single elastic time step.
+To run time-dependent simulations, you can simply append 'timedep.cfg'
+to the end of each example listed above.
+
+TO RUN TIME-DEPENDENT SIMULATIONS
+======================================================================
+
+hex8 @ 1000m resolution
+
+  pylith strikeslip_cubit.cfg strikeslip_hex8_1000m.cfg timedep.cfg
+
+hex8 @ 500m resolution
+
+  pylith strikeslip_cubit.cfg strikeslip_hex8_0500m.cfg timedep.cfg
+
+hex8 @ 250m resolution
+
+  pylith strikeslip_cubit.cfg strikeslip_hex8_0250m.cfg timedep.cfg
+
+tet4 @ 1000m resolution
+
+  pylith strikeslip_lagrit.cfg strikeslip_tet4_1000m.cfg timedep.cfg
+
+tet4 @ 500m resolution
+
+  pylith strikeslip_lagrit.cfg strikeslip_tet4_0500m.cfg timedep.cfg
+
+tet4 @ 250m resolution
+
+  pylith strikeslip_lagrit.cfg strikeslip_tet4_0250m.cfg timedep.cfg
+
+======================================================================
+NOTE:  Any of the above problems can be run on more than one processor
+by appending -nodes=n, where n is the number of desired processes, to
+the end of any of the above example commands.
+======================================================================
