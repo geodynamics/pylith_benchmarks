@@ -15,10 +15,11 @@ import numpy
 import tables
 
 shape = "hex8"
-res = 1000
+res = 500
 t = 0.0
-filenameIn = "strikeslip_%s_%04dm_t%0.6f.vtk" % (shape, res, t)
-filenameOut = "strikeslip_%s_%04dm.h5" % (shape, res)
+filenameRoot = "../results/strikeslip_%s_%04dm" % (shape, res)
+filenameIn = "%s_t%0.6f.vtk" % (filenameRoot, t)
+filenameOut = "%s.h5" % filenameRoot
 
 reader = VTKFileReader()
 reader.initialize(filenameIn)
@@ -37,10 +38,12 @@ dispVtk = data._get_point_data()._get_vectors().to_array()
 
 h5 = tables.openFile(filenameOut, "w")
 h5.createGroup("/", "topology")
-h5.createArray("/topology", "vertices", verticesVtk)
 h5.createArray("/topology", "cells", cellsVtk)
-h5.createGroup("/", "data")
-h5.createArray("/data", "displacements", dispVtk)
+h5.createGroup("/", "geometry")
+h5.createArray("/geometry", "vertices", verticesVtk)
+h5.createGroup("/", "solution")
+h5.createGroup("/solution", "snapshot0")
+h5.createArray("/solution/snapshot0", "displacements", dispVtk)
 h5.close()
 
 # End of file
