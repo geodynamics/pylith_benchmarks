@@ -33,10 +33,19 @@ elif shape == "tet4":
 ncells = size / (1+ncorners)
 assert((1+ncorners)*ncells == size)
 cellsVtk = numpy.reshape(cellsVtk, (ncells, 1+ncorners))[:,1:1+ncorners]
+
 verticesVtk = data._get_points().to_array()
+(nvertices, spaceDim) = verticesVtk.shape
+
 dispVtk = data._get_point_data()._get_vectors().to_array()
 
+
 h5 = tables.openFile(filenameOut, "w")
+h5.root._v_attrs.space_dim = spaceDim
+h5.root._v_attrs.num_corners = ncorners
+h5.root._v_attrs.num_vertices = nvertices
+h5.root._v_attrs.cell_shape = shape
+
 h5.createGroup("/", "topology")
 h5.createArray("/topology", "cells", cellsVtk)
 h5.createGroup("/", "geometry")
