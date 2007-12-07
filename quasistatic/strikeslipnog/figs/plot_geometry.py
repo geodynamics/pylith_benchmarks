@@ -14,16 +14,31 @@ from enthought.mayavi.app import Mayavi
 import vtk_geometry
 from enthought.mayavi.sources.vtk_data_source import VTKDataSource
 
-class PlotGeometry(Mayavi):
+class PlotScene(Mayavi):
 
-  def run(self):
+  # PUBLIC METHODS /////////////////////////////////////////////////////
+
+  def run(self):    
+    self._setupScene(showFaultTaper=True)
+    return
+
+
+  # PRIVATE METHODS ////////////////////////////////////////////////////
+
+  def _setupScene(self,
+                  showFault=True,
+                  showMaterials=True,
+                  showFaultTaper=False):
+    """
+    Plot axes, fault surface, and materials.
+    """
+
     from enthought.mayavi.modules.outline import Outline
     from enthought.mayavi.modules.axes import Axes
     from enthought.mayavi.modules.surface import Surface
-    
-    script = self.script
-    
+
     # Create rendering scene
+    script = self.script
     script.new_scene()
     script.engine.current_scene.scene.background = (1,1,1)
     script.engine.current_scene.scene.foreground = (0,0,0)
@@ -43,37 +58,40 @@ class PlotGeometry(Mayavi):
     script.add_module(axes)
 
     # Fault surface
-    srcs = vtk_geometry.fault(showTaper=True)
-    for src in srcs:
-      script.add_source(VTKDataSource(data=src['object']))
-      script.engine.current_object.name = "Fault %s" % src['name']
-      surf = Surface()
-      script.add_module(surf)
-      surf.actor.property.color = (1,0,0)
-      if src['name'] == "taper":
-        surf.actor.property.opacity = 0.1
-      else:
-        surf.actor.property.opacity = 0.3
+    if showFault:
+      srcs = vtk_geometry.fault(showTaper=showFaultTaper)
+      for src in srcs:
+        script.add_source(VTKDataSource(data=src['object']))
+        script.engine.current_object.name = "Fault %s" % src['name']
+        surf = Surface()
+        script.add_module(surf)
+        surf.actor.property.color = (1,0,0)
+        if src['name'] == "taper":
+          surf.actor.property.opacity = 0.1
+        else:
+          surf.actor.property.opacity = 0.3
 
     # Materials
-    srcs = vtk_geometry.materials()
-    for src in srcs:
-      script.add_source(VTKDataSource(data=src['object']))
-      script.engine.current_object.name = "Material %s" % src['name']
-      surf = Surface()
-      script.add_module(surf)
-      surf.actor.property.opacity = 0.1
-      if src['name'] == "elastic":
-        surf.actor.property.color = (1,1,0)
-      elif src['name'] == "viscoelastic":
-        surf.actor.property.color = (0,1,1)
+    if showMaterials:
+      srcs = vtk_geometry.materials()
+      for src in srcs:
+        script.add_source(VTKDataSource(data=src['object']))
+        script.engine.current_object.name = "Material %s" % src['name']
+        surf = Surface()
+        script.add_module(surf)
+        surf.actor.property.opacity = 0.1
+        if src['name'] == "elastic":
+          surf.actor.property.color = (1,1,0)
+        elif src['name'] == "viscoelastic":
+          surf.actor.property.color = (0,1,1)
 
     return
 
 
+
 # ----------------------------------------------------------------------
 if __name__ == "__main__":
-  app = PlotGeometry()
+  app = PlotScene()
   app.main()
 
 
