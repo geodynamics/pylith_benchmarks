@@ -13,7 +13,8 @@
 from plot_geometry import PlotScene
 
 shape = "tet4"
-res = 1000
+res = 500
+showSlice = True
 
 class PlotError(PlotScene):
 
@@ -21,8 +22,9 @@ class PlotError(PlotScene):
 
   def run(self):    
     from enthought.mayavi.sources.vtk_data_source import VTKDataSource
-    from enthought.mayavi.filters.cell_to_point_data import CellToPointData
-    from enthought.mayavi.modules.iso_surface import IsoSurface
+    from enthought.mayavi.filters.threshold import Threshold
+    from enthought.mayavi.modules.surface import Surface
+    from enthought.mayavi.modules.scalar_cut_plane import ScalarCutPlane
 
     self._setupScene()
     data = self._readData()
@@ -31,12 +33,25 @@ class PlotError(PlotScene):
     script.add_source(VTKDataSource(data=data))
     script.engine.current_object.name = "Error"
 
-    ptdata = CellToPointData()
-    script.add_filter(ptdata)
-
-    surf = IsoSurface()
-    script.add_module(surf)
+    threshold = Threshold()
+    script.add_filter(threshold)
+    threshold.lower_threshold = -3.5
     
+    surf = Surface()
+    script.add_filter(surf)
+    if showSlice:
+      surf.actor.property.opacity = 0.2
+      slice = ScalarCutPlane()
+      script.add_module(slice)
+      slice.implicit_plane.origin = (12.0, 12.0, -12.0)
+      slice.implicit_plane.normal = (0, -1.0, 0.0)
+
+    colorbar = script.engine.current_object.module_manager.scalar_lut_manager
+    colorbar.show_scalar_bar = True
+    colorbar.data_range = (-3.5, -2.0)
+    colorbar.number_of_labels = 7
+    colorbar.scalar_bar.label_format = "%-4.2f"
+
     return
 
 

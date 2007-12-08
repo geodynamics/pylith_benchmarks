@@ -14,6 +14,7 @@ from plot_geometry import PlotScene
 
 shape = "tet4"
 res = 1000
+scaleFactor = 2.0
 
 class PlotSoln(PlotScene):
 
@@ -34,6 +35,7 @@ class PlotSoln(PlotScene):
     script.engine.current_object.name = "Solution"
 
     warp = WarpVector()
+    warp.filter.scale_factor = scaleFactor
     script.add_filter(warp)
 
     norm = ExtractVectorNorm()
@@ -46,8 +48,16 @@ class PlotSoln(PlotScene):
     glyph.actor.property.color = (1,1,1)
     glyph.actor.mapper.scalar_visibility = False
     glyph.glyph.glyph_position = 'tail'
+    glyph.glyph.glyph.scale_factor = scaleFactor
     glyph.glyph.glyph_source = glyph.glyph.glyph_list[1]
     
+    colorbar = script.engine.current_object.module_manager.scalar_lut_manager
+    colorbar.show_scalar_bar = True
+    colorbar.data_range = (0.0, 0.5)
+    colorbar.number_of_labels = 6
+    colorbar.scalar_bar.label_format = "%3.1f"
+    colorbar.data_name = "Displacement [m]"
+
     return
 
 
