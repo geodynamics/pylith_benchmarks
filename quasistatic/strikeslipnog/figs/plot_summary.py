@@ -80,17 +80,56 @@ class PlotSummary(object):
 
         self._setup()
 
-        plots = [self._plotVertices,
-                 self._plotIterations,
-                 self._plotRunTime,
-                 self._plotError,
-                 self._plotCells,
-                 self._plotFlops,
-                 self._plotMemory]
+        plots = [{'value': "nvertices",
+                  'title': "# Vertices",
+                  'log': True,
+                  'range': None},
+                 {'value': "niterations",
+                  'title': "# Iterations in Solve",
+                  'log': False,
+                  'range': None},
+                 {'value': "run_time",
+                  'title': "Run Time (s)",
+                  'log': False,
+                  'range': None},
+                 {'value': "error",
+                  'title': "Average Error (m)",
+                  'log': True,
+                  'range': (1e-5, 1e-2)},
+                 {'value': "ncells",
+                  'title': "# Cells",
+                  'log': True,
+                  'range': None},
+                 {'value': "nflops",
+                  'title': "# FLOPS",
+                  'log': True,
+                  'range': (1e+6, 1e+11)},
+                 {'value': "memory",
+                  'title': "Peak Memory Uage (MB)",
+                  'log': False,
+                  'range': None}]
         iplot = 1
         for plot in plots:
             pylab.subplot(self.nrows, self.ncols, iplot)
-            handles = plot()
+            offset = 0
+            handles = []
+            for shape in self.shapes:
+                format = shape + " " + "%dm"
+                keys = [format % res for res in self.resolutions]
+                d = [data[key][plot['value']] for key in keys]
+                h = pylab.bar(self.loc0+offset*self.width, d,
+                              self.width,
+                              log=plot['log'],
+                              color=self.colorShapes[shape])
+                handles.append(h)
+                offset += 1
+            pylab.title(plot['title'],
+                        fontsize=self.titleFontSize)
+            pylab.xticks(self.locs, ["%sm" % res for res in self.resolutions],
+                         fontsize=self.labelFontSize)
+            pylab.yticks(fontsize=self.labelFontSize)
+            if not plot['range'] is None:
+                pylab.ylim(plot['range'])
             iplot += 1
 
         pylab.subplot(self.nrows, self.ncols, iplot)
@@ -114,6 +153,8 @@ class PlotSummary(object):
         from matplotlib.colors import colorConverter
         for key in colors.keys():
             colorConverter.colors[key] = colors[key]
+        self.titleFontSize = 12
+        self.labelFontSize = 10
 
         self.nrows = 2
         self.ncols = 4
@@ -137,132 +178,6 @@ class PlotSummary(object):
                               wspace=0.46,
                               hspace=0.26)
         return
-
-
-    def _plotVertices(self):
-        offset = 0
-        handles = []
-        for shape in self.shapes:
-            format = shape + " " + "%dm"
-            keys = [format % res for res in self.resolutions]
-            vertices = [data[key]['nvertices'] for key in keys]
-            h = pylab.bar(self.loc0+offset*self.width, vertices,
-                          self.width,
-                          log=True,
-                          color=self.colorShapes[shape])
-            handles.append(h)
-            offset += 1
-        pylab.xticks(self.locs, ["%sm" % res for res in self.resolutions] )
-        pylab.title("# Vertices")
-        return handles
-
-
-    def _plotCells(self):
-        offset = 0
-        handles = []
-        for shape in self.shapes:
-            format = shape + " " + "%dm"
-            keys = [format % res for res in self.resolutions]
-            vertices = [data[key]['ncells'] for key in keys]
-            h = pylab.bar(self.loc0+offset*self.width, vertices,
-                          self.width,
-                          log=True,
-                          color=self.colorShapes[shape])
-            handles.append(h)
-            offset += 1
-        pylab.xticks(self.locs, ["%sm" % res for res in self.resolutions] )
-        pylab.title("# Cells")
-        return handles
-
-
-    def _plotIterations(self):
-        offset = 0
-        handles = []
-        for shape in self.shapes:
-            format = shape + " " + "%dm"
-            keys = [format % res for res in self.resolutions]
-            vertices = [data[key]['niterations'] for key in keys]
-            h = pylab.bar(self.loc0+offset*self.width, vertices,
-                          self.width,
-                          log=False,
-                          color=self.colorShapes[shape])
-            handles.append(h)
-            offset += 1
-        pylab.xticks(self.locs, ["%sm" % res for res in self.resolutions] )
-        pylab.title("# Iterations in Solve")
-        return handles
-
-
-    def _plotFlops(self):
-        offset = 0
-        handles = []
-        for shape in self.shapes:
-            format = shape + " " + "%dm"
-            keys = [format % res for res in self.resolutions]
-            vertices = [data[key]['nflops'] for key in keys]
-            h = pylab.bar(self.loc0+offset*self.width, vertices,
-                          self.width,
-                          log=True,
-                          color=self.colorShapes[shape])
-            handles.append(h)
-            offset += 1
-        pylab.xticks(self.locs, ["%sm" % res for res in self.resolutions] )
-        pylab.title("# FLOPS")
-        return handles
-
-
-    def _plotRunTime(self):
-        offset = 0
-        handles = []
-        for shape in self.shapes:
-            format = shape + " " + "%dm"
-            keys = [format % res for res in self.resolutions]
-            vertices = [data[key]['run_time'] for key in keys]
-            h = pylab.bar(self.loc0+offset*self.width, vertices,
-                          self.width,
-                          log=False,
-                          color=self.colorShapes[shape])
-            handles.append(h)
-            offset += 1
-        pylab.xticks(self.locs, ["%sm" % res for res in self.resolutions] )
-        pylab.title("Run Time (s)")
-        return handles
-
-
-    def _plotMemory(self):
-        offset = 0
-        handles = []
-        for shape in self.shapes:
-            format = shape + " " + "%dm"
-            keys = [format % res for res in self.resolutions]
-            vertices = [data[key]['memory'] for key in keys]
-            h = pylab.bar(self.loc0+offset*self.width, vertices,
-                          self.width,
-                          log=False,
-                          color=self.colorShapes[shape])
-            handles.append(h)
-            offset += 1
-        pylab.xticks(self.locs, ["%sm" % res for res in self.resolutions] )
-        pylab.title("Memory (MB)")
-        return handles
-
-
-    def _plotError(self):
-        offset = 0
-        handles = []
-        for shape in self.shapes:
-            format = shape + " " + "%dm"
-            keys = [format % res for res in self.resolutions]
-            vertices = [data[key]['error'] for key in keys]
-            h = pylab.bar(self.loc0+offset*self.width, vertices,
-                          self.width,
-                          log=False,
-                          color=self.colorShapes[shape])
-            handles.append(h)
-            offset += 1
-        pylab.xticks(self.locs, ["%sm" % res for res in self.resolutions] )
-        pylab.title("Average Error (m)")
-        return handles
 
 
 # ----------------------------------------------------------------------
