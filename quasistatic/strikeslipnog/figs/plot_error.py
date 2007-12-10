@@ -30,7 +30,7 @@ class PlotError(PlotScene):
     data = self._readData()
 
     script = self.script
-    script.add_source(VTKDataSource(data=data))
+    error = script.add_source(VTKDataSource(data=data))
     script.engine.current_object.name = "Error"
 
     if showSlice:
@@ -59,6 +59,8 @@ class PlotError(PlotScene):
     colorbar.scalar_bar.label_format = "%-3.1f"
     w,h = colorbar.scalar_bar.position2
     colorbar.scalar_bar.position2 = (w, 0.1)
+
+    print error
 
     import vtk_geometry
     vtk_geometry.setCamera(script.engine.current_scene.scene.camera)
