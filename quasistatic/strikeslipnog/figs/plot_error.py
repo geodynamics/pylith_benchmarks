@@ -13,7 +13,7 @@
 from plot_geometry import PlotScene
 
 shape = "tet4"
-res = 250
+res = 1000
 showSlice = True
 
 class PlotError(PlotScene):
@@ -33,24 +33,30 @@ class PlotError(PlotScene):
     script.add_source(VTKDataSource(data=data))
     script.engine.current_object.name = "Error"
 
+    if showSlice:
+      slice = ScalarCutPlane()
+      script.add_module(slice)
+      slice.actor.property.opacity = 0.5
+      slice.implicit_plane.origin = (12.0, 12.0, -12.0)
+      slice.implicit_plane.normal = (0, -1.0, 0.0)
+
     threshold = Threshold()
     script.add_filter(threshold)
-    threshold.lower_threshold = -3.5
+    threshold.lower_threshold = -3.0
     
     surf = Surface()
     script.add_filter(surf)
     if showSlice:
-      surf.actor.property.opacity = 0.2
-      slice = ScalarCutPlane()
-      script.add_module(slice)
-      slice.implicit_plane.origin = (12.0, 12.0, -12.0)
-      slice.implicit_plane.normal = (0, -1.0, 0.0)
+      surf.actor.property.opacity = 0.3
 
-    colorbar = script.engine.current_object.module_manager.scalar_lut_manager
+    for obj in [slice, surf]:
+      colorbar = obj.module_manager.scalar_lut_manager
+      colorbar.data_range = (threshold.lower_threshold, -2.0)
+      colorbar.lut_mode = "hot"
+      colorbar.reverse_lut = True
     colorbar.show_scalar_bar = True
-    colorbar.data_range = (-3.5, -2.0)
-    colorbar.number_of_labels = 7
-    colorbar.scalar_bar.label_format = "%-4.2f"
+    colorbar.number_of_labels = 5
+    colorbar.scalar_bar.label_format = "%-3.1f"
     w,h = colorbar.scalar_bar.position2
     colorbar.scalar_bar.position2 = (w, 0.1)
 
@@ -82,11 +88,14 @@ class PlotError(PlotScene):
         assert(spaceDim == 3)
         assert(ncorners == 4)
         cellType = tvtk.Tetra().cell_type
+    elif shape == "hex8":
+        assert(spaceDim == 3)
+        assert(ncorners == 8)
+        cellType = tvtk.Hexahedron().cell_type
     else:
         raise ValueError("Unknown shape '%s'." % shape)
 
     errorLog10 = numpy.log10(error)
-    disp = numpy.reshape(disp, (ncells, spaceDim))
 
     data = tvtk.UnstructuredGrid()
     data.points = vertices
