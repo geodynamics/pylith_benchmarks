@@ -28,7 +28,7 @@ data = {
         'nvertices': 15625,
         'nflops': 1.95e+09,
         'run_time': 15.9,
-        'error': 0.0,
+        'error': 6.58e-04,
         'niterations': 37,
         'memory': 185},
 
@@ -46,7 +46,7 @@ data = {
         'nvertices': 117649,
         'nflops': 2.12e+10,
         'run_time': 154.0,
-        'error': 0.0,
+        'error': 1.94e-04,
         'niterations': 68,
         'memory': 2100.0},
 
@@ -54,7 +54,7 @@ data = {
     "Tet4 250m": {
         'ncells': 5244768,
         'nvertices': 912673,
-        'nflops': 1.0,
+        'nflops': 0.0,
         'run_time': 0.0,
         'error': 1.30e-04,
         'niterations': 0,
@@ -63,7 +63,7 @@ data = {
     "Hex8 250m" : {
         'ncells': 884736,
         'nvertices': 912673,
-        'nflops': 1.0,
+        'nflops': 0.0,
         'run_time': 0.0,
         'error': 0.0,
         'niterations': 0,
@@ -139,7 +139,7 @@ class PlotSummary(object):
                      loc='center')
 
         pylab.show()
-        pylab.savefig('benchmark_summary')
+        #pylab.savefig('benchmark_summary')
         return
 
     def _setup(self):
