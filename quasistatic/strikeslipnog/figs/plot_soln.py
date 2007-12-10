@@ -56,8 +56,12 @@ class PlotSoln(PlotScene):
     colorbar.data_range = (0.0, 0.5)
     colorbar.number_of_labels = 6
     colorbar.scalar_bar.label_format = "%3.1f"
+    w,h = colorbar.scalar_bar.position2
+    colorbar.scalar_bar.position2 = (w, 0.1)
     colorbar.data_name = "Displacement [m]"
-
+    
+    import vtk_geometry
+    vtk_geometry.setCamera(script.engine.current_scene.scene.camera)
     return
 
 

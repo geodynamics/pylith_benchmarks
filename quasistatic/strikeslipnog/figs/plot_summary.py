@@ -18,10 +18,10 @@ data = {
         'ncells': 79756,
         'nvertices': 15625,
         'nflops': 1.01e+09,
-        'run_time': 0.0,
+        'run_time': 35.8,
         'error': 1.41e-03,
         'niterations': 60,
-        'memory': 0.0},
+        'memory': 313},
 
     "Hex8 1000m": {
         'ncells': 13824,
@@ -30,7 +30,7 @@ data = {
         'run_time': 15.9,
         'error': 0.0,
         'niterations': 37,
-        'memory': 0.0},
+        'memory': 185},
 
     "Tet4 500m": {
         'ncells': 661929,
@@ -56,7 +56,7 @@ data = {
         'nvertices': 912673,
         'nflops': 1.0,
         'run_time': 0.0,
-        'error': 0.0,
+        'error': 1.30e-04,
         'niterations': 0,
         'memory': 0.0},
 
@@ -84,30 +84,30 @@ class PlotSummary(object):
                   'title': "# Vertices",
                   'log': True,
                   'range': None},
+                 {'value': "ncells",
+                  'title': "# Cells",
+                  'log': True,
+                  'range': None},
+                 {'value': "memory",
+                  'title': "Peak Memory Usage (MB)",
+                  'log': True,
+                  'range': (1e+1, 1e+4)},
                  {'value': "niterations",
                   'title': "# Iterations in Solve",
                   'log': False,
                   'range': None},
                  {'value': "run_time",
                   'title': "Run Time (s)",
-                  'log': False,
-                  'range': None},
-                 {'value': "error",
-                  'title': "Average Error (m)",
                   'log': True,
-                  'range': (1e-5, 1e-2)},
-                 {'value': "ncells",
-                  'title': "# Cells",
-                  'log': True,
-                  'range': None},
+                  'range': (1e+1, 1e+3)},
                  {'value': "nflops",
                   'title': "# FLOPS",
                   'log': True,
-                  'range': (1e+6, 1e+11)},
-                 {'value': "memory",
-                  'title': "Peak Memory Uage (MB)",
-                  'log': False,
-                  'range': None}]
+                  'range': (1e+8, 1e+11)},
+                 {'value': "error",
+                  'title': "Average Error (m)",
+                  'log': True,
+                  'range': (1e-5, 1e-2)}]
         iplot = 1
         for plot in plots:
             pylab.subplot(self.nrows, self.ncols, iplot)
@@ -139,25 +139,35 @@ class PlotSummary(object):
                      loc='center')
 
         pylab.show()
-        #pylab.savefig('summary')
+        pylab.savefig('benchmark_summary')
         return
 
     def _setup(self):
-        figWidth = 8
-        figHeight = 4
+        figWidth = 9.25
+        figHeight = 8.5
         colors = {'fg': (0,0,0),
                   'bg': (1,1,1),
-                  'red': (1,0,0),
-                  'green': (0,1,0),
-                  'blue': (0,0,1)}
+                  'dkgray': 0.25,
+                  'mdgray': 0.5,
+                  'ltgray': 0.75,
+                  'dkslate': (0.18, 0.21, 0.28),
+                  'slate': (0.45, 0.50, 0.68),
+                  'ltorange': (1.0, 0.74, 0.41),
+                  'orange': (0.96, 0.50, 0.0),
+                  'ltred': (1.0, 0.25, 0.25),
+                  'red': (0.79, 0.00, 0.01),
+                  'ltblue': (0.2, 0.73, 1.0),
+                  'blue': (0.12, 0.43, 0.59),
+                  'green': (0.37, 0.80, 0.05),
+                  'green': (0.23, 0.49, 0.03)}
         from matplotlib.colors import colorConverter
         for key in colors.keys():
             colorConverter.colors[key] = colors[key]
-        self.titleFontSize = 12
-        self.labelFontSize = 10
+        self.titleFontSize = 18
+        self.labelFontSize = 14
 
-        self.nrows = 2
-        self.ncols = 4
+        self.nrows = 3
+        self.ncols = 3
 
         self.resolutions = [1000, 500, 250]
         self.shapes = ["Tet4", "Hex8"]
@@ -166,17 +176,18 @@ class PlotSummary(object):
         self.locs = pylab.arange(len(self.resolutions))
         self.loc0 = self.locs - 0.5*len(self.shapes)*self.width
 
-        self.colorShapes = {'Tet4': 'red',
+        self.colorShapes = {'Tet4': 'orange',
                             'Hex8': 'blue'}
 
         pylab.figure(figsize=(figWidth, figHeight),
+                     facecolor='bg',
                      dpi=90)
-        pylab.subplots_adjust(left=0.06,
-                              right=0.98,
-                              bottom=0.05,
-                              top=0.93,
-                              wspace=0.46,
-                              hspace=0.26)
+        pylab.subplots_adjust(left=0.04,
+                              right=0.96,
+                              bottom=0.03,
+                              top=0.96,
+                              wspace=0.22,
+                              hspace=0.35)
         return
 
 

@@ -13,7 +13,7 @@
 from plot_geometry import PlotScene
 
 shape = "tet4"
-res = 500
+res = 250
 showSlice = True
 
 class PlotError(PlotScene):
@@ -51,7 +51,11 @@ class PlotError(PlotScene):
     colorbar.data_range = (-3.5, -2.0)
     colorbar.number_of_labels = 7
     colorbar.scalar_bar.label_format = "%-4.2f"
+    w,h = colorbar.scalar_bar.position2
+    colorbar.scalar_bar.position2 = (w, 0.1)
 
+    import vtk_geometry
+    vtk_geometry.setCamera(script.engine.current_scene.scene.camera)
     return
 
 

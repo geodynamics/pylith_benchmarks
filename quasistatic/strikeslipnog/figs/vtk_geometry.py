@@ -80,12 +80,12 @@ def materials():
 
 # ----------------------------------------------------------------------
 def setCamera(camera):
-    dist = 70.0
+    dist = 67.0
     angle = 40.0
     elev = 30.0
     azimuth = 35.0
     clipRange = numpy.array( [5, 100] )
-    ptTo = numpy.array( [8.0, 12.0, -18.0] )
+    ptTo = numpy.array( [6.0, 12.0, -19] )
     ptFrom = ptTo + numpy.array( [0.0, -dist, 0.0])
     
     camera.view_angle = angle
