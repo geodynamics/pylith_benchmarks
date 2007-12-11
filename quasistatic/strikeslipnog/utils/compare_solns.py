@@ -14,27 +14,8 @@
 
 import tables
 
-shape = "tet4"
-res = 500
-
-# ----------------------------------------------------------------------
-def getMap(solnfile):
-    """
-    Get element interpolation mapping information.
-    """
-    vertices = solnfile.root.geometry.vertices[:]
-    (nvertices, spaceDim) = vertices.shape
-    cells = solnfile.root.topology.cells[:]
-    (ncells, ncorners) = cells.shape
-
-    if spaceDim == 3 and ncorners == 4:
-        from benchmark.discretize.Tet4 import Tet4
-        cell = Tet4()
-    else:
-        raise ValueError("Unknown finite-element in dimension %d with %d " \
-                         "corners." % (spaceDim, ncorners))
-    return cell.calcMap(vertices, cells)
-
+shape = "hex8"
+res = 1000
 
 # ----------------------------------------------------------------------
 def main_load_disp(app):
@@ -47,15 +28,13 @@ def main_load_disp(app):
     field = "displacements"
     filename = "results/strikeslip_%s_%04dm.h5" % (shape, res)
     
-    projection = app.projection
     projection.open()
 
     # PyLith ---------------------------------
     app._info.log("Projecting PyLith solution...")
     solnfile = tables.openFile(filename, 'r')
-    solnmap = getMap(solnfile)
     for tstep in [0]:
-        projection.project(solnfile, solnmap, "pylith_1_0", tstep, field)
+        projection.project(solnfile, "pylith_1_0", tstep, field)
     solnfile.close()
 
     # Analytic -------------------------------
@@ -110,6 +89,17 @@ if __name__ == "__main__":
 
     from benchmark.CompareApp import CompareApp
     app = CompareApp()
+    app._configure()
+    projection = app.projection
+    if shape == "tet4":
+        from benchmark.discretize.FIATSimplex import FIATSimplex
+        projection.discretize = FIATSimplex()
+    elif shape == "hex8":
+        from benchmark.discretize.FIATLagrange import FIATLagrange
+        projection.discretize = FIATLagrange()
+    projection.discretize._configure()
+    projection.discretize.initialize()
+    
     app.mainfn = main_load_disp
     app.run()
     app.mainfn = main_cmp_disp
