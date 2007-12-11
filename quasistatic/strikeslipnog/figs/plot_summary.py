@@ -65,7 +65,7 @@ data = {
         'nvertices': 912673,
         'nflops': 0.0,
         'run_time': 0.0,
-        'error': 0.0,
+        'error': 7.70e-05,
         'niterations': 0,
         'memory': 0.0}
     }
