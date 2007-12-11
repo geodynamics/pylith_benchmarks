@@ -12,8 +12,8 @@
 
 from plot_geometry import PlotScene
 
-shape = "tet4"
-res = 1000
+shape = "hex8"
+res = 250
 showSlice = True
 
 class PlotError(PlotScene):
@@ -30,15 +30,9 @@ class PlotError(PlotScene):
     data = self._readData()
 
     script = self.script
-    error = script.add_source(VTKDataSource(data=data))
+    script.add_source(VTKDataSource(data=data))
     script.engine.current_object.name = "Error"
-
-    if showSlice:
-      slice = ScalarCutPlane()
-      script.add_module(slice)
-      slice.actor.property.opacity = 0.5
-      slice.implicit_plane.origin = (12.0, 12.0, -12.0)
-      slice.implicit_plane.normal = (0, -1.0, 0.0)
+    error = script.engine.current_object
 
     threshold = Threshold()
     script.add_filter(threshold)
@@ -46,8 +40,15 @@ class PlotError(PlotScene):
     
     surf = Surface()
     script.add_filter(surf)
+
     if showSlice:
       surf.actor.property.opacity = 0.3
+      script.engine.current_object = error
+      slice = ScalarCutPlane()
+      script.add_module(slice)
+      slice.actor.property.opacity = 0.5
+      slice.implicit_plane.origin = (12.0, 12.0, -12.0)
+      slice.implicit_plane.normal = (0, -1.0, 0.0)
 
     for obj in [slice, surf]:
       colorbar = obj.module_manager.scalar_lut_manager
@@ -55,12 +56,14 @@ class PlotError(PlotScene):
       colorbar.lut_mode = "hot"
       colorbar.reverse_lut = True
     colorbar.show_scalar_bar = True
-    colorbar.number_of_labels = 5
+    colorbar.number_of_labels = 6
     colorbar.scalar_bar.label_format = "%-3.1f"
     w,h = colorbar.scalar_bar.position2
     colorbar.scalar_bar.position2 = (w, 0.1)
 
-    print error
+    light = script.engine.current_scene.scene.light_manager.lights[0]
+    light.elevation = 20.0
+    light.azimuth = -45.0
 
     import vtk_geometry
     vtk_geometry.setCamera(script.engine.current_scene.scene.camera)
