@@ -1,0 +1,65 @@
+# ----------------------------------------------------------------------
+# Create blocks for materials
+# ----------------------------------------------------------------------
+block 1 volume elastic_hangingwall
+block 1 name "elastic hangingwall"
+block 2 volume elastic_footwall
+block 2 name "elastic footwall"
+block 3 volume visco_hangingwall
+block 3 name "viscoelastic hangingwall"
+block 4 volume visco_footwall
+block 4 name "viscoelastic footwall"
+
+# ----------------------------------------------------------------------
+# Create nodeset for fault
+# ----------------------------------------------------------------------
+group "fault" add node in fault_surface
+group "fault" add node in fault_surface@A
+group "fault" remove node with z_coord < -16.001e+3 or with y_coord > 16.001e+3
+nodeset 10 group fault
+nodeset 10 name "fault"
+
+# ----------------------------------------------------------------------
+# Create nodeset for fixed BC
+# ----------------------------------------------------------------------
+group "analytic_disp_xpos" add node in surface 13
+group "analytic_disp_xpos" add node in surface 32
+group "analytic_disp_xpos" add node in surface 36
+nodeset 11 group analytic_disp_xpos
+nodeset 11 name "analytic_disp_xpos"
+
+group "analytic_disp_xneg" add node in surface 11
+group "analytic_disp_xneg" add node in surface 17
+nodeset 12 group analytic_disp_xneg
+nodeset 12 name "analytic_disp_xneg"
+
+group "analytic_disp_ypos" add node in surface 23
+group "analytic_disp_ypos" add node in surface 25
+group "analytic_disp_ypos" add node in surface 33
+group "analytic_disp_ypos" add node in surface 35
+group "analytic_disp_ypos" remove node in analytic_disp_xneg
+group "analytic_disp_ypos" remove node in analytic_disp_xpos
+nodeset 13 group analytic_disp_ypos
+nodeset 13 name "analytic_disp_ypos"
+
+group "analytic_disp_zneg" add node in surface 2
+group "analytic_disp_zneg" remove node in analytic_disp_xneg
+group "analytic_disp_zneg" remove node in analytic_disp_xpos
+group "analytic_disp_zneg" remove node in analytic_disp_ypos
+nodeset 14 group analytic_disp_zneg
+nodeset 14 name "analytic_disp_zneg"
+
+# ----------------------------------------------------------------------
+# Create nodeset for symmetry BC
+# ----------------------------------------------------------------------
+group "symmetry_disp" add node in surface 21
+group "symmetry_disp" add node in surface 28
+group "symmetry_disp" add node in surface 31
+group "symmetry_disp" add node in surface 38
+group "symmetry_disp" remove node in analytic_disp_xpos
+group "symmetry_disp" remove node in analytic_disp_xneg
+group "symmetry_disp" remove node in analytic_disp_ypos
+group "symmetry_disp" remove node in analytic_disp_zneg
+group "symmetry_disp" remove node in fault
+nodeset 15 group symmetry_disp
+nodeset 15 name "symmetry_disp"

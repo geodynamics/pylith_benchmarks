@@ -1,0 +1,39 @@
+# ----------------------------------------------------------------------
+# Create block
+# ----------------------------------------------------------------------
+reset
+brick x 24000 y 24000 z 24000
+volume 1 move x 12000 y 12000 z -12000
+
+# ----------------------------------------------------------------------
+# Create interface surfaces
+# ----------------------------------------------------------------------
+# Fault surface
+create vertex 4000.0 0.0 0.0
+create vertex 4000.0 16000.0 0.0
+create vertex 20000.0 0.0 -16000.0
+create planar surface with plane vertex 10 vertex 9 vertex 11
+surface 7 name "fault_surface"
+
+create planar surface with plane zplane offset -12000.0
+surface 8 name "material_interface"
+
+#create planar surface with plane xplane offset 20000.0
+#surface 9 name "fault_auxiliary"
+
+# ----------------------------------------------------------------------
+# Divide volumes using interfaces surfaces
+# ----------------------------------------------------------------------
+webcut volume 1 with plane surface material_interface
+webcut volume 1 with plane surface fault_surface
+webcut volume 4 with plane surface fault_surface
+volume 1 name "elastic_hangingwall"
+volume 5 name "elastic_footwall"
+volume 4 name "visco_hangingwall"
+volume 6 name "visco_footwall"
+
+# ----------------------------------------------------------------------
+# Imprint curves on volumes
+# ----------------------------------------------------------------------
+imprint all with volume all
+merge all
