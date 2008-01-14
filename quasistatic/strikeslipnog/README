@@ -23,6 +23,8 @@ strikeslip_tet4_0250m.cfg - Parameters specific to tet4 250m resolution sim
 TO RUN SIMULATIONS
 ======================================================================
 
+Run the simulations from the parameters directory.
+
 hex8 @ 1000m resolution
 
   pylith strikeslip_cubit.cfg strikeslip_hex8_1000m.cfg
