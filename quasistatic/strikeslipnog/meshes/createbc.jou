@@ -1,14 +1,10 @@
 # ----------------------------------------------------------------------
 # Create blocks for materials
 # ----------------------------------------------------------------------
-block 1 volume elastic_xpos
-block 1 name "elastic x_pos"
-block 2 volume elastic_xneg
-block 2 name "elastic x_neg"
-block 3 volume visco_xpos
-block 3 name "viscoelastic x_pos"
-block 4 volume visco_xneg
-block 4 name "viscoelastic x_neg"
+block 1 volume elastic_xpos elastic_xneg
+block 1 name "elastic"
+block 2 volume visco_xpos visco_xneg
+block 2 name "viscoelastic"
 
 # ----------------------------------------------------------------------
 # Create nodeset for fault
