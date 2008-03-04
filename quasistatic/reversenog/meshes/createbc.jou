@@ -1,14 +1,10 @@
 # ----------------------------------------------------------------------
 # Create blocks for materials
 # ----------------------------------------------------------------------
-block 1 volume elastic_hangingwall
-block 1 name "elastic hangingwall"
-block 2 volume elastic_footwall
-block 2 name "elastic footwall"
-block 3 volume visco_hangingwall
-block 3 name "viscoelastic hangingwall"
-block 4 volume visco_footwall
-block 4 name "viscoelastic footwall"
+block 1 volume elastic_hangingwall elastic_footwall
+block 1 name "elastic"
+block 2 volume visco_hangingwall visco_footwall
+block 2 name "viscoelastic"
 
 # ----------------------------------------------------------------------
 # Create nodeset for fault
