@@ -1,0 +1,205 @@
+* -*- LaGriT -*-
+*
+* ----------------------------------------------------------------------
+* PARAMETERS CONTROLLING MESH
+* ----------------------------------------------------------------------
+*
+* Boundaries of domain
+define / domain_xmin /   0.0e+3
+define / domain_xmax /  24.0e+3
+define / domain_ymin /   0.0e+3
+define / domain_ymax /  24.0e+3
+define / domain_zmin / -24.0e+3
+define / domain_zmax /   0.0e+3
+*
+* ----------------------------------------------------------------------
+* CREATE GEOMETRY
+* ----------------------------------------------------------------------
+*
+* Create a mesh object and name it box
+cmo / create / box /
+*
+* Create boundary surfaces
+surface / surf_xneg / reflect / plane / &
+   domain_xmin   0.0e+0   0.0e+0 / &
+   domain_xmin   0.0e+0  10.0e+3 / &
+   domain_xmin  10.0e+3   0.0e+0
+surface / surf_xpos / reflect / plane / &
+    domain_xmax   0.0e+0   0.0e+0 / &
+    domain_xmax  10.0e+3   0.0e+0 / &
+    domain_xmax   0.0e+0  10.0e+3
+surface / surf_yneg / reflect / plane / &
+     0.0e+0  domain_ymin   0.0e+0 / &
+     0.0e+0  domain_ymin  10.0e+3 / &
+   -10.0e+3  domain_ymin   0.0e+0
+surface / surf_ypos / reflect / plane / &
+     0.0e+0   domain_ymax   0.0e+0 / &
+   -10.0e+3   domain_ymax   0.0e+0 / &
+     0.0e+0   domain_ymax  10.0e+3
+surface / surf_zneg / reflect / plane / &
+     0.0e+0    0.0e+0  domain_zmin / &
+   -10.0e+3    0.0e+0  domain_zmin / &
+     0.0e+0   10.0e+3  domain_zmin
+surface / surf_zpos / reflect / plane / &
+     0.0e+0    0.0e+0    domain_zmax / &
+     0.0e+0   10.0e+3    domain_zmax / &
+   -10.0e+3    0.0e+0    domain_zmax
+*
+* Create fault plane
+surface / surf_fault / intrface / plane / &
+  4.0e+3        domain_ymax   0.0e+0 / &
+  4.0e+3        0.0e+0        0.0e+0 / &
+  domain_xmax   0.0e+0      -20.0e+3 /
+* Create material interface
+surface / surf_mantle / intrface / plane / &
+  0.0     0.0     -12.0e+3 / &
+  1.0e+3  0.0     -12.0e+3 / &
+  0.0     1.0e+3  -12.0e+3 /
+
+* ----------------------------------------------------------------------
+* Create regions
+* ----------------------------------------------------------------------
+
+** Elastic on hanging wall side of the fault
+region / r_elastic_hang / &
+  le surf_xpos and ge surf_fault  &
+  and le surf_ypos and le surf_yneg  &
+  and le surf_zpos and ge surf_mantle /
+
+** Elastic on footwell side of the fault
+region / r_elastic_foot / &
+  le surf_xneg and lt surf_fault  &
+  and le surf_ypos and le surf_yneg  &
+  and le surf_zpos and ge surf_mantle /
+
+** Viscoelastic on hanging wall side of the fault
+region / r_visco_hang / &
+  le surf_xpos and ge surf_fault  &
+  and le surf_ypos and le surf_yneg  &
+  and lt surf_mantle and le surf_zneg /
+
+** Viscoelastic on footwall side of the fault
+region / r_visco_foot / &
+  le surf_xneg and lt surf_fault  &
+  and le surf_ypos and le surf_yneg  &
+  and lt surf_mantle and le surf_zneg /
+
+* ----------------------------------------------------------------------
+* Create material regions
+* ----------------------------------------------------------------------
+* Material regions do not include internal interfaces (regions do)
+*
+
+* Material 1
+mregion / mr_elastic_hang / &
+  le surf_xpos and gt surf_fault  &
+  and le surf_ypos and le surf_yneg  &
+  and le surf_zpos and gt surf_mantle /
+
+* Material 2
+mregion / mr_elastic_foot / &
+  le surf_xneg and lt surf_fault  &
+  and le surf_ypos and le surf_yneg  &
+  and le surf_zpos and gt surf_mantle /
+
+* Material 3
+mregion / mr_visco_hang / &
+  le surf_xpos and gt surf_fault  &
+  and le surf_ypos and le surf_yneg  &
+  and lt surf_mantle and le surf_zneg /
+
+* Material 4
+mregion / mr_visco_foot / &
+  le surf_xneg and lt surf_fault  &
+  and le surf_ypos and le surf_yneg  &
+  and lt surf_mantle and le surf_zneg /
+*
+* ----------------------------------------------------------------------
+* CREATE MESH
+* ----------------------------------------------------------------------
+*
+createpts / xyz / nx,ny,1 / &
+  domain_xmin  domain_ymin  domain_zmax / &
+  domain_xmax  domain_ymax  domain_zmax / &
+  1,1,0 /
+pset / rayend / seq / 0,0,0
+*
+
+loop / foreach / iregion / &
+  r_elastic_hang r_elastic_foot r_visco_hang r_visco_foot &
+  / loop_end / &
+  regnpts / iregion / dx / pset,get,rayend / xyz / &
+    0.0e+3  0.0e+3  domain_zmin / &
+    0.0e+3  1.0e+3  domain_zmin / &
+    1.0e+3  0.0e+3  domain_zmin / &
+    0,0
+cmo/setatt//itp/pset,get,rayend/dud
+pset / rayend / delete
+
+* ----------------------------------------------------------------------
+* Remove duplicate points
+* ----------------------------------------------------------------------
+filter / 1,0,0 / 10.0
+rmpoint / compress
+
+* ----------------------------------------------------------------------
+* Set node type and material
+* ----------------------------------------------------------------------
+setpts
+
+* ----------------------------------------------------------------------
+* Connect the points into a Delaunay tetrahedral mesh
+* ----------------------------------------------------------------------
+connect
+
+* ----------------------------------------------------------------------
+* Set elements to tetrahedra
+* ----------------------------------------------------------------------
+settets / geometry
+resetpts/cell_color
+
+* Remove parent/child hierarchy
+resetpts
+rmpoint / compress
+*
+* ----------------------------------------------------------------------
+* MESH QUALITY
+* ----------------------------------------------------------------------
+*
+quality
+*
+* ----------------------------------------------------------------------
+* IDENTIFY GROUPS
+* ----------------------------------------------------------------------
+*
+* Identify nodes on fault surface
+pset / tmp / surface / surf_fault /
+pset / fault / geom / xyz / pset,get,tmp / &
+   domain_xmin -0.001e+3 -16.001e+3 / &
+   domain_xmax 16.001e+3   0.001e+3 /
+pset / tmp / delete
+*
+* Identify nodes on boundaries
+pset / boundary_xneg / surface / surf_xneg /
+pset / boundary_xpos / surface / surf_xpos /
+
+pset / tmp / surface / surf_ypos /
+pset / boundary_ypos / not / tmp, boundary_xneg, boundary_xpos
+pset / tmp / delete
+
+pset / tmp / surface / surf_zneg /
+pset / boundary_zneg / not / tmp, &
+  boundary_xneg, boundary_xpos, boundary_ypos
+pset / tmp / delete
+
+pset / tmp / surface / surf_yneg /
+pset / boundary_yneg / not / tmp, boundary_xneg, boundary_xpos, &
+  boundary_zneg, fault
+pset / tmp / delete
+
+pset / boundary_zpos / surface / surf_zpos /
+
+* ----------------------------------------------------------------------
+finish
+
+* End of file

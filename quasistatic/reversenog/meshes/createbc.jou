@@ -59,3 +59,12 @@ group "symmetry_disp" remove node in analytic_disp_zneg
 group "symmetry_disp" remove node in fault
 nodeset 15 group symmetry_disp
 nodeset 15 name "symmetry_disp"
+
+# ----------------------------------------------------------------------
+# Create nodeset for ground surface
+# ----------------------------------------------------------------------
+group "ground_surf" add node in surface 20
+group "ground_surf" add node in surface 27
+nodeset 16 group ground_surf
+nodeset 16 name "ground_surf"
+
