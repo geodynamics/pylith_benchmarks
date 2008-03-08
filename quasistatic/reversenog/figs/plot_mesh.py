@@ -32,9 +32,12 @@ class PlotMesh(PlotScene):
 
     surf = Surface()
     script.add_module(surf)
+    surf.actor.property.color = (0,1,0)
     
     surf = Surface()
     script.add_module(surf)
+    surf.actor.property.representation = 'wireframe'
+    
     
     import vtk_geometry
     vtk_geometry.setCamera(script.engine.current_scene.scene.camera)
