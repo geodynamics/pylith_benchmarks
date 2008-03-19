@@ -51,11 +51,16 @@ surface / surf_fault / intrface / plane / &
   4.0e+3        0.0e+0        0.0e+0 / &
   domain_xmax   0.0e+0      -20.0e+3 /
 *
-* Create plane to trim fault
-surface / surf_ftrim / intrface / plane / &
+* Create planes to trim fault
+surface / surf_ftrimy / intrface / plane / &
   domain_xmax   16.0e+3    0.0e+0 / &
   0.0e+0        16.0e+3    0.0e+0 / &
   0.0e+0        16.0e+3    domain_zmin /
+surface / surf_ftrimz / intrface / plane / &
+  0.0e+0        16.0e+3    -16.0e+3 / &
+  0.0e+0         0.0e+0    -16.0e+3 / &
+  domain_xmax    0.0e+0    -16.0e+3 /
+*
 * Create material interface
 surface / surf_mantle / intrface / plane / &
   0.0     0.0     -12.0e+3 / &
@@ -70,37 +75,38 @@ surface / surf_mantle / intrface / plane / &
 ** Elastic region beyond end of fault
 region / r_elastic_end / &
   le surf_xpos and le surf_xneg  &
-  and lt surf_ftrim and le surf_ypos &
+  and lt surf_ftrimy and le surf_ypos &
   and le surf_zpos and ge surf_mantle /
 
 ** Viscoelastic region beyond end of fault
 region / r_visco_end / &
   le surf_xpos and le surf_xneg  &
-  and lt surf_ftrim and le surf_ypos &
+  and lt surf_ftrimy and le surf_ypos &
   and lt surf_mantle and le surf_zneg /
 
 ** Elastic on hanging wall side of the fault
 region / r_elastic_hang / &
   le surf_xpos and ge surf_fault  &
-  and ge surf_ftrim and le surf_yneg  &
+  and ge surf_ftrimy and le surf_yneg  &
   and le surf_zpos and ge surf_mantle /
 
-** Elastic on footwell side of the fault
+** Elastic on footwall side of the fault
 region / r_elastic_foot / &
   le surf_xneg and lt surf_fault  &
-  and ge surf_ftrim and le surf_yneg  &
+  and ge surf_ftrimy and le surf_yneg  &
   and le surf_zpos and ge surf_mantle /
 
 ** Viscoelastic on hanging wall side of the fault
 region / r_visco_hang / &
   le surf_xpos and ge surf_fault  &
-  and ge surf_ftrim and le surf_yneg  &
-  and lt surf_mantle and le surf_zneg /
+  and ge surf_ftrimy and le surf_yneg  &
+  and lt surf_mantle and ge surf_ftrimz /
 
 ** Viscoelastic on footwall side of the fault
 region / r_visco_foot / &
-  le surf_xneg and lt surf_fault  &
-  and ge surf_ftrim and le surf_yneg  &
+  le surf_xneg and le surf_xpos &
+  and ( lt surf_fault or lt surf_ftrimz ) &
+  and ge surf_ftrimy and le surf_yneg  &
   and lt surf_mantle and le surf_zneg /
 
 * ----------------------------------------------------------------------
@@ -112,37 +118,38 @@ region / r_visco_foot / &
 ** Material 1: Elastic region beyond end of fault
 mregion / mr_elastic_end / &
   le surf_xpos and le surf_xneg  &
-  and lt surf_ftrim and le surf_ypos &
+  and lt surf_ftrimy and le surf_ypos &
   and le surf_zpos and gt surf_mantle /
 
 ** Material 2: Viscoelastic region beyond end of fault
 mregion / mr_visco_end / &
   le surf_xpos and le surf_xneg  &
-  and lt surf_ftrim and le surf_ypos &
+  and lt surf_ftrimy and le surf_ypos &
   and lt surf_mantle and le surf_zneg /
 
 * Material 3
 mregion / mr_elastic_hang / &
   le surf_xpos and gt surf_fault  &
-  and gt surf_ftrim and le surf_yneg  &
+  and gt surf_ftrimy and le surf_yneg  &
   and le surf_zpos and gt surf_mantle /
 
 * Material 4
 mregion / mr_elastic_foot / &
   le surf_xneg and lt surf_fault  &
-  and gt surf_ftrim and le surf_yneg  &
+  and gt surf_ftrimy and le surf_yneg  &
   and le surf_zpos and gt surf_mantle /
 
 * Material 5
 mregion / mr_visco_hang / &
   le surf_xpos and gt surf_fault  &
-  and gt surf_ftrim and le surf_yneg  &
-  and lt surf_mantle and le surf_zneg /
+  and gt surf_ftrimy and le surf_yneg  &
+  and lt surf_mantle and gt surf_ftrimz /
 
 * Material 6
 mregion / mr_visco_foot / &
-  le surf_xneg and lt surf_fault  &
-  and gt surf_ftrim and le surf_yneg  &
+  le surf_xneg and le surf_xpos &
+  and ( lt surf_fault or lt surf_ftrimz ) &
+  and gt surf_ftrimy and le surf_yneg  &
   and lt surf_mantle and le surf_zneg /
 *
 * ----------------------------------------------------------------------
@@ -191,26 +198,78 @@ connect / check_interface
 settets / geometry
 resetpts/cell_color
 
+* ----------------------------------------------------------------------
+* Improve element size and quality
+* ----------------------------------------------------------------------
+*
+define / MO_NAME / box
+mode / recon / geom
+
+massage / len_max / len_min / 1.0e-4 / 1.0e-4 / 1,0,0 / nosmooth
+crush_thin_tets / MO_NAME / 0.4
+rmpoint / compress
+resetpts / itp
+
+*smooth / position / laplace
+input / classify_pts.lagrit
+smooth / position / geometry / pset,get,pts_intminaspect
+
+massage / len_max / len_min / 1.0e-4 / 1.0e-4 / 1,0,0 / &
+  nosmooth
+crush_thin_tets / MO_NAME / 0.4
+rmpoint / compress
+resetpts / itp
+
+** Plump most distorted elements
+input / classify_pts.lagrit
+smooth / position / geometry / pset,get,pts_intminaspect
+
+* Cleanup --------------------------------------------------
+eltset / el_minaspect / delete
+pset / pts_minaspect / delete
+pset / pts_interior / delete
+pset / pts_interface / delete
+pset / pts_parents / delete
+pset / pts_all / delete
+pset / pts_notinterface / delete
+
+filter / 1,0,0 / 10.0
+rmpoint / compress
+
+quality / aspect
+*
+* ----------------------------------------------------------------------
 * Remove parent/child hierarchy
+* ----------------------------------------------------------------------
 resetpts
 rmpoint / compress
-*
-* ----------------------------------------------------------------------
-* MESH QUALITY
-* ----------------------------------------------------------------------
-*
-quality
-*
+
 * ----------------------------------------------------------------------
 * IDENTIFY GROUPS
 * ----------------------------------------------------------------------
 *
 * Identify nodes on fault surface
-pset / tmp / surface / surf_fault /
+eltset / el_hangelast / itetclr / eq / 3
+eltset / el_hangvisco / itetclr / eq / 5
+eltset / el_footelast / itetclr / eq / 4
+eltset / el_footvisco / itetclr / eq / 6
+eltset / el_hang / union / el_hangelast,el_hangvisco
+eltset / el_foot / union / el_footelast,el_footvisco
+pset / pts_hang / eltset / el_hang
+pset / pts_foot / eltset / el_foot
+pset / tmp / inter / pts_hang,pts_foot
 pset / fault / geom / xyz / pset,get,tmp / &
-   domain_xmin  -0.001e+3 -16.001e+3 / &
-   domain_xmax  16.001e+3  +0.001e+3 /
+   -0.001e+3   -0.001e+3 -16.001e+3 / &
+   16.001e+3   16.001e+3  +0.001e+3 /
 pset / tmp / delete
+pset / pts_hang / delete
+pset / pts_foot / delete
+eltset / el_hang / delete
+eltset / el_foot / delete
+eltset / el_hangelast / delete
+eltset / el_hangvisco / delete
+eltset / el_footelast / delete
+eltset / el_footvisco / delete
 *
 * Identify nodes on boundaries
 pset / boundary_xneg / surface / surf_xneg /

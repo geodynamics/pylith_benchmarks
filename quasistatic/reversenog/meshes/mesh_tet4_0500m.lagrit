@@ -9,6 +9,9 @@ define / dx / 500.0
 define / nx / 49
 define / ny / 49
 
+define / len_min / 288.7
+define / len_max / 866.0
+
 * ----------------------------------------------------------------------
 * GENERATE MESH AND MARK BOUNDARIES
 * ----------------------------------------------------------------------
@@ -19,7 +22,7 @@ input / mesh_tet4.lagrit
 * ----------------------------------------------------------------------
 cmo / setatt / box / ipolydat / no
 dump / gmv / reverseslip_tet4_0500m.gmv / / binary
-pset / -all- / write / reverseslip_tet4_0500m.pset / ascii
+pset / -all- / write / reverseslip_tet4_0500m.pset / binary
 
 * ----------------------------------------------------------------------
 finish
