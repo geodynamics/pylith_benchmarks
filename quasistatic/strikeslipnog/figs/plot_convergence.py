@@ -23,71 +23,43 @@ class PlotSummary(object):
 
         self._setup()
 
-        plots = [{'value': "nvertices",
-                  'title': "# Vertices",
-                  'log': True,
-                  'range': None},
-                 {'value': "ncells",
-                  'title': "# Cells",
-                  'log': True,
-                  'range': None},
-                 {'value': "memory",
-                  'title': "Peak Memory Usage (MB)",
-                  'log': True,
-                  'range': (1e+1, 1e+4)},
-                 {'value': "niterations",
-                  'title': "# Iterations in Solve",
-                  'log': False,
-                  'range': None},
-                 {'value': "run_time",
-                  'title': "Run Time (s)",
-                  'log': True,
-                  'range': (1e+1, 1e+3)},
-                 {'value': "nflops",
-                  'title': "# FLOPS",
-                  'log': True,
-                  'range': (1e+8, 1e+11)},
-                 {'value': "error",
-                  'title': "Average Error (m)",
-                  'log': True,
-                  'range': (1e-5, 1e-2)}]
         iplot = 1
-        for plot in plots:
-            pylab.subplot(self.nrows, self.ncols, iplot)
-            offset = 0
-            handles = []
-            for shape in self.shapes:
-                format = shape + " " + "%dm"
-                keys = [format % res for res in self.resolutions]
-                d = [data[key][plot['value']] for key in keys]
-                h = pylab.bar(self.loc0+offset*self.width, d,
-                              self.width,
-                              log=plot['log'],
-                              color=self.colorShapes[shape])
-                handles.append(h)
-                offset += 1
-            pylab.title(plot['title'],
+        pylab.subplot(self.nrows, self.ncols, iplot)
+        offset = 0
+        handles = []
+        for shape in self.shapes:
+            format = shape + " " + "%dm"
+            keys = [format % res for res in self.resolutions]
+            err = [data[key]['error'] for key in keys]
+            h = pylab.loglog(self.resolutions, err,
+                             color=self.colorShapes[shape],
+                             marker='+')
+            handles.append(h)
+            offset += 1
+            pylab.title("Global Error versus Discretization Size",
                         fontsize=self.titleFontSize)
-            pylab.xticks(self.locs, ["%sm" % res for res in self.resolutions],
+            pylab.xlabel("Discretization Size (m)",
                          fontsize=self.labelFontSize)
+            pylab.ylabel("Global Error (m)",
+                         fontsize=self.labelFontSize)
+            pylab.xticks(fontsize=self.labelFontSize)
             pylab.yticks(fontsize=self.labelFontSize)
-            if not plot['range'] is None:
-                pylab.ylim(plot['range'])
+            pylab.xlim(1.0e+2, 2.0e+3)
+            pylab.ylim(2.0e-5, 2.0e-3)
             iplot += 1
 
-        pylab.subplot(self.nrows, self.ncols, iplot)
-        pylab.axis('off')
-        pylab.legend((handles[0][0], handles[1][0]), self.shapes,
+        pylab.legend((handles[0][0], handles[1][0]),
+                     self.shapes,
                      shadow=True,
-                     loc='center')
+                     loc='upper left')
 
         pylab.show()
-        pylab.savefig('benchmark_summary')
+        pylab.savefig('benchmark_convergence')
         return
 
     def _setup(self):
-        figWidth = 9.25
-        figHeight = 8.5
+        figWidth = 5.5
+        figHeight = 5.0
         colors = {'fg': (0,0,0),
                   'bg': (1,1,1),
                   'dkgray': 0.25,
@@ -109,8 +81,8 @@ class PlotSummary(object):
         self.titleFontSize = 18
         self.labelFontSize = 14
 
-        self.nrows = 3
-        self.ncols = 3
+        self.nrows = 1
+        self.ncols = 1
 
         self.resolutions = [1000, 500, 250]
         self.shapes = ["Tet4", "Hex8"]
@@ -125,10 +97,10 @@ class PlotSummary(object):
         pylab.figure(figsize=(figWidth, figHeight),
                      facecolor='bg',
                      dpi=90)
-        pylab.subplots_adjust(left=0.04,
+        pylab.subplots_adjust(left=0.14,
                               right=0.96,
-                              bottom=0.03,
-                              top=0.96,
+                              bottom=0.10,
+                              top=0.91,
                               wspace=0.22,
                               hspace=0.35)
         return
