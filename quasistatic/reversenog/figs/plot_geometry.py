@@ -55,7 +55,7 @@ class PlotScene(Mayavi):
     axes.axes.y_label = "Y (km)"
     axes.axes.z_label = "Z (km)"
     axes.axes.label_format = "%-0.1f"
-    script.add_module(axes)
+    #script.add_module(axes)
 
     # Fault surface
     if showFault:
