@@ -15,10 +15,11 @@ import numpy
 import tables
 
 shape = "hex8"
-res = 500
+res = 1000
 t = 0.0
 filenameRoot = "../results/strikeslip_%s_%04dm" % (shape, res)
-filenameIn = "%s_t%0.6f.vtk" % (filenameRoot, t)
+filenameIn = "%s_t%07d.vtk" % (filenameRoot, int(t*1.0e+7))
+print filenameIn
 filenameOut = "%s.h5" % filenameRoot
 
 reader = VTKFileReader()

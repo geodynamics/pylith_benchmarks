@@ -1,0 +1,8 @@
+bm_create_projection.py \
+  --projection.filename=projection/pylith_hex8_1000m.h5 \
+  --dump_filename=analytic/output/hex8_1000m_points.in.NEW \
+  --solution=results/strikeslip_hex8_1000m.h5 \
+  --projection.discretization=benchmark.discretize.FIATLagrange
+
+compare_soln.py \
+  --projection.filename=projection/pylith_hex8_1000m.h5
