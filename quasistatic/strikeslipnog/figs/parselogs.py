@@ -24,13 +24,11 @@ for filename in files:
         record = "PyLith main"
         if line[0:len(record)] == record:
             total = float(line[indexBegin:indexEnd])
-            print float(line[indexBegin:indexEnd])
 
         record = "Dist"
         if line[0:len(record)] == record:
             fields = line.split()
             distribute += float(line[indexBegin:indexEnd])
-            print float(line[indexBegin:indexEnd])
 
     stats.append({'filename': filename,
                   'total': total,

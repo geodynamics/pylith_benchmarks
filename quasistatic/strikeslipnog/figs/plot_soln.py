@@ -12,7 +12,7 @@
 
 from plot_geometry import PlotScene
 
-shape = "tet4"
+shape = "hex8"
 res = 1000
 scaleFactor = 2.0
 
@@ -43,6 +43,7 @@ class PlotSoln(PlotScene):
     
     surf = Surface()
     script.add_module(surf)
+
     glyph = Glyph()
     script.add_module(glyph)
     glyph.actor.property.color = (1,1,1)
@@ -86,13 +87,12 @@ class PlotSoln(PlotScene):
         assert(spaceDim == 3)
         assert(ncorners == 4)
         cellType = tvtk.Tetra().cell_type
+    elif shape == "hex8":
+        assert(spaceDim == 3)
+        assert(ncorners == 8)
+        cellType = tvtk.Hexahedron().cell_type
     else:
         raise ValueError("Unknown shape '%s'." % shape)
-
-    # Zero out values for Lagrange multipliers
-    mask = numpy.ones( (nvertices,), dtype=numpy.bool)
-    mask[cells.flatten()] = False
-    disp[mask,:] = 0.0
 
     data = tvtk.UnstructuredGrid()
     data.points = vertices
