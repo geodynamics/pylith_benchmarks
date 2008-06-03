@@ -53,8 +53,8 @@ class PlotSoln(PlotScene):
     
     colorbar = script.engine.current_object.module_manager.scalar_lut_manager
     colorbar.show_scalar_bar = False
-    colorbar.data_range = (0.0, 0.8)
-    colorbar.number_of_labels = 5
+    colorbar.data_range = (0.0, 0.75)
+    colorbar.number_of_labels = 4
     colorbar.scalar_bar.label_format = "%3.1f"
     w,h = colorbar.scalar_bar.position2
     colorbar.scalar_bar.position2 = (w, 0.1)
