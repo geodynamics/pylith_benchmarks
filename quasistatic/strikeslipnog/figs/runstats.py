@@ -10,8 +10,11 @@
 # ======================================================================
 #
 
+# ----------------------------------------------------------------------
+# Version 1.1
+# ----------------------------------------------------------------------
 # Hydra (2.2 GHz Opteron)
-data = {
+data_v1_1 = {
     "Tet4 1000m": {
         'ncells': 79756,
         'nvertices': 15625,
@@ -69,7 +72,7 @@ data = {
     }
 
 # Hydra (2.2 GHz Opteron)
-dataScaling = {
+dataScaling_v1_1 = {
     "Tet4":
     [{'nprocs': 1,
       'total': 380.6,
@@ -103,5 +106,104 @@ dataScaling = {
       {'nprocs': 16,
        'total': 188.0,
        'distribute': 52.2},
+      ]
+    }
+
+# ----------------------------------------------------------------------
+# Version 1.3
+# ----------------------------------------------------------------------
+# Hydra (2.2 GHz Opteron)
+data_v1_3 = {
+    "Tet4 1000m": {
+        'ncells': 79756,
+        'nvertices': 15625,
+        'nflops': 9.957e+08,
+        'run_time': 31.2,
+        'error': 1.41e-03,
+        'niterations': 59,
+        'memory': 235},
+
+    "Hex8 1000m": {
+        'ncells': 13824,
+        'nvertices': 15625,
+        'nflops': 1.976e+09,
+        'run_time': 14.0,
+        'error': 6.58e-04,
+        'niterations': 38,
+        'memory': 229},
+
+    "Tet4 500m": {
+        'ncells': 661929,
+        'nvertices': 117649,
+        'nflops': 1.297e+10,
+        'run_time': 271.0,
+        'error': 4.79e-04,
+        'niterations': 107,
+        'memory': 1709.0},
+
+    "Hex8 500m": {
+        'ncells': 110592,
+        'nvertices': 117649,
+        'nflops': 2.165e+10,
+        'run_time': 126.5,
+        'error': 1.94e-04,
+        'niterations': 70,
+        'memory': 1710.8},
+
+
+    "Tet4 250m": {
+        'ncells': 5244768,
+        'nvertices': 912673,
+        'nflops': 2.093e+11,
+        'run_time': 2.653e+03,
+        'error': 1.30e-04,
+        'niterations': 228,
+        'memory': 12000.0},
+
+    "Hex8 250m" : {
+        'ncells': 884736,
+        'nvertices': 912673,
+        'nflops': 2.521e+11,
+        'run_time': 1.330e+03,
+        'error': 7.70e-05,
+        'niterations': 134,
+        'memory': 12000.0}
+    }
+
+# Hydra (2.2 GHz Opteron)
+dataScaling_v1_3 = {
+    "Tet4":
+    [{'nprocs': 1,
+      'total': 271.0,
+      'distribute': 0.0},
+     {'nprocs': 2,
+      'total': 456.5,
+      'distribute': 181.1},
+     {'nprocs': 4,
+      'total': 0,
+      'distribute': 0},
+     {'nprocs': 8,
+      'total': 0,
+      'distribute': 0},
+     {'nprocs': 16,
+      'total': 0,
+      'distribute': 0},
+     ],
+    "Hex8":
+     [{'nprocs': 1,
+       'total': 126.5,
+       'distribute': 0.0},
+      {'nprocs': 2,
+       'total': 189.0,
+       'distribute': 33.3},
+      {'nprocs': 4,
+       'total': 0,
+       'distribute': 0},
+      {'nprocs': 8,
+       'total': 0,
+       'distribute': 0},
+      {'nprocs': 16,
+       'total': 0,
+       'distribute': 0},
       ]
     }

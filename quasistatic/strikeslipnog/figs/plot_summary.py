@@ -10,105 +10,26 @@
 # ======================================================================
 #
 
+fileSuffix = "eps"
+
 import pylab
+from mypylab.Figure import Figure
 
-from runstats import data
+from runstats import data_v1_3 as data
 
-class PlotSummary(object):
+# ----------------------------------------------------------------------
+class PlotSummary(Figure):
 
     def __init__(self):
+        Figure.__init__(self, fontsize=12)
         return
 
     def main(self):
 
-        self._setup()
-
-        plots = [{'value': "nvertices",
-                  'title': "# Vertices",
-                  'log': True,
-                  'range': None},
-                 {'value': "ncells",
-                  'title': "# Cells",
-                  'log': True,
-                  'range': None},
-                 {'value': "memory",
-                  'title': "Peak Memory Usage (MB)",
-                  'log': True,
-                  'range': (1e+1, 1e+4)},
-                 {'value': "niterations",
-                  'title': "# Iterations in Solve",
-                  'log': False,
-                  'range': None},
-                 {'value': "run_time",
-                  'title': "Run Time (s)",
-                  'log': True,
-                  'range': (1e+1, 1e+3)},
-                 {'value': "nflops",
-                  'title': "# FLOPS",
-                  'log': True,
-                  'range': (1e+8, 1e+11)},
-                 {'value': "error",
-                  'title': "Average Error (m)",
-                  'log': True,
-                  'range': (1e-5, 1e-2)}]
-        iplot = 1
-        for plot in plots:
-            pylab.subplot(self.nrows, self.ncols, iplot)
-            offset = 0
-            handles = []
-            for shape in self.shapes:
-                format = shape + " " + "%dm"
-                keys = [format % res for res in self.resolutions]
-                d = [data[key][plot['value']] for key in keys]
-                h = pylab.bar(self.loc0+offset*self.width, d,
-                              self.width,
-                              log=plot['log'],
-                              color=self.colorShapes[shape])
-                handles.append(h)
-                offset += 1
-            pylab.title(plot['title'],
-                        fontsize=self.titleFontSize)
-            pylab.xticks(self.locs, ["%sm" % res for res in self.resolutions],
-                         fontsize=self.labelFontSize)
-            pylab.yticks(fontsize=self.labelFontSize)
-            if not plot['range'] is None:
-                pylab.ylim(plot['range'])
-            iplot += 1
-
-        pylab.subplot(self.nrows, self.ncols, iplot)
-        pylab.axis('off')
-        pylab.legend((handles[0][0], handles[1][0]), self.shapes,
-                     shadow=True,
-                     loc='center')
-
-        pylab.show()
-        pylab.savefig('benchmark_summary')
-        return
-
-    def _setup(self):
-        figWidth = 9.25
-        figHeight = 8.5
-        colors = {'fg': (0,0,0),
-                  'bg': (1,1,1),
-                  'dkgray': 0.25,
-                  'mdgray': 0.5,
-                  'ltgray': 0.75,
-                  'dkslate': (0.18, 0.21, 0.28),
-                  'slate': (0.45, 0.50, 0.68),
-                  'ltorange': (1.0, 0.74, 0.41),
-                  'orange': (0.96, 0.50, 0.0),
-                  'ltred': (1.0, 0.25, 0.25),
-                  'red': (0.79, 0.00, 0.01),
-                  'ltblue': (0.2, 0.73, 1.0),
-                  'blue': (0.12, 0.43, 0.59),
-                  'green': (0.37, 0.80, 0.05),
-                  'green': (0.23, 0.49, 0.03)}
-        from matplotlib.colors import colorConverter
-        for key in colors.keys():
-            colorConverter.colors[key] = colors[key]
-        self.titleFontSize = 18
-        self.labelFontSize = 14
-
+        width = 9.25
+        height = 8.5
+        self.open(width, height, margins=[[0.45, 0.6, 0.1],
+                                          [0.25, 0.65, 0.30]])
         self.nrows = 3
         self.ncols = 3
 
@@ -121,16 +42,69 @@ class PlotSummary(object):
 
         self.colorShapes = {'Tet4': 'orange',
                             'Hex8': 'blue'}
+        
+        plots = [{'value': "nvertices",
+                  'title': "# Vertices",
+                  'log': True,
+                  'range': None},
+                 {'value': "ncells",
+                  'title': "# Cells",
+                  'log': True,
+                  'range': None},
+                 {'value': "memory",
+                  'title': "Peak Memory Usage (MB)",
+                  'log': True,
+                  'range': (1e+1, 2e+4)},
+                 {'value': "niterations",
+                  'title': "# Iterations in Solve",
+                  'log': False,
+                  'range': None},
+                 {'value': "run_time",
+                  'title': "Run Time (s)",
+                  'log': True,
+                  'range': (1e+1, 3e+3)},
+                 {'value': "nflops",
+                  'title': "# FLOPS",
+                  'log': True,
+                  'range': (1e+8, 3e+11)},
+                 {'value': "error",
+                  'title': "Average Error (m)",
+                  'log': True,
+                  'range': (1e-5, 1e-2)}]
+        irow = 0
+        icol = 0
+        for plot in plots:
+            self.axes(self.nrows, self.ncols, irow+1, icol+1)
 
-        pylab.figure(figsize=(figWidth, figHeight),
-                     facecolor='bg',
-                     dpi=90)
-        pylab.subplots_adjust(left=0.04,
-                              right=0.96,
-                              bottom=0.03,
-                              top=0.96,
-                              wspace=0.22,
-                              hspace=0.35)
+            offset = 0
+            handles = []
+            for shape in self.shapes:
+                format = shape + " " + "%dm"
+                keys = [format % res for res in self.resolutions]
+                d = [data[key][plot['value']] for key in keys]
+                h = pylab.bar(self.loc0+offset*self.width, d,
+                              self.width,
+                              log=plot['log'],
+                              color=self.colorShapes[shape])
+                handles.append(h)
+                offset += 1
+            pylab.title(plot['title'])
+            pylab.xticks(self.locs, ["%sm" % res for res in self.resolutions])
+            if not plot['range'] is None:
+                pylab.ylim(plot['range'])
+            icol += 1
+            if icol >= self.ncols:
+                icol = 0
+                irow += 1
+
+        self.subplot(self.nrows, self.ncols, irow+1, icol+1)
+        pylab.axis('off')
+        pylab.legend((handles[0][0], handles[1][0]), self.shapes,
+                     shadow=True,
+                     loc='center')
+
+        pylab.show()
+        pylab.savefig('benchmark_summary.%s' % fileSuffix)
         return
 
 
