@@ -110,24 +110,24 @@ dataScaling_v1_1 = {
     }
 
 # ----------------------------------------------------------------------
-# Version 1.3
+# Version 1.3.1
 # ----------------------------------------------------------------------
 # Hydra (2.2 GHz Opteron)
 data_v1_3 = {
     "Tet4 1000m": {
         'ncells': 79756,
         'nvertices': 15625,
-        'nflops': 9.957e+08,
-        'run_time': 31.2,
+        'nflops': 9.958e+08,
+        'run_time': 26.51,
         'error': 1.41e-03,
         'niterations': 59,
-        'memory': 235},
+        'memory': 234.1},
 
     "Hex8 1000m": {
         'ncells': 13824,
         'nvertices': 15625,
-        'nflops': 1.976e+09,
-        'run_time': 14.0,
+        'nflops': 1.977e+09,
+        'run_time': 13.45,
         'error': 6.58e-04,
         'niterations': 38,
         'memory': 229},
@@ -136,7 +136,7 @@ data_v1_3 = {
         'ncells': 661929,
         'nvertices': 117649,
         'nflops': 1.297e+10,
-        'run_time': 271.0,
+        'run_time': 237.4,
         'error': 4.79e-04,
         'niterations': 107,
         'memory': 1709.0},
@@ -145,17 +145,17 @@ data_v1_3 = {
         'ncells': 110592,
         'nvertices': 117649,
         'nflops': 2.165e+10,
-        'run_time': 126.5,
+        'run_time': 120.7,
         'error': 1.94e-04,
         'niterations': 70,
-        'memory': 1710.8},
+        'memory': 1710.6},
 
 
     "Tet4 250m": {
         'ncells': 5244768,
         'nvertices': 912673,
         'nflops': 2.093e+11,
-        'run_time': 2.653e+03,
+        'run_time': 2.355e+03,
         'error': 1.30e-04,
         'niterations': 228,
         'memory': 12000.0},
@@ -164,7 +164,7 @@ data_v1_3 = {
         'ncells': 884736,
         'nvertices': 912673,
         'nflops': 2.521e+11,
-        'run_time': 1.330e+03,
+        'run_time': 1.268e+03,
         'error': 7.70e-05,
         'niterations': 134,
         'memory': 12000.0}
@@ -173,37 +173,18 @@ data_v1_3 = {
 # Hydra (2.2 GHz Opteron)
 dataScaling_v1_3 = {
     "Tet4":
-    [{'nprocs': 1,
-      'total': 271.0,
-      'distribute': 0.0},
-     {'nprocs': 2,
-      'total': 456.5,
-      'distribute': 181.1},
-     {'nprocs': 4,
-      'total': 0,
-      'distribute': 0},
-     {'nprocs': 8,
-      'total': 0,
-      'distribute': 0},
-     {'nprocs': 16,
-      'total': 0,
-      'distribute': 0},
+    [{'nprocs': 1, 'total': 237.2, 'compute': 75.88},
+     {'nprocs': 2, 'total': 398.2, 'compute': 56.14},
+     {'nprocs': 4, 'total': 307.3, 'compute': 39.93},
+     {'nprocs': 8, 'total': 252.9, 'compute': 16.50},
+     {'nprocs': 16, 'total': 234.8, 'compute': 10.70},
      ],
+    
     "Hex8":
-     [{'nprocs': 1,
-       'total': 126.5,
-       'distribute': 0.0},
-      {'nprocs': 2,
-       'total': 189.0,
-       'distribute': 33.3},
-      {'nprocs': 4,
-       'total': 0,
-       'distribute': 0},
-      {'nprocs': 8,
-       'total': 0,
-       'distribute': 0},
-      {'nprocs': 16,
-       'total': 0,
-       'distribute': 0},
+     [{'nprocs': 1, 'total': 117.5, 'compute': 56.08},
+      {'nprocs': 2, 'total': 174.5, 'compute': 46.63},
+      {'nprocs': 4, 'total': 111.9, 'compute': 29.41},
+      {'nprocs': 8, 'total': 86.3, 'compute': 16.01},
+      {'nprocs': 16, 'total': 78.7, 'compute': 10.46},
       ]
     }
