@@ -1,0 +1,51 @@
+#EQSIM.param  1
+Simulation parameters
+Partitioned mesh filename: ../meshes/halfspace_tet4_lagrit.1.mbf
+Problem type: 3D
+Mesh parameters
+  Refinement type: none
+  System of units: SI
+  coordsys = cartesian {
+    to-meters = 1.0
+  }
+
+  Materials DB type: simpledb
+  Filename for spatial distribution: mat_elastic.spatialdb
+IO parameters
+  Root of output filenames: ../results/eqsim
+  Refine output?: No
+  Time step b/t output of point data: 0.1 sec
+  Number of output point groups: 0
+  Time step b/t output of surface data: 0.1 sec
+  Number of surface groups: 1
+  Names of surface groups:
+    zmax
+  Time step b/t output of volume data: 0 sec
+  Time step b/t output of fault data: 0.1 sec
+Simulation parameters
+  Problem type: dynamic
+  Dynamic simulation parameters
+    Time when simulation starts: 0.0 sec
+    Time when simulation stops: 15.0 sec
+    Time step for simulation: 0.05 sec
+    Number of groups for absorbing boundary: 5
+      Names of groups:
+        ymax
+        ymin
+        xmax
+        xmin
+        ymin
+    Type of dynamic simulation: prescribed rupture
+    Prescribed rupture simulation parameters
+      Number of faults: 1
+        sliding  fault
+      Number of hypocenters: 1
+      Hypocenter node labels and start times:
+        134481  0.0
+      Filename for slip distribution: slip.spatialdb
+        Query type: nearest
+      Type of rupture speed specification: start time
+      Filename for rate/rup speed distribution: risesliptime.spatialdb
+        Query type: nearest
+      Functional form for slip function: Liu cosine
+      Time step b/t energy snapshots: 2.0 sec
