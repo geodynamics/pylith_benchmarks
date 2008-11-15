@@ -1,0 +1,51 @@
+# ----------------------------------------------------------------------
+# Create blocks for materials
+# ----------------------------------------------------------------------
+block 1 volume elastic_xpos elastic_xneg
+block 1 name "elastic"
+
+# ----------------------------------------------------------------------
+# Create nodeset for fault
+# ----------------------------------------------------------------------
+group "fault" add node in fault_surface
+group "fault" add node in fault_surface@A
+group "fault" remove node with z_coord < -15.001e+3
+group "fault" remove node with y_coord < -15.001e+3
+group "fault" remove node with y_coord > +15.001e+3
+nodeset 10 group fault
+nodeset 10 name "fault"
+
+# ----------------------------------------------------------------------
+# Create nodesets for absorbing BC
+# ----------------------------------------------------------------------
+group "surf_xpos" add node in surface 6
+nodeset 11 group surf_xpos
+nodeset 11 name "surf_xpos"
+
+group "surf_xneg" add node in surface 4
+nodeset 12 group surf_xneg
+nodeset 12 name "surf_xneg"
+
+group "surf_ypos" add node in surface 12
+group "surf_ypos" add node in surface 14
+nodeset 13 group surf_ypos
+nodeset 13 name "surf_ypos"
+
+group "surf_yneg" add node in surface 10
+group "surf_yneg" add node in surface 17
+nodeset 14 group surf_yneg
+nodeset 14 name "surf_yneg"
+
+group "surf_zneg" add node in surface 11
+group "surf_zneg" add node in surface 15
+nodeset 15 group surf_zneg
+nodeset 15 name "surf_zneg"
+
+
+# ----------------------------------------------------------------------
+# Create nodeset for ground surface
+# ----------------------------------------------------------------------
+group "ground_surf" add node in surface 9
+group "ground_surf" add node in surface 16
+nodeset 16 group ground_surf
+nodeset 16 name "ground_surf"

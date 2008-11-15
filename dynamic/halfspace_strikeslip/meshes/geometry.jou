@@ -1,0 +1,41 @@
+# Geometry for simple dynamic benchmark with a kinematic fault rupture.
+#
+# Fault is 30km long and 15km wide
+# Fault runs north-south (y direction)
+#
+# Domain is 72.0 km by 36.0 km by 36.0 km
+#   x: -18e+3 to +18e+3
+#   y: -36e+3 to +36e+3
+#   z: -36e+3 to 0
+
+# ----------------------------------------------------------------------
+# Create domain
+# ----------------------------------------------------------------------
+
+reset
+brick x 36.0e+3 y 72.0e+3 z 36.0e+3
+
+# Translate block so the top is at z=0
+volume 1 move x 0 y 0 z -18.0e+3
+
+# ----------------------------------------------------------------------
+# Create interface surfaces
+# ----------------------------------------------------------------------
+
+# Create fault (yz plane) at x = 0.0
+create planar surface with plane xplane offset 0
+surface 7 name "fault_surface"
+
+# ----------------------------------------------------------------------
+# Divide volumes using interface surfaces
+# ----------------------------------------------------------------------
+webcut volume 1 with plane surface fault_surface
+volume 1 name "elastic_xpos"
+volume 3 name "elastic_xneg"
+
+# ----------------------------------------------------------------------
+# Imprint all volumes, merging surfaces
+# ----------------------------------------------------------------------
+imprint all with volume all
+merge all
+delete body 2
