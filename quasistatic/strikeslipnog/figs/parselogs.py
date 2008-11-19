@@ -12,7 +12,7 @@ files = ["run_tet4_0500m_np1.log",
 
 stats = []
 for filename in files:
-    fin = open("../logs/2008nov03/%s" % filename, "r")
+    fin = open("../logs/2008nov19/%s" % filename, "r")
     lines = fin.readlines()
 
     total = 0.0

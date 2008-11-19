@@ -117,35 +117,35 @@ data_v1_3 = {
     "Tet4 1000m": {
         'ncells': 79756,
         'nvertices': 15625,
-        'nflops': 9.958e+08,
-        'run_time': 26.51,
+        'nflops': 1.012e+09,
+        'run_time': 24.44,
         'error': 1.41e-03,
-        'niterations': 59,
-        'memory': 234.1},
+        'niterations': 60,
+        'memory': 233.9},
 
     "Hex8 1000m": {
         'ncells': 13824,
         'nvertices': 15625,
         'nflops': 1.977e+09,
-        'run_time': 13.45,
+        'run_time': 12.98,
         'error': 6.58e-04,
         'niterations': 38,
-        'memory': 229},
+        'memory': 229.1},
 
     "Tet4 500m": {
         'ncells': 661929,
         'nvertices': 117649,
-        'nflops': 1.297e+10,
-        'run_time': 237.4,
+        'nflops': 1.342e+10,
+        'run_time': 216.8,
         'error': 4.79e-04,
-        'niterations': 107,
+        'niterations': 111,
         'memory': 1709.0},
 
     "Hex8 500m": {
         'ncells': 110592,
         'nvertices': 117649,
         'nflops': 2.165e+10,
-        'run_time': 120.7,
+        'run_time': 113.5,
         'error': 1.94e-04,
         'niterations': 70,
         'memory': 1710.6},
@@ -173,18 +173,18 @@ data_v1_3 = {
 # Hydra (2.2 GHz Opteron)
 dataScaling_v1_3 = {
     "Tet4":
-    [{'nprocs': 1, 'total': 237.2, 'compute': 75.88},
-     {'nprocs': 2, 'total': 398.2, 'compute': 56.14},
-     {'nprocs': 4, 'total': 307.3, 'compute': 39.93},
-     {'nprocs': 8, 'total': 252.9, 'compute': 16.50},
-     {'nprocs': 16, 'total': 234.8, 'compute': 10.70},
+    [{'nprocs': 1, 'total': 216.77, 'compute': 73.91},
+     {'nprocs': 2, 'total': 330.35, 'compute': 48.58},
+     {'nprocs': 4, 'total': 262.85, 'compute': 29.16},
+     {'nprocs': 8, 'total': 229.57, 'compute': 17.78},
+     {'nprocs': 16, 'total': 222.19, 'compute': 11.89},
      ],
     
     "Hex8":
-     [{'nprocs': 1, 'total': 117.5, 'compute': 56.08},
-      {'nprocs': 2, 'total': 174.5, 'compute': 46.63},
-      {'nprocs': 4, 'total': 111.9, 'compute': 29.41},
-      {'nprocs': 8, 'total': 86.3, 'compute': 16.01},
-      {'nprocs': 16, 'total': 78.7, 'compute': 10.46},
+     [{'nprocs': 1, 'total': 113.39, 'compute': 54.12},
+      {'nprocs': 2, 'total': 124.16, 'compute': 49.21},
+      {'nprocs': 4, 'total': 93.54, 'compute': 28.17},
+      {'nprocs': 8, 'total': 80.62, 'compute': 16.69},
+      {'nprocs': 16, 'total': 71.31, 'compute': 10.41},
       ]
     }
