@@ -1,0 +1,28 @@
+# ----------------------------------------------------------------------
+# Create block
+# ----------------------------------------------------------------------
+reset
+brick x 256e+3 y 128e+3 z 500.0
+volume 1 move x 103e+3 y 10e+3 z -250.0
+
+# ----------------------------------------------------------------------
+# Create interface surfaces
+# ----------------------------------------------------------------------
+create vertex 100.0e+3   60.0e+3      0.0
+create vertex 150.0e+3  -54.0e+3      0.0
+create vertex 150.0e+3  -54.0e+3  -1000.0
+create planar surface with plane vertex 9 vertex 10 vertex 11
+delete vertex all
+surface 7 name "fault_surface"
+
+# ----------------------------------------------------------------------
+# Divide volumes using interfaces surfaces
+# ----------------------------------------------------------------------
+webcut volume 1 with plane surface fault_surface
+
+# ----------------------------------------------------------------------
+# Imprint curves on volumes
+# ----------------------------------------------------------------------
+imprint all with volume all
+merge all
+delete body 2

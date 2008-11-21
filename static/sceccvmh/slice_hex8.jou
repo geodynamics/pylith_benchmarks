@@ -1,0 +1,67 @@
+# ----------------------------------------------------------------------
+# Generate geometry
+# ----------------------------------------------------------------------
+playback 'slice_geometry.jou'
+
+# ----------------------------------------------------------------------
+# Set discretization size
+# ----------------------------------------------------------------------
+surface 9 11 15 16 scheme pave
+surface all size 1000
+volume all size 1000
+
+# ----------------------------------------------------------------------
+# Generate the mesh
+# ----------------------------------------------------------------------
+mesh volume all
+
+# ----------------------------------------------------------------------
+# Generate blocks and nodesets
+# ----------------------------------------------------------------------
+block 1 volume 1 3
+block 1 name "elastic"
+
+# ----------------------------------------------------------------------
+# Create nodeset for fault
+# ----------------------------------------------------------------------
+group "fault" add node in fault_surface
+nodeset 10 group fault
+nodeset 10 name "fault"
+
+# ----------------------------------------------------------------------
+# Create nodeset for BC
+# ----------------------------------------------------------------------
+group "surf_east" add node in surface 6
+nodeset 21 group surf_east
+nodeset 21 name "surf_east"
+
+group "surf_west" add node in surface 4
+nodeset 22 group surf_west
+nodeset 22 name "surf_west"
+
+group "surf_north" add node in surface 14
+group "surf_north" add node in surface 12
+group "surf_north" remove node in fault
+nodeset 23 group surf_north
+nodeset 23 name "surf_north"
+
+group "surf_south" add node in surface 17
+group "surf_south" add node in surface 10
+group "surf_south" remove node in fault
+nodeset 24 group surf_south
+nodeset 24 name "surf_south"
+
+group "surf_ground" add node in surface 16
+group "surf_ground" add node in surface 9
+nodeset 25 group surf_ground
+nodeset 25 name "surf_ground"
+
+group "surf_bottom" add node in surface 15
+group "surf_bottom" add node in surface 11
+nodeset 26 group surf_bottom
+nodeset 26 name "surf_bottom"
+
+# ----------------------------------------------------------------------
+# Export exodus file
+# ----------------------------------------------------------------------
+export mesh "slice_hex8.exo" dimension 3 overwrite

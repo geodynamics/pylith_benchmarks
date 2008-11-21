@@ -1,0 +1,19 @@
+#SPATIAL.ascii 1
+SimpleDB {
+  num-values = 3
+  value-names =  left-lateral-slip reverse-slip fault-opening
+  value-units =  m  m m
+  num-locs = 1
+  data-dim = 0
+  space-dim = 3
+  cs-data = geo-projected {
+    ellipsoid = WGS84
+    datum-horiz = WGS84
+    datum-vert = mean sea level
+    projector = projection {
+      projection = tmerc
+      proj-options = +lon_0=-118.2467 +lat_0=34.0550
+    }
+  }
+}
+0.0  0.0  0.0   -2.0  0.0  0.0

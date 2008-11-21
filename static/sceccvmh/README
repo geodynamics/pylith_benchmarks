@@ -1,0 +1,12 @@
+These problems test using physical properties from the SCEC CVM-H with
+PyLith via a static problem.
+
+One problem (volume_dislocation.cfg) is a domain 48km x 48km x 16km
+with Dirichlet BC imposing shear with slip on a fault.
+
+The second problem (slice_dislocation.cfg) is a domain 256km x 128km x
+0.5 km with similar BC. The solution fails to converge due to the
+small aspect ratio of the domain, but it samples the velocity model at
+shallow depths, which is important for dealing with potential
+incompressibility of very soft sediments.
+
