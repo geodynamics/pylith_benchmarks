@@ -12,7 +12,7 @@
 
 plotSize = "manual"
 color = "lightbg"
-fileSuffix = "eps"
+fileSuffix = "pdf"
 
 # ======================================================================
 import pylab

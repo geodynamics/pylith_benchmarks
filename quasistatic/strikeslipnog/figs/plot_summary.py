@@ -10,7 +10,7 @@
 # ======================================================================
 #
 
-fileSuffix = "eps"
+fileSuffix = "pdf"
 
 import pylab
 from mypylab.Figure import Figure
