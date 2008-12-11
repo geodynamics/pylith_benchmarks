@@ -10,9 +10,9 @@
 # ======================================================================
 #
 
-plotSize = "manual"
+plotSize = "poster"
 color = "lightbg"
-fileSuffix = "pdf"
+fileSuffix = "eps"
 
 # ======================================================================
 import pylab
@@ -24,8 +24,9 @@ from runstats import dataScaling_v1_3 as data
 class PlotScaling(Figure):
 
   def __init__(self):
+ 
     if plotSize == "poster":
-      fontsize = 21
+      fontsize = 18
     elif plotSize == "presentation":
       fontsize = 14
     elif plotSize == "manual":
@@ -41,7 +42,7 @@ class PlotScaling(Figure):
     if plotSize == "poster":
       self.width = 6.5
       self.height = 5.75
-      margins = [[0.90, 0, 0.05], [0.70, 0, 0.12]]
+      margins = [[0.90, 0, 0.05], [0.70, 0, 0.3]]
     elif plotSize == "presentation":
       self.width = 4.0
       self.height = 5.0
@@ -80,18 +81,31 @@ class PlotScaling(Figure):
                          linestyle="--",
                          marker='+')
         handles.append(h)
-        pylab.title("Runtime versus Number of Processors")
-        pylab.xlabel("Number of Processors")
-        pylab.ylabel("Runtime (s)")
-        pylab.xlim(0.5, 32)
-        pylab.ylim(5.0e+0, 8.0e+2)
         labels += ["%s total" % shape, "%s compute" % shape]
+
+    time2 = compute[1] # runtime for 2 procs
+    strongScaling = [[1.0, 16.0],
+                     [2.0*time2, time2/8.0]]
+    pylab.plot(strongScaling[0], strongScaling[1],
+               linestyle=':',
+               color='ltred')
+
+    pylab.title("Runtime versus Number of Processors")
+    pylab.xlabel("Number of Processors")
+    pylab.ylabel("Runtime (s)")
+    pylab.xlim(0.5, 32)
+    pylab.ylim(5.0e+0, 8.0e+2)
 
     pylab.legend((handles[0][0], handles[1][0],
                   handles[2][0], handles[3][0]),
                  labels,
                  shadow=True,
                  loc='lower left')
+    pylab.text(4.5, 19, 'Strong scaling',
+               rotation=-35.0,
+               verticalalignment='top',
+               horizontalalignment='left',
+               color='ltred')
 
     pylab.show()
     pylab.savefig("benchmark_scaling.%s" % fileSuffix)

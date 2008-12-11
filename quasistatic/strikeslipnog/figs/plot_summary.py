@@ -10,8 +10,11 @@
 # ======================================================================
 #
 
-fileSuffix = "pdf"
+plotSize = "poster"
+color = "lightbg"
+fileSuffix = "eps"
 
+# ======================================================================
 import pylab
 from mypylab.Figure import Figure
 
@@ -21,24 +24,44 @@ from runstats import data_v1_3 as data
 class PlotSummary(Figure):
 
     def __init__(self):
-        Figure.__init__(self, fontsize=12)
+        if plotSize == "poster":
+            fontsize = 14
+        elif plotSize == "presentation":
+            fontsize = 14
+        elif plotSize == "manual":
+            fontsize = 10
+        else:
+            raise ValueError("Unknown plotSize '%s'." % plotSize)
+        Figure.__init__(self, color=color, fontsize=fontsize)
         return
 
     def main(self):
 
-        width = 9.25
-        height = 8.5
-        self.open(width, height, margins=[[0.45, 0.6, 0.1],
-                                          [0.25, 0.65, 0.30]])
+        if plotSize == "poster":
+            self.width = 8.75
+            self.height = 6.75
+            margins = [[0.5, 0.6, 0.1], [0.25, 0.55, 0.30]]
+        elif plotSize == "presentation":
+            self.width = 4.0
+            self.height = 5.0
+            margins = [[0.7, 0, 0.05], [0.5, 0, 0.1]]
+        elif plotSize == "manual":
+            self.width = 5.5
+            self.height = 5.0
+            margins = [[0.6, 0, 0.05], [0.5, 0, 0.25]]
+        else:
+            raise ValueError("Unknown plotSize '%s'." % plotSize)
+
+        self.open(self.width, self.height, margins=margins)
         self.nrows = 3
         self.ncols = 3
 
         self.resolutions = [1000, 500, 250]
         self.shapes = ["Tet4", "Hex8"]
 
-        self.width = 1.0/(len(self.shapes)+1)
+        self.barwidth = 1.0/(len(self.shapes)+1)
         self.locs = pylab.arange(len(self.resolutions))
-        self.loc0 = self.locs - 0.5*len(self.shapes)*self.width
+        self.loc0 = self.locs - 0.5*len(self.shapes)*self.barwidth
 
         self.colorShapes = {'Tet4': 'orange',
                             'Hex8': 'blue'}
@@ -82,8 +105,8 @@ class PlotSummary(Figure):
                 format = shape + " " + "%dm"
                 keys = [format % res for res in self.resolutions]
                 d = [data[key][plot['value']] for key in keys]
-                h = pylab.bar(self.loc0+offset*self.width, d,
-                              self.width,
+                h = pylab.bar(self.loc0+offset*self.barwidth, d,
+                              self.barwidth,
                               log=plot['log'],
                               color=self.colorShapes[shape])
                 handles.append(h)
