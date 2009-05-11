@@ -18,7 +18,7 @@ fileSuffix = "eps"
 import pylab
 from mypylab.Figure import Figure
 
-from runstats import dataScaling_v1_3 as data
+from runstats import dataScaling_v1_4 as data
 
 # ----------------------------------------------------------------------
 class PlotScaling(Figure):
@@ -58,9 +58,11 @@ class PlotScaling(Figure):
     self.open(self.width, self.height, margins=margins)
     self.axes(1, 1, 1, 1)
 
-    shapes = ["Tet4", "Hex8"]
-    colorShapes = {'Tet4': 'orange',
-                   'Hex8': 'blue'}
+    #shapes = ["Tet4", "Hex8"]
+    #colorShapes = {'Tet4': 'orange',
+    #               'Hex8': 'blue'}
+    shapes = ["Hex8"]
+    colorShapes = {'Hex8': 'blue'}
 
     handles = []
     labels = []
@@ -94,15 +96,19 @@ class PlotScaling(Figure):
     pylab.xlabel("Number of Processors")
     pylab.ylabel("Runtime (s)")
     pylab.xlim(0.5, 32)
-    pylab.ylim(5.0e+0, 8.0e+2)
+    pylab.ylim(1.0e+2, 1.0e+4)
 
-    pylab.legend((handles[0][0], handles[1][0],
-                  handles[2][0], handles[3][0]),
+    #pylab.legend((handles[0][0], handles[1][0],
+    #              handles[2][0], handles[3][0]),
+    #             labels,
+    #             shadow=True,
+    #             loc='lower left')
+    pylab.legend((handles[0][0], handles[1][0]),
                  labels,
                  shadow=True,
                  loc='lower left')
-    pylab.text(4.5, 19, 'Strong scaling',
-               rotation=-35.0,
+    pylab.text(4.5, 1.8e+3, 'Strong scaling',
+               rotation=-38.0,
                verticalalignment='top',
                horizontalalignment='left',
                color='ltred')

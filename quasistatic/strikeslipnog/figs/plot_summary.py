@@ -39,7 +39,7 @@ class PlotSummary(Figure):
 
         if plotSize == "poster":
             self.width = 8.75
-            self.height = 6.75
+            self.height = 4.5
             margins = [[0.5, 0.6, 0.1], [0.25, 0.55, 0.30]]
         elif plotSize == "presentation":
             self.width = 4.0
@@ -53,7 +53,7 @@ class PlotSummary(Figure):
             raise ValueError("Unknown plotSize '%s'." % plotSize)
 
         self.open(self.width, self.height, margins=margins)
-        self.nrows = 3
+        self.nrows = 2
         self.ncols = 3
 
         self.resolutions = [1000, 500, 250]
@@ -78,18 +78,10 @@ class PlotSummary(Figure):
                   'title': "Peak Memory Usage (MB)",
                   'log': True,
                   'range': (1e+1, 2e+4)},
-                 {'value': "niterations",
-                  'title': "# Iterations in Solve",
-                  'log': False,
-                  'range': None},
                  {'value': "run_time",
                   'title': "Run Time (s)",
                   'log': True,
                   'range': (1e+1, 3e+3)},
-                 {'value': "nflops",
-                  'title': "# FLOPS",
-                  'log': True,
-                  'range': (1e+8, 3e+11)},
                  {'value': "error",
                   'title': "Average Error (m)",
                   'log': True,

@@ -188,3 +188,88 @@ dataScaling_v1_3 = {
       {'nprocs': 16, 'total': 67.10, 'compute': 10.37},
       ]
     }
+
+# ----------------------------------------------------------------------
+# Version 1.4.0a
+# ----------------------------------------------------------------------
+# Hydra (2.2 GHz Opteron)
+data_v1_4 = {
+    "Tet4 1000m": {
+        'ncells': 79756,
+        'nvertices': 15625,
+        'nflops': 0,
+        'run_time': 0,
+        'error': 1.41e-03,
+        'niterations': 0,
+        'memory': 0},
+
+    "Hex8 1000m": {
+        'ncells': 13824,
+        'nvertices': 15625,
+        'nflops': 0,
+        'run_time': 0,
+        'error': 6.58e-04,
+        'niterations': 0,
+        'memory': 0},
+
+    "Tet4 500m": {
+        'ncells': 661929,
+        'nvertices': 117649,
+        'nflops': 0,
+        'run_time': 0,
+        'error': 4.79e-04,
+        'niterations': 0,
+        'memory': 0},
+
+    "Hex8 500m": {
+        'ncells': 110592,
+        'nvertices': 117649,
+        'nflops': 0,
+        'run_time': 0,
+        'error': 1.94e-04,
+        'niterations': 0,
+        'memory': 0},
+
+
+    "Tet4 250m": {
+        'ncells': 5244768,
+        'nvertices': 912673,
+        'nflops': 0,
+        'run_time': 0,
+        'error': 1.30e-04,
+        'niterations': 0,
+        'memory': 0},
+
+    "Hex8 250m" : {
+        'ncells': 884736,
+        'nvertices': 912673,
+        'nflops': 0,
+        'run_time': 0,
+        'error': 7.70e-05,
+        'niterations': 0,
+        'memory': 0}
+    }
+
+# Hydra (2.2 GHz Opteron)
+dataScaling_v1_4 = {
+#    "Tet4":
+#    [{'nprocs': 1, 'total': 223.92, 'compute': 78.27},
+#     {'nprocs': 2, 'total': 363.94, 'compute': 50.91},
+#     {'nprocs': 4, 'total': 274.45, 'compute': 28.98},
+#     {'nprocs': 8, 'total': 237.84, 'compute': 16.92},
+#     {'nprocs': 16, 'total': 220.18, 'compute': 11.60},
+#     ],
+    
+    "Hex8":
+     [{'nprocs': 1, 'total': 4.968e+03, 
+       'compute': 2.0475e+01 + 2.2342e+02 + 4.4633e+03},
+      {'nprocs': 2, 'total': 5.016e+03, 
+       'compute': 1.2321e+01 + 1.3460e+02 + 4.6152e+03},
+      {'nprocs': 4, 'total': 2.889e+03, 
+       'compute': 6.7043e+00 + 7.7384e+01 + 2.5752e+03},
+      {'nprocs': 8, 'total': 1.688e+03, 
+       'compute': 3.5514e+00 + 4.2006e+01 + 1.4234e+03},
+      {'nprocs': 16, 'total': 1.1075e+03 , 
+       'compute': 2.0657e+00 + 2.2895e+01 + 8.7341e+02},
+      ]
+    }
