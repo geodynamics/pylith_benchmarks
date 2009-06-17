@@ -20,7 +20,7 @@ strikeslip_tet4_0250m.cfg - Parameters specific to tet4 250m resolution sim
 
 
 ======================================================================
-TO RUN SIMULATIONS
+TO RUN SIMULATIONS (elastic solution only, single time step)
 ======================================================================
 
 Run the simulations from the parameters directory.
@@ -51,11 +51,10 @@ tet4 @ 250m resolution
 
 
 ======================================================================
-All of the simulations above are for a single elastic time step.
+TO RUN TIME-DEPENDENT SIMULATIONS
+
 To run time-dependent simulations, you can simply append 'timedep.cfg'
 to the end of each example listed above.
-
-TO RUN TIME-DEPENDENT SIMULATIONS
 ======================================================================
 
 hex8 @ 1000m resolution
