@@ -10,9 +10,9 @@
 # ======================================================================
 #
 
-plotSize = "poster"
+plotSize = "manual"
 color = "lightbg"
-fileSuffix = "eps"
+fileSuffix = "pdf"
 
 # ======================================================================
 import pylab
@@ -48,9 +48,9 @@ class PlotScaling(Figure):
       self.height = 5.0
       margins = [[0.7, 0, 0.05], [0.5, 0, 0.1]]
     elif plotSize == "manual":
-      self.width = 5.5
-      self.height = 5.0
-      margins = [[0.6, 0, 0.05], [0.5, 0, 0.25]]
+      self.width = 4.5
+      self.height = 3.5
+      margins = [[0.6, 0, 0.05], [0.55, 0, 0.25]]
     else:
       raise ValueError("Unknown plotSize '%s'." % plotSize)
 
@@ -58,11 +58,9 @@ class PlotScaling(Figure):
     self.open(self.width, self.height, margins=margins)
     self.axes(1, 1, 1, 1)
 
-    #shapes = ["Tet4", "Hex8"]
-    #colorShapes = {'Tet4': 'orange',
-    #               'Hex8': 'blue'}
-    shapes = ["Hex8"]
-    colorShapes = {'Hex8': 'blue'}
+    shapes = ["Tet4", "Hex8"]
+    colorShapes = {'Tet4': 'orange',
+                   'Hex8': 'blue'}
 
     handles = []
     labels = []
@@ -96,14 +94,10 @@ class PlotScaling(Figure):
     pylab.xlabel("Number of Processors")
     pylab.ylabel("Runtime (s)")
     pylab.xlim(0.5, 32)
-    pylab.ylim(1.0e+2, 1.0e+4)
+    pylab.ylim(5.0e+2, 1.0e+4)
 
-    #pylab.legend((handles[0][0], handles[1][0],
-    #              handles[2][0], handles[3][0]),
-    #             labels,
-    #             shadow=True,
-    #             loc='lower left')
-    pylab.legend((handles[0][0], handles[1][0]),
+    pylab.legend((handles[0][0], handles[1][0],
+                  handles[2][0], handles[3][0]),
                  labels,
                  shadow=True,
                  loc='lower left')

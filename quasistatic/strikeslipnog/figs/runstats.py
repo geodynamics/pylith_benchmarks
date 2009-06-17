@@ -190,10 +190,10 @@ dataScaling_v1_3 = {
     }
 
 # ----------------------------------------------------------------------
-# Version 1.4.0a
+# Version 1.4.0a (May 2009)
 # ----------------------------------------------------------------------
 # Hydra (2.2 GHz Opteron)
-data_v1_4 = {
+data_v1_4a = {
     "Tet4 1000m": {
         'ncells': 79756,
         'nvertices': 15625,
@@ -272,4 +272,95 @@ dataScaling_v1_4 = {
       {'nprocs': 16, 'total': 1.1075e+03 , 
        'compute': 2.0657e+00 + 2.2895e+01 + 8.7341e+02},
       ]
+    }
+
+# ----------------------------------------------------------------------
+# Version 1.4.0 (June 2009)
+# ----------------------------------------------------------------------
+# Hydra (2.2 GHz Opteron)
+data_v1_4 = {
+    "Tet4 1000m": {
+        'ncells': 79756,
+        'nvertices': 15625,
+        'nflops': 1.045e+09,
+        'run_time': 2.394e+01,
+        'error': 1.41e-03,
+        'niterations': 60,
+        'memory': 198},
+
+    "Hex8 1000m": {
+        'ncells': 13824,
+        'nvertices': 15625,
+        'nflops': 2.034e+09,
+        'run_time': 1.277e+01,
+        'error': 6.58e-04,
+        'niterations': 38,
+        'memory': 135},
+
+    "Tet4 500m": {
+        'ncells': 661929,
+        'nvertices': 117649,
+        'nflops': 1.373e+10,
+        'run_time': 2.122e+02,
+        'error': 4.79e-04,
+        'niterations': 111,
+        'memory': 1407},
+
+    "Hex8 500m": {
+        'ncells': 110592,
+        'nvertices': 117649,
+        'nflops': 2.210e+10,
+        'run_time': 1.084e+02,
+        'error': 1.94e-04,
+        'niterations': 70,
+        'memory': 941},
+
+
+    "Tet4 250m": {
+        'ncells': 5244768,
+        'nvertices': 912673,
+        'nflops': 2.127e+11,
+        'run_time': 2.037e+03,
+        'error': 1.30e-04,
+        'niterations': 228,
+        'memory': 10947},
+
+    "Hex8 250m" : {
+        'ncells': 884736,
+        'nvertices': 912673,
+        'nflops': 2.559e+11,
+        'run_time': 1.119e+03,
+        'error': 7.70e-05,
+        'niterations': 134,
+        'memory': 7354}
+    }
+
+# Hydra (2.2 GHz Opteron)
+# compute is ReformJacobian + ReformResidual + Solve
+dataScaling_v1_4 = {
+    "Hex8":
+     [{'nprocs': 1, 'total': 4.576e+03, 
+       'compute': 2.5215+01 + 3.1091e+02 + 3.9115e+03},
+      {'nprocs': 2, 'total': 4.646e+03, 
+       'compute': 1.6538e+01 + 1.7700e+02 + 4.1305e+03},
+      {'nprocs': 4, 'total': 2.766e+03, 
+       'compute': 8.7656e+00 + 1.0729e+02 + 2.3450e+03},
+      {'nprocs': 8, 'total': 1.738e+03, 
+       'compute': 4.6828e+00 + 5.6397e+01 + 1.3856e+03},
+      {'nprocs': 16, 'total': 1.186e+03 , 
+       'compute': 2.7453e+00 + 3.0797e+01 + 8.6552e+02},
+      ],
+    
+    "Tet4":
+     [{'nprocs': 1, 'total': 6.458e+03, 
+       'compute': 4.6239+01 + 1.0807e+03 + 4.5114e+03},
+      {'nprocs': 2, 'total': 4.687e+03, 
+       'compute': 2.8637e+01 + 5.7330e+02 + 3.0657e+03},
+      {'nprocs': 4, 'total': 3.383e+03, 
+       'compute': 1.6463e+01 + 3.4986e+02 + 1.9526e+03},
+      {'nprocs': 8, 'total': 2.423e+03, 
+       'compute': 8.9229e+00 + 1.8018e+02 + 1.2004e+03},
+      {'nprocs': 16, 'total': 1.918e+03 , 
+       'compute': 4.7615e+00 + 9.7393e+01 + 7.775e+02},
+      ],
     }

@@ -10,15 +10,15 @@
 # ======================================================================
 #
 
-plotSize = "poster"
+plotSize = "manual"
 color = "lightbg"
-fileSuffix = "eps"
+fileSuffix = "pdf"
 
 # ======================================================================
 import pylab
 from mypylab.Figure import Figure
 
-from runstats import data_v1_3 as data
+from runstats import data_v1_4 as data
 
 # ----------------------------------------------------------------------
 class PlotSummary(Figure):
@@ -46,9 +46,9 @@ class PlotSummary(Figure):
             self.height = 5.0
             margins = [[0.7, 0, 0.05], [0.5, 0, 0.1]]
         elif plotSize == "manual":
-            self.width = 5.5
-            self.height = 5.0
-            margins = [[0.6, 0, 0.05], [0.5, 0, 0.25]]
+            self.width = 6.5
+            self.height = 4.5
+            margins = [[0.4, 0.6, 0.2], [0.25, 0.55, 0.30]]
         else:
             raise ValueError("Unknown plotSize '%s'." % plotSize)
 
@@ -69,7 +69,7 @@ class PlotSummary(Figure):
         plots = [{'value': "nvertices",
                   'title': "# Vertices",
                   'log': True,
-                  'range': None},
+                  'range': (1e4, 1e6)},
                  {'value': "ncells",
                   'title': "# Cells",
                   'log': True,
@@ -116,7 +116,7 @@ class PlotSummary(Figure):
         pylab.axis('off')
         pylab.legend((handles[0][0], handles[1][0]), self.shapes,
                      shadow=True,
-                     loc='center')
+                     loc='center left')
 
         pylab.show()
         pylab.savefig('benchmark_summary.%s' % fileSuffix)
