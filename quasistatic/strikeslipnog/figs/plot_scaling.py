@@ -10,7 +10,7 @@
 # ======================================================================
 #
 
-plotSize = "manual"
+plotSize = "presentation"
 color = "lightbg"
 fileSuffix = "pdf"
 
@@ -44,9 +44,9 @@ class PlotScaling(Figure):
       self.height = 5.75
       margins = [[0.90, 0, 0.05], [0.70, 0, 0.3]]
     elif plotSize == "presentation":
-      self.width = 4.0
+      self.width = 6.5
       self.height = 5.0
-      margins = [[0.7, 0, 0.05], [0.5, 0, 0.1]]
+      margins = [[0.75, 0, 0.15], [0.65, 0, 0.35]]
     elif plotSize == "manual":
       self.width = 4.5
       self.height = 3.5
@@ -101,8 +101,8 @@ class PlotScaling(Figure):
                  labels,
                  shadow=True,
                  loc='lower left')
-    pylab.text(4.5, 1.8e+3, 'Strong scaling',
-               rotation=-38.0,
+    pylab.text(4.1, 1.8e+3, 'Strong scaling',
+               rotation=-45.0,
                verticalalignment='top',
                horizontalalignment='left',
                color='ltred')
