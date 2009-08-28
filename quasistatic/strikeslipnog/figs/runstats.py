@@ -364,3 +364,94 @@ dataScaling_v1_4 = {
        'compute': 4.7615e+00 + 9.7393e+01 + 7.775e+02},
       ],
     }
+
+# ----------------------------------------------------------------------
+# Version 1.4.2 (August 2009)
+# ----------------------------------------------------------------------
+# Hydra (2.2 GHz Opteron)
+data_v1_4_2 = {
+    "Tet4 1000m": {
+        'ncells': 79756,
+        'nvertices': 15625,
+        'nflops': 1.045e+09,
+        'run_time': 2.394e+01,
+        'error': 1.41e-03,
+        'niterations': 60,
+        'memory': 187},
+
+    "Hex8 1000m": {
+        'ncells': 13824,
+        'nvertices': 15625,
+        'nflops': 2.034e+09,
+        'run_time': 1.277e+01,
+        'error': 6.58e-04,
+        'niterations': 38,
+        'memory': 141.39},
+
+    "Tet4 500m": {
+        'ncells': 661929,
+        'nvertices': 117649,
+        'nflops': 1.373e+10,
+        'run_time': 2.122e+02,
+        'error': 4.79e-04,
+        'niterations': 111,
+        'memory': 1287},
+
+    "Hex8 500m": {
+        'ncells': 110592,
+        'nvertices': 117649,
+        'nflops': 2.210e+10,
+        'run_time': 1.084e+02,
+        'error': 1.94e-04,
+        'niterations': 70,
+        'memory': 939},
+
+
+    "Tet4 250m": {
+        'ncells': 5244768,
+        'nvertices': 912673,
+        'nflops': 2.127e+11,
+        'run_time': 0,
+        'error': 1.30e-04,
+        'niterations': 228,
+        'memory': 0},
+
+    "Hex8 250m" : {
+        'ncells': 884736,
+        'nvertices': 912673,
+        'nflops': 2.559e+11,
+        'run_time': 0,
+        'error': 7.70e-05,
+        'niterations': 134,
+        'memory': 0}
+    }
+
+# Hydra (2.2 GHz Opteron)
+# compute is ReformJacobian + ReformResidual + Solve
+dataScaling_v1_4_2 = {
+    "Hex8":
+     [{'nprocs': 1, 'total': 4.548e+03, 
+       'compute': 2.5300+01 + 3.2109e+02 + 3.8737e+03},
+      {'nprocs': 2, 'total': 4.425e+03, 
+       'compute': 1.6316e+01 + 1.7913e+02 + 3.9116e+03},
+      {'nprocs': 4, 'total': 2.732e+03, 
+       'compute': 8.6815e+00 + 1.1116e+02 + 2.3178e+03},
+      {'nprocs': 8, 'total': 1.674e+03, 
+       'compute': 4.6347e+00 + 5.8458e+01 + 1.3162e+03},
+      {'nprocs': 16, 'total': 1.186e+03 , 
+       'compute': 2.7453e+00 + 3.0797e+01 + 8.6552e+02},
+      ],
+    
+    "Tet4":
+     [{'nprocs': 1, 'total': 6.381e+03, 
+       'compute': 4.7147+01 + 1.1293e+03 + 4.3983e+03},
+      {'nprocs': 2, 'total': 4.654e+03, 
+       'compute': 2.9268e+01 + 6.8973e+02 + 2.8576e+03},
+      {'nprocs': 4, 'total': 3.189e+03, 
+       'compute': 1.6397e+01 + 3.5251e+02 + 1.8215e+03},
+      {'nprocs': 8, 'total': 2.310e+03, 
+       'compute': 8.9932e+00 + 1.8315e+02 + 1.1172e+03},
+      {'nprocs': 16, 'total': 1.775e+03 , 
+       'compute': 4.7358e+00 + 9.8182e+01 + 7.0615e+02},
+      ],
+    }
