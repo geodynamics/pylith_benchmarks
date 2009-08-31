@@ -1,0 +1,63 @@
+# ----------------------------------------------------------------------
+# Create block
+# ----------------------------------------------------------------------
+
+# Block is 72 km x 72 km x 36 km
+# -36 km <= x <= 36 km
+# -36 km <= y <= 36 km
+# -36 km <= z <= 0 km
+reset
+brick x 72000 y 72000 z 36000
+
+# Translate block so the top is at z=0
+volume 1 move x 0 y 0 z -18000
+
+# ----------------------------------------------------------------------
+# Create interface surfaces
+# ----------------------------------------------------------------------
+# Center fault
+create planar surface with plane xplane offset 0
+surface 7 name "fault_middle"
+rotate surface fault_middle about z angle -15
+
+# Fault on +x side of middle fault
+create planar surface with plane yplane offset 0
+surface 8 name "fault_xpos"
+rotate surface fault_xpos about z angle -45
+move surface fault_xpos x 12000 y 12000 z 0
+
+# Fault on -x side of middle fault
+create planar surface with plane yplane offset 0
+surface 9 name "fault_xneg"
+rotate surface fault_xneg about z angle -45
+move surface fault_xneg x -12000 y -12000 z 0
+
+# Moho
+create planar surface with plane zplane offset -12000
+surface 10 name "material_interface"
+
+# ----------------------------------------------------------------------
+# Divide volumes using interface surfaces
+# ----------------------------------------------------------------------
+webcut volume 1 with plane surface fault_middle
+webcut volume 1 with plane surface fault_xpos
+webcut volume 6 with plane surface fault_xneg
+webcut volume all with plane surface material_interface
+volume 1 name "elastic_xpos_ypos"
+volume 6 name "elastic_xneg_ypos"
+volume 7 name "elastic_xpos_yneg"
+volume 8 name "elastic_xneg_yneg"
+volume 9 name "visco_xpos_ypos"
+volume 13 name "visco_xneg_ypos"
+volume 14 name "visco_xpos_yneg"
+volume 15 name "visco_xneg_yneg"
+
+# ----------------------------------------------------------------------
+# Imprint all volumes, merging surfaces
+# ----------------------------------------------------------------------
+# Remove sheet bodies
+delete body 2 3 4 5 10 11 12
+
+imprint all with volume all
+merge all
+
