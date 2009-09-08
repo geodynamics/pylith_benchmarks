@@ -10,15 +10,15 @@
 # ======================================================================
 #
 
-plotSize = "manual"
+plotSize = "poster"
 color = "lightbg"
-fileSuffix = "pdf"
+fileSuffix = "eps"
 
 # ======================================================================
 import pylab
 from mypylab.Figure import Figure
 
-from runstats import data_v1_4 as data
+from runstats import data_v1_4_2 as data
 
 # ----------------------------------------------------------------------
 class PlotSummary(Figure):
@@ -40,7 +40,7 @@ class PlotSummary(Figure):
         if plotSize == "poster":
             self.width = 8.75
             self.height = 4.5
-            margins = [[0.5, 0.6, 0.1], [0.25, 0.55, 0.30]]
+            margins = [[0.5, 0.6, 0.16], [0.27, 0.6, 0.32]]
         elif plotSize == "presentation":
             self.width = 4.0
             self.height = 5.0

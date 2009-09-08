@@ -411,19 +411,19 @@ data_v1_4_2 = {
         'ncells': 5244768,
         'nvertices': 912673,
         'nflops': 2.127e+11,
-        'run_time': 0,
+        'run_time': 2.08e+03,
         'error': 1.30e-04,
         'niterations': 228,
-        'memory': 0},
+        'memory': 9991.54},
 
     "Hex8 250m" : {
         'ncells': 884736,
         'nvertices': 912673,
         'nflops': 2.559e+11,
-        'run_time': 0,
+        'run_time': 1.105e+03,
         'error': 7.70e-05,
         'niterations': 134,
-        'memory': 0}
+        'memory': 7340.34}
     }
 
 # Hydra (2.2 GHz Opteron)

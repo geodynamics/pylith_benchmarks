@@ -10,15 +10,15 @@
 # ======================================================================
 #
 
-plotSize = "presentation"
+plotSize = "poster"
 color = "lightbg"
-fileSuffix = "pdf"
+fileSuffix = "eps"
 
 # ======================================================================
 import pylab
 from mypylab.Figure import Figure
 
-from runstats import dataScaling_v1_4 as data
+from runstats import dataScaling_v1_4_2 as data
 
 # ----------------------------------------------------------------------
 class PlotScaling(Figure):
@@ -42,7 +42,7 @@ class PlotScaling(Figure):
     if plotSize == "poster":
       self.width = 6.5
       self.height = 5.75
-      margins = [[0.90, 0, 0.05], [0.70, 0, 0.3]]
+      margins = [[0.90, 0, 0.05], [0.72, 0, 0.32]]
     elif plotSize == "presentation":
       self.width = 6.5
       self.height = 5.0
@@ -101,8 +101,8 @@ class PlotScaling(Figure):
                  labels,
                  shadow=True,
                  loc='lower left')
-    pylab.text(4.1, 1.8e+3, 'Strong scaling',
-               rotation=-45.0,
+    pylab.text(3.8, 1.8e+3, 'Strong scaling',
+               rotation=-50.0,
                verticalalignment='top',
                horizontalalignment='left',
                color='ltred')

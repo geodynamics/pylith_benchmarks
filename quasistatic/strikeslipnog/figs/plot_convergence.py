@@ -12,7 +12,7 @@
 
 import pylab
 
-from runstats import data
+from runstats import data_v1_4_2 as data
 
 class PlotSummary(object):
 
