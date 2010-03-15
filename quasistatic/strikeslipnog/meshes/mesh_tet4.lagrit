@@ -194,6 +194,20 @@ pset / boundary_yneg / not / tmp, boundary_xneg, boundary_xpos, &
 pset / tmp / delete
 
 * ----------------------------------------------------------------------
+* REORDER CELLS AND VERTICES
+* ----------------------------------------------------------------------
+* Sort vertices
+sort / box / index / ascending / ikey_vertices / zic yic xic
+reorder / box / ikey_vertices
+cmo / delatt / box / ikey_vertices
+
+* Reorder cells
+createpts / median
+sort / box / index / ascending / ikey_cells / zmed ymed xmed
+reorder / box / ikey_cells
+cmo / delatt / box / ikey_cells
+
+* ----------------------------------------------------------------------
 finish
 
 * End of file
