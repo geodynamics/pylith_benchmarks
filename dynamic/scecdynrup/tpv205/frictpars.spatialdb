@@ -1,0 +1,22 @@
+#SPATIAL.ascii 1
+SimpleDB {
+  num-values = 4
+  value-names = static-coefficient dynamic-coefficient slip-weakening-parameter cohesion
+  value-units =  none none m MPa
+  num-locs = 8  
+  data-dim = 2
+  space-dim = 3
+  cs-data = cartesian {
+    to-meters = 1.0e+3  // x, y, z are in km
+    space-dim = 3
+  }
+}
+-3.6		0.0		-5.4		1000.0	0.525	0.4		0.0
+-3.4		0.0		-5.4		0.677	0.525	0.4		0.0
++3.4	0.0		-5.4		0.677	0.525	0.4		0.0
++3.6	0.0		-5.4		1000.0	0.525	0.4		0.0
+
+-3.6		0.0		-5.6		1000.0	0.525	0.4		0.0
+-3.4		0.0		-5.6		1000.0	0.525	0.4		0.0
++3.4	0.0		-5.6		1000.0	0.525	0.4		0.0
++3.6	0.0		-5.6		1000.0	0.525	0.4		0.0
