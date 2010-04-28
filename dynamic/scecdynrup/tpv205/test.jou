@@ -129,6 +129,6 @@ nodeset 28 name "face zneg nofault"
 # ----------------------------------------------------------------------
 # Export exodus file
 # ----------------------------------------------------------------------
-export mesh "/Users/surendranadhsomala/src/cig/pylith/playpen/friction/SCEC_benchmarks/SCEC2004.exo" dimension 3 overwrite
+export mesh "test.exo" dimension 3 overwrite
 
 

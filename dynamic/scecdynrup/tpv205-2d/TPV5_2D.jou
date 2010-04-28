@@ -1,0 +1,108 @@
+# ----------------------------------------------------------------------
+# Create block
+# ----------------------------------------------------------------------
+# Bar is 20.4 km x 40.8 km
+# -10.2 km <= x <= 10.2 km
+# -20.4 km <= y <= 20.4 km
+#
+# We create the 2-D TPV5 by extracting the mid-surface from a 3-D TPV5.
+reset
+brick x 20400 y 40800 z 20400
+create midsurface volume 1 surface 1 2
+delete volume 1
+
+# ----------------------------------------------------------------------
+# Create interface surfaces
+# ----------------------------------------------------------------------
+
+# Create fault (yz plane) at x = 0.0
+split surface 7 across location position 0 -20400 0 location position 0 20400 0
+curve 17 name "fault_surface"
+
+# ----------------------------------------------------------------------
+# Imprint all volumes, merging surfaces
+# ----------------------------------------------------------------------
+imprint all
+merge all
+
+
+
+
+
+
+
+# ----------------------------------------------------------------------
+# Set discretization size
+# ----------------------------------------------------------------------
+surface all size 200
+
+# ----------------------------------------------------------------------
+# Generate the mesh
+# ----------------------------------------------------------------------
+mesh surface all
+
+# ----------------------------------------------------------------------
+# Create blocks for materials
+# ----------------------------------------------------------------------
+block 1 surface 8 9
+block 1 name "elastic"
+
+# ----------------------------------------------------------------------
+# Create nodeset for fault
+# ----------------------------------------------------------------------
+group "fault" add node in fault_surface
+nodeset 10 group fault
+nodeset 10 name "fault"
+
+# ----------------------------------------------------------------------
+# Create nodeset for +x face
+# ----------------------------------------------------------------------
+group "face_xpos" add node in curve 14
+nodeset 11 group face_xpos
+nodeset 11 name "face xpos"
+
+# ----------------------------------------------------------------------
+# Create nodeset for -x face
+# ----------------------------------------------------------------------
+group "face_xneg" add node in curve 16
+nodeset 12 group face_xneg
+nodeset 12 name "face xneg"
+
+# ----------------------------------------------------------------------
+# Create nodeset for +y face
+# ----------------------------------------------------------------------
+group "face_ypos" add node in curve 18
+group "face_ypos" add node in curve 21
+nodeset 13 group face_ypos
+nodeset 13 name "face ypos"
+
+# ----------------------------------------------------------------------
+# Create nodeset for -y face
+# ----------------------------------------------------------------------
+group "face_yneg" add node in curve 19
+group "face_yneg" add node in curve 20
+nodeset 14 group face_yneg
+nodeset 14 name "face yneg"
+
+# ----------------------------------------------------------------------
+# Create nodeset for +y face without fault
+# ----------------------------------------------------------------------
+group "face_ypos" add node in curve 18
+group "face_ypos" add node in curve 21
+group "face_ypos" remove node in fault
+nodeset 15 group face_ypos
+nodeset 15 name "face ypos"
+
+# ----------------------------------------------------------------------
+# Create nodeset for -y face without fault
+# ----------------------------------------------------------------------
+group "face_yneg" add node in curve 19
+group "face_yneg" add node in curve 20
+group "face_yneg" remove node in fault
+nodeset 16 group face_yneg
+nodeset 16 name "face yneg"
+
+# ----------------------------------------------------------------------
+# Export exodus file
+# ----------------------------------------------------------------------
+export mesh "TPV5_2D.exo" dimension 2 overwrite
