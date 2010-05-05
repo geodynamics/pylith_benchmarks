@@ -1,0 +1,59 @@
+When each simulation has finished running, the results are stored in these
+directories. The VTK files may be viewed with ParaView. To compare the
+results with the analytical results, you can either use the displacements
+directly and reference all results to the same time step within a cycle
+(probably the first), or use the velocity results created with the
+vtkdiff.py script in the utils directory. In either case, you will probably
+want to convert the VTK results into something that can be used with a
+plotting package. Here is one way to do this:
+
+1.  Import the desired VTK files into ParaView (either the groundsurf or
+groundsurf-diff files). You should be able to import all of them at once by
+clicking on the top-level file.
+
+2.  Use the "Plot Over Line" filter to extract results along a line. Make
+the line coincident with the x-axis, extending from x=0 to the maximum
+x-value.
+
+3.  With the filter still selected, save the data. There is an option to
+save the data as a CSV file. Provide a root filename, and then ParaView
+will ask whether to save all of the steps. If you do that, you will have
+one result profile for each time step. Note that if you use the filename
+roots found in the 'cutcmd-displ.sh' and 'cutcmd-diff.sh' shell scripts,
+you can just use these scripts instead of writing your own.
+
+4.  You can extract columns from the CSV files by using the Unix 'cut'
+command. For example, to select the column containing y-displacements in a
+file called "file1.csv", you could do the following:
+
+cut --delimiter=, --fields=5 file1.csv > file1.col
+
+There are shell scripts to extract all these columns for you if you have
+named your CSV files appropriately ('cutcmd-displ.sh' and 'cutcmd-diff.sh').
+
+5.  Once you have extracted any desired columns, you can use the Unix
+'paste' command to create a tab-delimited file containing the desired
+columns. For example, assuming you have extracted the column files
+"coords.col", "file1.col", and "file2.col", you could do the following:
+
+paste coords.col file1.col file2.col > feresults.txt
+
+There are shell scripts to paste the colums into a single file for you if
+you have named your CSV files appropriately ('pastecmd-displ.sh' and
+'pastecmd-diff.sh'). There are also files here at the top level that
+contain column headings that are a bit more user-friendly than those
+provided by ParaView. You can simply edit the .txt files and replace the
+first line with the appropriate heading ('head-displ' or 'head-diff').
+Note that all of the Python scripts recognize column headers as lines
+beginning with a '#', so make sure the column headings begin with this
+character.
+
+6.  If you are using displacement results, you will then need to reference
+any results to the first step in a cycle. There is a Python script in the
+utils directory (ref_profiles.py) to do this for you. See the README in the
+utils directory for instructions. You can then either use a plotting
+package to view the results, or use the Python script in the figures
+directory (plot_displ_profiles.py) to do it for you. See the README in
+that directory for instructions. To view the velocity results, you will
+either need to use a plotting package or write your own script based on
+the script in the figures directory.

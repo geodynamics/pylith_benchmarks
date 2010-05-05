@@ -1,0 +1,54 @@
+This directory contains the .cfg files and spatial databases needed to run
+the benchmark. The simulations may either be run using the shell scripts
+(spbm_xxx.sh) or by running the commands contained in the scripts. This
+will take the form:
+pylith spbm_xxx.cfg timedep.cfg
+
+The default parameters, which are independent of the mesh used, are
+contained in pylithapp.cfg. Additional mesh-dependent parameters are given
+in the spbm_xxx.cfg files. The timedep.cfg file contains parameters specific
+to time-dependent fault slip. At present, there are four different meshes
+(the meshes and corresponding Cubit journal files are contained in the
+meshes directory). Make sure that you unzip the appropriate mesh before
+trying to run a simulation. Each mesh requires a different .cfg file.
+These files are:
+
+spbm_hex8_unif_20km.cfg:	This is a simple uniform mesh composed of
+hexahedral elements, with a fault completely contained in the elastic layer.
+The mesh resolution is 20 km throughout.
+
+spbm_hex8_graded_20km.cfg:	This mesh is similar to the uniform mesh,
+but an inner region of the mesh is put through one level of refinement, so
+the region surrounding the fault has a finer resolution. This mesh will
+yield more accurate results, but since it contains more cells and vertices
+it will take longer to run.
+
+spbm_tet4_unif_20km.cfg:	This mesh is exactly analagous to the
+uniform hex mesh, but it is composed of tetrahedral elements. The resulting
+mesh has slightly fewer vertices than the corresponding hex mesh, but many
+more elements (cells).
+
+spbm_tet4_graded_20km.cfg:	This mesh is exactly analagous to the
+graded hex mesh, but it is composed of tetrahedral elements. The resulting
+mesh has slightly fewer vertices than the corresponding hex mesh, but many
+more elements (cells). As for the hex case, this mesh should produce more
+accurate results than the graded mesh equivalent, but it will take longer
+to run.
+
+The spatial databases are as follows:
+
+finalslip_rupture.spatialdb:	File used to specify coseismic slip.
+
+mat_elastic.spatialdb:		File describing uniform elastic properties.
+
+mat_maxwell.spatialdb:		File describing uniform viscoelastic
+				properties.
+sliprate_creep.spatialdb:	File describing constant velocity slip.
+
+sliptime.spatialdb:		File describing slip initiation time.
+
+Once you have run a simulation, the output VTK files will be in the
+corresponding subdirectory in the results directory. These files may be
+viewed with a visualization package such as ParaView. To compare the
+results with an analytical solution, there are also some utility programs
+in the utils directory.

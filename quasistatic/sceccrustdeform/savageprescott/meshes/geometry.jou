@@ -1,0 +1,68 @@
+## /Applications/Plotting/Cubit_10_2.app/Contents/MacOS/Cubit_10_2
+## Cubit Version 10.2
+## Cubit Build 8
+## Revised 10/17/2006 15:13:41 MST
+## Running 06/16/2008 02:47:47 PM
+## Command Options:
+## -warning = On
+## -information = On
+
+# Description:
+# This journal creates defines the geometry for a mesh with dimensions of
+# 2000 km (x), 1000 km (y), and 400 km (z).  The volume is divided into 3
+# horizontal layers:
+# a surface layer from 0 to 20 km, marking the bottom of the locking depth;
+# a middle layer from 20 to 40 km, marking the creeping section;
+# a bottom layer from 40 to 400 km, which approximates the viscoelastic
+# half-space.
+# The volume is cut vertically by the fault surface, which lies along the
+# x-axis, and by a symmetry plane, which lies along the y-axis.
+# The fault is restricted to the upper two (elastic) layers.
+#
+# ----------------------------------------------------------------------
+# Create outer block
+# ----------------------------------------------------------------------
+
+# Block is 2000 km x 1000 km x 400 km
+# -1000 km <= x <= 1000 km
+# -500 km <= y <= 500 km
+# -400 km <= z <= 0 km
+reset
+brick x 2000000 y 1000000 z 400000
+
+# Translate block so the top is at z=0
+volume 1 move x 0 y 0 z -200000
+
+# ----------------------------------------------------------------------
+# Create interface surfaces
+# ----------------------------------------------------------------------
+create planar surface with plane xplane offset 0
+surface 7 name "fault_surface"
+create planar surface with plane zplane offset -40000
+surface 8 name "material_interface"
+create planar surface with plane yplane offset 0
+surface 9 name "symmetry_plane"
+create planar surface with plane zplane offset -20000
+surface 10 name "fault_bottom"
+
+# ----------------------------------------------------------------------
+# Cut volume with interfaces.
+# ----------------------------------------------------------------------
+compress all
+webcut volume all with plane fault_surface
+webcut volume all with plane material_interface
+webcut volume all with plane symmetry_plane
+webcut volume all with plane fault_bottom
+
+# ----------------------------------------------------------------------
+# Imprint all volumes, merging surfaces.
+# ----------------------------------------------------------------------
+imprint all with volume all
+merge all
+
+# ----------------------------------------------------------------------
+# Remove surface bodies.
+# ----------------------------------------------------------------------
+delete body 2 3 4 5 7 8 9 11 12 14 16 17 18 20 21 23 26 27 29 31
+imprint all with volume all
+merge all

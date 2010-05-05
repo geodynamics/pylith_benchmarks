@@ -1,0 +1,146 @@
+## /Applications/Plotting/Cubit_10_2.app/Contents/MacOS/Cubit_10_2
+## Cubit Version 10.2
+## Cubit Build 8
+## Revised 10/17/2006 15:13:41 MST
+## Running 06/16/2008 02:47:47 PM
+## Command Options:
+## -warning = On
+## -information = On
+
+# Description:
+# This journal uses the geometry from file geometry.jou to create a mesh
+# with dimensions of 2000 km (x), 1000 km (y), and 400 km (z).  The mesh is
+# divided into 3 horizontal layers:
+# a surface layer from 0 to 20 km, marking the bottom of the locking depth;
+# a middle layer from 20 to 40 km, marking the creeping section;
+# a bottom layer from 40 to 400 km, which approximates the viscoelastic
+# half-space.
+# The mesh is cut vertically by the fault surface, which lies along the
+# x-axis, and by a symmetry plane, which lies along the y-axis.
+# The fault is restricted to the upper two (elastic) layers.
+#
+# The volume is meshed at a uniform resolution of 20 km.
+# The final mesh contains 105334 vertices and 586720 cells.
+# ----------------------------------------------------------------------
+# Generate geometry
+# ----------------------------------------------------------------------
+playback 'geometry.jou'
+
+# ----------------------------------------------------------------------
+# Set interval size to 20 km and set volume meshing scheme to tetmesh
+# ----------------------------------------------------------------------
+volume all size 20000.0
+volume all scheme tetmesh
+
+# ----------------------------------------------------------------------
+# Set surface meshing scheme to qtri with a map base scheme.
+# This gives us regularly-spaced vertices that should have the same
+# locations as those for the hex meshes.
+# ----------------------------------------------------------------------
+surface all scheme qtri base scheme map
+mesh surface all
+
+# ----------------------------------------------------------------------
+# Mesh the volume.
+# ----------------------------------------------------------------------
+mesh volume all
+
+# ----------------------------------------------------------------------
+# Smooth the mesh.
+# ----------------------------------------------------------------------
+set debug 91 on
+volume all smooth scheme condition number
+smooth volume all
+
+# ----------------------------------------------------------------------
+# Create blocks for materials
+# ----------------------------------------------------------------------
+block 1 volume 1 6 15 19 25 28 30 32
+block 1 name "elastic"
+block 2 volume 10 13 22 24
+block 2 name "viscoelastic"
+
+# ----------------------------------------------------------------------
+# Create fault nodeset
+# ----------------------------------------------------------------------
+group "fault" add node in fault_surface
+group "fault" add node in fault_surface@A
+group "fault" add node in fault_surface@D
+group "fault" add node in fault_surface@E
+nodeset 10 fault
+nodeset 10 name "fault"
+
+# ----------------------------------------------------------------------
+# Create nodeset for +x face
+# ----------------------------------------------------------------------
+group "face_xpos" add node in surface 133 109 139 111 89 87
+nodeset 11 face_xpos
+nodeset 11 name "face_xpos"
+
+# ----------------------------------------------------------------------
+# Create nodeset for -x face
+# ----------------------------------------------------------------------
+group "face_xneg" add node in surface 121 147 127 149 97 104
+nodeset 12 face_xneg
+nodeset 12 name "face_xneg"
+
+# ----------------------------------------------------------------------
+# Create nodeset for +y face
+# ----------------------------------------------------------------------
+group "face_ypos" add node in surface 106 120 113 128 35 47
+nodeset 13 face_ypos
+nodeset 13 name "face_ypos"
+
+# ----------------------------------------------------------------------
+# Create nodeset for -y face
+# ----------------------------------------------------------------------
+group "face_yneg" add node in surface 144 132 151 140 49 33
+nodeset 14 face_yneg
+nodeset 14 name "face_yneg"
+
+# ----------------------------------------------------------------------
+# Create nodeset for -z face
+# ----------------------------------------------------------------------
+group "face_zneg" add node in surface 103 92 96 84
+nodeset 15 face_zneg
+nodeset 15 name "face_zneg"
+
+# ----------------------------------------------------------------------
+# Create nodeset for -z face without fault
+# ----------------------------------------------------------------------
+group "face_zneg_nofault" add node in face_zneg
+group "face_zneg_nofault" remove node in fault
+nodeset 16 face_zneg_nofault
+nodeset 16 name "face_zneg_nofault"
+
+# ----------------------------------------------------------------------
+# Create nodeset for +z face
+# ----------------------------------------------------------------------
+group "face_zpos" add node in surface 78 62 70 54
+nodeset 17 face_zpos
+nodeset 17 name "face_zpos"
+
+# ----------------------------------------------------------------------
+# Create nodeset for -y face without fault or x-boundaries
+# ----------------------------------------------------------------------
+group "face_yneg_nofault" add node in face_yneg
+group "face_yneg_nofault" remove node in fault
+group "face_yneg_nofault" remove node in face_xpos
+group "face_yneg_nofault" remove node in face_xneg
+nodeset 18 face_yneg_nofault
+nodeset 18 name "face_yneg_nofault"
+
+# ----------------------------------------------------------------------
+# Create nodeset for +y face without fault or x-boundaries
+# ----------------------------------------------------------------------
+group "face_ypos_nofault" add node in face_ypos
+group "face_ypos_nofault" remove node in fault
+group "face_ypos_nofault" remove node in face_xpos
+group "face_ypos_nofault" remove node in face_xneg
+nodeset 19 face_ypos_nofault
+nodeset 19 name "face_ypos_nofault"
+
+# ----------------------------------------------------------------------
+# Export exodus file
+# ----------------------------------------------------------------------
+export mesh "spbm_tet4_unif_20km.exo" dimension 3 overwrite
