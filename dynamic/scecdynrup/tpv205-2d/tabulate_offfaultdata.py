@@ -10,82 +10,66 @@
 # ----------------------------------------------------------------------
 #
 
-outputRoot = "output/quad4_100m"
-outdir = "scecfiles/quad4_100m/"
-dx = 100
+dx = 200
+dt = 0.05
+
+outputRoot = "output/quad4_%3dm" % dx
+outdir = "scecfiles/quad4_%3dm/" % dx
+
+# ----------------------------------------------------------------------
 
 import numpy
 import time
 
 from pylith.utils.VTKDataReader import VTKDataReader
-from numpy import *
 
 # ----------------------------------------------------------------------
-def feq(a,b):
-    if numpy.abs(a-b)<0.0001:
-        return 1
-    else:
-        return 0
+timestamps = numpy.arange(0,12000,50)
+targets = numpy.array([[3000.0, -12000.0, 0.0],
+                       [3000.0, +12000.0, 0.0]])
 
-# ----------------------------------------------------------------------
-# Extract Off Fault stations data ( Displacements and Velocities )
-# ----------------------------------------------------------------------
-nfileNames = numpy.arange(1,1202,5)
-filename = "%s_t%04d.vtk" % (outputRoot,nfileNames[0])
 
-dt = 0.05
-nsteps = len(nfileNames)
-print nsteps
-
-fieldNames = ["displacement","velocity"]
 reader = VTKDataReader()
+tolerance = 1.0e-6
+
+# Get vertices and find indices of target locations
+filename = "%s_t%05d.vtk" % (outputRoot,timestamps[0])
 data = reader.read(filename)
-values = numpy.array(data['vertices'])
-(nvertices, spaceDim) = values.shape
 
-x_OffFltStat = numpy.array([3000.0, 3000.0])
-y_OffFltStat = numpy.array([-12000.0, 12000.0]) # CHECK THESE VALUES
-Index_OffFltStat = numpy.zeros(2)
+vertices = numpy.array(data['vertices'])
+ntargets = targets.shape[0]
+indices = []
+for target in targets:
+    dist = ( (vertices[:,0]-target[0])**2 + 
+             (vertices[:,1]-target[1])**2 +
+             (vertices[:,2]-target[2])**2 )**0.5
+    min = numpy.min(dist)
+    indices.append(numpy.where(dist <= min+tolerance)[0])
 
-# Find the indices of On Fault Stations
-nFltStat = -1
-for i in xrange(nvertices):
-    if (feq(values[i,0],x_OffFltStat[0]) and feq(values[i,1],y_OffFltStat[0])) or \
-       (feq(values[i,0],x_OffFltStat[1]) and feq(values[i,1],y_OffFltStat[1])):
-        nFltStat += 1
-        Index_OffFltStat[nFltStat] = i
-
-Index_OffFltStat = numpy.int_(Index_OffFltStat)
-print "Off-fault indices", Index_OffFltStat
+print "Indices", indices
+print "Coordinates of selected points:",vertices[indices,:]
 
 # Extract values
-disp = numpy.zeros((nsteps,2,3))  # 3-D array (ntime, nstats, ncomponents)
+nsteps = timestamps.shape[0]
+disp = numpy.zeros((nsteps,2,3))  # 3-D array (time, targets, components)
 vel = numpy.zeros((nsteps,2,3))
-nFile = -1
-for i in nfileNames:
-    nFile += 1
-    filename = "%s_t%04d.vtk" % (outputRoot,i)
+itime = 0
+for timestamp in timestamps:
+    filename = "%s_t%05d.vtk" % (outputRoot,timestamp)
     data = reader.read(filename)
-    nField = 0
-    for name in fieldNames:
-        nField += 1
-        values = data['vertex_fields'][name]
-        if nField == 1:
-            disp[nFile,:,:] = values[Index_OffFltStat,:]
-        elif nField == 2:
-            vel[nFile,:,:] = values[Index_OffFltStat,:]
+    fields = data['vertex_fields']
+    disp[itime,0:ntargets,:] = fields['displacement'][indices,:].squeeze()
+    vel[itime,0:ntargets,:] = fields['velocity'][indices,:].squeeze()
+    itime += 1
 
 
-# ----------------------------------------------------------------------
-# Extract Off Fault stations data ( Displacements and Velocities )
-# ----------------------------------------------------------------------
-
+# Write data
 headerA = \
     "# problem = TPV205\n" + \
-    "# author = BradAagaard\n" + \
+    "# author = SurendraSomala\n" + \
     "# date = %s\n" % (time.asctime()) + \
     "# code = PyLith\n" + \
-    "# code_version = 1.4.3\n" + \
+    "# code_version = 1.5.0\n" + \
     "# element_size = %s\n" % dx
 headerB = \
     "# Time series in 7 columns of E14.6:\n" + \
@@ -108,13 +92,11 @@ locName = "%+04dst%+04ddp%03d"
 lengthScale = 1000.0
 timeScale = 100.0
 dip = 7.5
-body = x_OffFltStat[:] / lengthScale
-strike = y_OffFltStat[:] / lengthScale
-time = (nfileNames[:] - 1) / timeScale
-print "time", time
+body = targets[:,0] / lengthScale
+strike = targets[:,1] / lengthScale
+time = timestamps / timeScale
 
-nlocs = disp.shape[1]
-for iloc in xrange(nlocs):
+for iloc in xrange(ntargets):
     pt = locName % (round(10*body[iloc]), 
                     round(10*strike[iloc]),
                     round(10*dip))
