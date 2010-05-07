@@ -92,10 +92,10 @@ for i in nfileNames:
 
 headerA = \
     "# problem = TPV205\n" + \
-    "# author = BradAagaard\n" + \
+    "# author = Surendra N. Somala\n" + \
     "# date = %s\n" % (time.asctime()) + \
     "# code = PyLith\n" + \
-    "# code_version = 1.4.3\n" + \
+    "# code_version = 1.5.0a\n" + \
     "# element_size = %s\n" % dx
 headerB = \
     "# Time series in 7 columns of E14.6:\n" + \
@@ -118,7 +118,7 @@ lengthScale = 1000.0
 timeScale = 100.0
 dip = 7.5
 strike = y_OnFltStat[:] / lengthScale
-time = (nfileNames[:] - 1) / timeScale
+time =  nfileNames[:] / timeScale
 print "time", time
 
 # Write data
@@ -137,8 +137,8 @@ for iloc in xrange(nlocs):
                             -slip[:,iloc,0],
                             -slip_rate[:,iloc,0],
                             -traction[:,iloc,0]/1e+6,
-                            +slip[:,iloc,1],
-                            +slip_rate[:,iloc,1],
-                            +traction[:,iloc,1]/1e+6))
+                            +slip[:,iloc,2],
+                            +slip_rate[:,iloc,2],
+                            +traction[:,iloc,2]/1e+6))
     numpy.savetxt(fout, data, fmt='%14.6e')
     fout.close()

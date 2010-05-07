@@ -10,7 +10,7 @@
 # ----------------------------------------------------------------------
 #
 
-dx = 200
+dx = 100
 dt = 0.05
 
 outputRoot = "output/quad4_%3dm" % dx
@@ -110,10 +110,10 @@ for iloc in xrange(ntargets):
                              dip))
     fout.write(headerB)
     data = numpy.transpose((time,
-                            +disp[:,iloc,1],
-                            +vel[:,iloc,1],
-                            -disp[:,iloc,2],
-                            -vel[:,iloc,2],
+                            -disp[:,iloc,1],
+                            -vel[:,iloc,1],
+                            +disp[:,iloc,2],
+                            +vel[:,iloc,2],
                             -disp[:,iloc,0],
                             -vel[:,iloc,0]))
     numpy.savetxt(fout, data, fmt='%14.6e')
