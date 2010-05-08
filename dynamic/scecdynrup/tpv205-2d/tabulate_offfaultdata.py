@@ -24,7 +24,7 @@ import time
 from pylith.utils.VTKDataReader import VTKDataReader
 
 # ----------------------------------------------------------------------
-timestamps = numpy.arange(0,12000,50)
+timestamps = numpy.arange(50,12001,50)
 targets = numpy.array([[3000.0, -12000.0, 0.0],
                        [3000.0, +12000.0, 0.0]])
 
@@ -66,7 +66,7 @@ for timestamp in timestamps:
 # Write data
 headerA = \
     "# problem = TPV205\n" + \
-    "# author = SurendraSomala\n" + \
+    "# author = Surendra N. Somala\n" + \
     "# date = %s\n" % (time.asctime()) + \
     "# code = PyLith\n" + \
     "# code_version = 1.5.0\n" + \
@@ -90,7 +90,7 @@ locHeader = "# location = %3.1f km off fault, %3.1f km along strike " \
 locName = "%+04dst%+04ddp%03d"
 
 lengthScale = 1000.0
-timeScale = 100.0
+timeScale = 1000.0
 dip = 7.5
 body = targets[:,0] / lengthScale
 strike = targets[:,1] / lengthScale
