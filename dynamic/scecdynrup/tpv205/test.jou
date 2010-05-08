@@ -2,15 +2,15 @@
 # Create block
 # ----------------------------------------------------------------------
 
-# Block is 7 km x 2 km x 6 km
-# -3.5 km <= x <= 3.5 km
+# Block is 8 km x 2 km x 6.5 km
+# -4 km <= x <= 4 km
 # -1 km <= y <= 1 km
-# -6 km <= z <= 0 km
+# -6.5 km <= z <= 0 km
 reset
-brick x 7000 y 2000 z 6000
+brick x 8000 y 2000 z 6500
 
 # Translate block so the top is at z=0
-volume 1 move x 0 y 0 z -3000
+volume 1 move x 0 y 0 z -3250
 
 # ----------------------------------------------------------------------
 # Create interface surfaces
@@ -53,6 +53,9 @@ block 1 name "elastic"
 # Create nodesets for faults
 # ----------------------------------------------------------------------
 group "fault" add node in surface fault_surface
+group "fault" remove node with x_coord > +3.5001e+3
+group "fault" remove node with x_coord < -3.5001e+3
+group "fault" remove node with z_coord < -6.0001e+3
 nodeset 10 group fault
 nodeset 10 name "fault"
 
@@ -130,5 +133,6 @@ nodeset 28 name "face zneg nofault"
 # Export exodus file
 # ----------------------------------------------------------------------
 export mesh "test.exo" dimension 3 overwrite
+
 
 

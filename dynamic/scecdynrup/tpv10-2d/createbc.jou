@@ -1,0 +1,42 @@
+# ----------------------------------------------------------------------
+# Create blocks for materials
+# ----------------------------------------------------------------------
+block 1 surface 18 19
+block 1 name "elastic"
+
+# ----------------------------------------------------------------------
+# Create nodeset for fault
+# ----------------------------------------------------------------------
+group "fault" add node in curve 33
+group "fault" remove node with x_coord < -7.5001e+3
+nodeset 10 group fault
+nodeset 10 name "fault"
+
+# ----------------------------------------------------------------------
+# Create nodeset for +x face
+# ----------------------------------------------------------------------
+group "face_xpos" add node in curve 40
+nodeset 11 group face_xpos
+nodeset 11 name "face xpos"
+
+# ----------------------------------------------------------------------
+# Create nodeset for -x face
+# ----------------------------------------------------------------------
+group "face_xneg" add node in curve 35
+nodeset 12 group face_xneg
+nodeset 12 name "face xneg"
+
+# ----------------------------------------------------------------------
+# Create nodeset for +z face
+# ----------------------------------------------------------------------
+group "face_zpos" add node in curve 34
+group "face_zpos" add node in curve 39
+nodeset 13 group face_zpos
+nodeset 13 name "face zpos"
+
+# ----------------------------------------------------------------------
+# Create nodeset for -z face
+# ----------------------------------------------------------------------
+group "face_zneg" add node in curve 36
+nodeset 14 group face_zneg
+nodeset 14 name "face zneg"
