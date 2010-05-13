@@ -28,6 +28,6 @@ webcut volume 1 with plane surface fault_surface
 # ----------------------------------------------------------------------
 imprint all
 merge all
-
+delete body 2
 
 
