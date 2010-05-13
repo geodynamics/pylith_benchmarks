@@ -1,0 +1,33 @@
+# ----------------------------------------------------------------------
+# Create block
+# ----------------------------------------------------------------------
+# Block is 48.0 km x 24.0 km x 24.0 km
+# -24.0 km <= x <= 24.0 km
+# -12.0 km <= y <= 12.0 km
+# -24.0 km <= z <= 0.0 km
+#
+reset
+brick x 48000 y 24000 z 24000
+
+# Translate block so the top is at z=0
+volume 1 move x 0 y 0 z -24000
+
+# ----------------------------------------------------------------------
+# Create interface surfaces
+# ----------------------------------------------------------------------
+create planar surface with plane yplane offset 0
+surface 7 name "fault_surface"
+
+# ----------------------------------------------------------------------
+# Divide volumes using interface surfaces
+# ----------------------------------------------------------------------
+webcut volume 1 with plane surface fault_surface
+
+# ----------------------------------------------------------------------
+# Imprint all volumes, merging surfaces
+# ----------------------------------------------------------------------
+imprint all
+merge all
+
+
+
