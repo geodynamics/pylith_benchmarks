@@ -17,14 +17,14 @@ nodeset 10 name "fault"
 # ----------------------------------------------------------------------
 group "face_xpos" add node in curve 39
 nodeset 11 group face_xpos
-nodeset 11 name "face xpos"
+nodeset 11 name "face_xpos"
 
 # ----------------------------------------------------------------------
 # Create nodeset for -x face
 # ----------------------------------------------------------------------
 group "face_xneg" add node in curve 35
 nodeset 12 group face_xneg
-nodeset 12 name "face xneg"
+nodeset 12 name "face_xneg"
 
 # ----------------------------------------------------------------------
 # Create nodeset for +y face
@@ -32,7 +32,7 @@ nodeset 12 name "face xneg"
 group "face_ypos" add node in curve 36
 group "face_ypos" add node in curve 40
 nodeset 13 group face_ypos
-nodeset 13 name "face ypos"
+nodeset 13 name "face_ypos"
 
 # ----------------------------------------------------------------------
 # Create nodeset for -y face
@@ -40,5 +40,5 @@ nodeset 13 name "face ypos"
 group "face_yneg" add node in curve 34
 group "face_yneg" add node in curve 38
 nodeset 14 group face_yneg
-nodeset 14 name "face yneg"
+nodeset 14 name "face_yneg"
 

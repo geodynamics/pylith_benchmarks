@@ -20,7 +20,7 @@ nodeset 10 name "fault"
 group "face_xpos" add node in surface 10
 group "face_xpos" add node in surface 17
 nodeset 11 group face_xpos
-nodeset 11 name "face xpos"
+nodeset 11 name "face_xpos"
 
 # ----------------------------------------------------------------------
 # Create nodeset for -x face
@@ -28,21 +28,21 @@ nodeset 11 name "face xpos"
 group "face_xneg" add node in surface 12
 group "face_xneg" add node in surface 14
 nodeset 12 group face_xneg
-nodeset 12 name "face xneg"
+nodeset 12 name "face_xneg"
 
 # ----------------------------------------------------------------------
 # Create nodeset for +y face
 # ----------------------------------------------------------------------
 group "face_ypos" add node in surface 5
 nodeset 13 group face_ypos
-nodeset 13 name "face ypos"
+nodeset 13 name "face_ypos"
 
 # ----------------------------------------------------------------------
 # Create nodeset for -y face
 # ----------------------------------------------------------------------
 group "face_yneg" add node in surface 3
 nodeset 14 group face_yneg
-nodeset 14 name "face yneg"
+nodeset 14 name "face_yneg"
 
 # ----------------------------------------------------------------------
 # Create nodeset for -z face
@@ -50,7 +50,7 @@ nodeset 14 name "face yneg"
 group "face_zneg" add node in surface 11
 group "face_zneg" add node in surface 15
 nodeset 15 group face_zneg
-nodeset 15 name "face zneg"
+nodeset 15 name "face_zneg"
 
 # ----------------------------------------------------------------------
 # Create nodeset for +z face
@@ -58,7 +58,7 @@ nodeset 15 name "face zneg"
 group "face_zpos" add node in surface 9
 group "face_zpos" add node in surface 16
 nodeset 16 group face_zpos
-nodeset 16 name "face zpos"
+nodeset 16 name "face_zpos"
 
 # ----------------------------------------------------------------------
 # Create nodeset for subset of +z face
@@ -69,4 +69,4 @@ group "face_zpos_subset" remove node with x_coord < -15.001e+3
 group "face_zpos_subset" remove node with y_coord > +5.001e+3
 group "face_zpos_subset" remove node with y_coord < -5.001e+3
 nodeset 20 group face_zpos_subset
-nodeset 20 name "face zpos_subset"
+nodeset 20 name "face_zpos_subset"
