@@ -16,7 +16,7 @@ delete volume 1
 # ----------------------------------------------------------------------
 
 # Create fault (yz plane) at x = 0.0
-split surface 7 across location position 0 -15000 0 location position 0 15000 0
+split surface 7 across location position 0 -72000 0 location position 0 72000 0
 curve 17 name "fault_surface"
 
 # ----------------------------------------------------------------------
