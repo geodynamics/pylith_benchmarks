@@ -10,7 +10,7 @@ playback 'geometry_refine.jou'
 # ----------------------------------------------------------------------
 # Set discretization size
 # ----------------------------------------------------------------------
-surface all size 600
+surface all size 800
 
 # ----------------------------------------------------------------------
 # Generate the mesh
@@ -18,24 +18,21 @@ surface all size 600
 mesh surface all
 
 # ----------------------------------------------------------------------
+# Refine elements within 1/2 of rupture width
+# ----------------------------------------------------------------------
+group "Refined" add node with x_min >= -15000 and x_max <= 15000 and y_min >= -30000 and y_max <= 30000
+
+refine node in Refined numsplit 2
+
+# ----------------------------------------------------------------------
 # Setup boundary conditions.
 # ----------------------------------------------------------------------
 playback 'createbc.jou'
 
 # ----------------------------------------------------------------------
-# Refine elements within 1/2 of rupture width
-# ----------------------------------------------------------------------
-group "Refined"" add node in surface 8
-group "Refined"" add node in surface 9
-group "Refined" copy scale 0.5
-#nodeset 21 group Refined
-#nodeset 21 name "Refined"
-
-refine node Refined numsplit=3
-
-# ----------------------------------------------------------------------
 # Export exodus file
 # ----------------------------------------------------------------------
 export mesh "quad4_200m_refine.exo" dimension 2 overwrite
+
 
 
