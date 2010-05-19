@@ -1,13 +1,13 @@
 # ----------------------------------------------------------------------
 # Create block
 # ----------------------------------------------------------------------
-# Block is 72.0 km x 144.0 km
-# -36.0 km <= x <= 36.0 km
-# -72.0 km <= y <= 72.0 km
+# Block is 128.0 km x 128.0 km
+# -64.0 km <= x <= 64.0 km
+# -64.0 km <= y <= 64.0 km
 #
 # We create the 2-D mesh by extracting the mid-surface from a 3-D mesh.
 reset
-brick x 72000 y 144000 z 72000
+brick x 128000 y 128000 z 128000
 create midsurface volume 1 surface 1 2
 delete volume 1
 
@@ -16,7 +16,7 @@ delete volume 1
 # ----------------------------------------------------------------------
 
 # Create fault (yz plane) at x = 0.0
-split surface 7 across location position 0 -72000 0 location position 0 72000 0
+split surface 7 across location position 0 -64000 0 location position 0 64000 0
 curve 17 name "fault_surface"
 
 # ----------------------------------------------------------------------
@@ -24,6 +24,3 @@ curve 17 name "fault_surface"
 # ----------------------------------------------------------------------
 imprint all
 merge all
-
-
-
