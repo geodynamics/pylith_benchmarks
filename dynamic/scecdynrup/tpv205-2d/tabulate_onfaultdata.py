@@ -11,11 +11,11 @@
 #
 
 cell = "quad4"
-dx = 100
+dx = 200
 dt = 0.05
 
-outputRoot = "output_pacha/%s_%3dm" % (cell,dx)
-outdir = "scecfiles/%s_%3dm/" % (cell,dx)
+outputRoot = "output/%s_%3dm_%s" % (cell,dx,"refine")
+outdir = "scecfiles/%s_%3dm_%s/" % (cell,dx,"refine")
 
 import numpy
 import time
@@ -23,7 +23,7 @@ import time
 from pylith.utils.VTKDataReader import VTKDataReader
 
 # ----------------------------------------------------------------------
-timestamps = numpy.arange(50,12001,50)
+timestamps = numpy.arange(0,12001,50)
 if dx == 200:
     targets = numpy.array([[0.0, -12000.0, 0.0],
                            [0.0,  -7600.0, 0.0],
