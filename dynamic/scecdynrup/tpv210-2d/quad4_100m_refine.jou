@@ -30,7 +30,7 @@ playback 'refinecells.jou'
 # ----------------------------------------------------------------------
 # Smooth mesh to improve quality
 # ----------------------------------------------------------------------
-surface all smooth scheme condition number beta 1.3 cpu 10
+surface all smooth scheme condition number beta 1.5 cpu 10
 smooth surface all
 
 # ----------------------------------------------------------------------
@@ -42,4 +42,5 @@ playback 'createbc.jou'
 # Export exodus file
 # ----------------------------------------------------------------------
 export mesh "quad4_100m_refine.exo" dimension 2 overwrite
+
 
