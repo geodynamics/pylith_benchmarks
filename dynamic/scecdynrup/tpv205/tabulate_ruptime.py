@@ -27,30 +27,45 @@ timestamps = numpy.arange(50,12001,50)
     
 
 reader = VTKDataReader()
-tolerance = 1.0e-6
+threshold = 0.001 # threshold for detecting slip has started
 
 filename = "%s-fault_t%05d.vtk" % (outputRoot,timestamps[0])
 data = reader.read(filename)
 vertices = numpy.array(data['vertices'])
-ntargets = vertices.shape[0]
+npts = vertices.shape[0]
 
 # Extract values
 nsteps = timestamps.shape[0]
-slip_rate = numpy.zeros((nsteps,ntargets,3))  # 3-D array (time, targets, components)
+
+# Set default rupture time to a large value (1.0e+30)
+rupTime = 1.0e+30 * numpy.ones( (npts,), dtype=numpy.float64)
+
+# Create buffer for current rupture time
+tmpTime = numpy.zeros( (npts,), dtype=numpy.float64)
+
 itime = 0
 for timestamp in timestamps:
+    t = (itime+1)*dt # itime=0, t=dt
+
+    # Get slip rate field
     filename = "%s-fault_t%05d.vtk" % (outputRoot,timestamp)
     data = reader.read(filename)
     fields = data['vertex_fields']
-    slip_rate[itime,:,:] = fields['slip_rate'][:,:].squeeze()
+    slipRate = fields['slip_rate'][:,:].squeeze()
+
+    # Compute magnitude of slip rate
+    slipRateMag = (slipRate[:,0]**2 + slipRate[:,1]**2)**0.5
+
+    # Set rupture time at locations where threshold is exceeded
+    tmpTime[slipRateMag > threshold] = t
+
+    # Get indicates where current time is less than current rupture
+    # time (this is only the locations that just started slipping)
+    indices = numpy.where(tmpTime < rupTime)[0]
+
+    rupTime[indices] = t
+
     itime += 1
-
-nVertices = slip_rate.shape[1]
-ruptime = numpy.zeros((nVertices))
-ruptime = 1e+9
-
-ruptimeIndices = (slip_rate[:,:,0]>0.001).nonzero()[0]
-
 
 # Write data
 headerA = \
