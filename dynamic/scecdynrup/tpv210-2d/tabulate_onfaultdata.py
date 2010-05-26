@@ -60,7 +60,7 @@ traction = numpy.zeros((nsteps,ntargets,3))
 itime = 0
 for timestamp in timestamps:
     filename = "%s-fault_t%05d.vtk" % (outputRoot,timestamp)
-    print "filename", filename
+#    print "filename", filename
     data = reader.read(filename)
     fields = data['vertex_fields']
     slip[itime,0:ntargets,:] = fields['slip'][indices,:].squeeze()
