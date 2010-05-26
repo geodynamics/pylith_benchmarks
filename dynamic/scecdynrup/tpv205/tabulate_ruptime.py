@@ -92,12 +92,9 @@ distStrike = vertices[:,0] / lengthScale
 time =  timestamps / timeScale
 print "time", time
 
-filename = "%s_ruptime.dat" % (outdir)
+filename = "%sruptime.dat" % (outdir)
 fout = open(filename, "w")
 fout.write(headerA)
-print "distStrike.shape", distStrike.shape
-print "distDip.shape", distDip.shape
-print "ruptimeIndices.shape", ruptimeIndices.shape
-data = numpy.transpose((distStrike, distDip, ruptimeIndices))
+data = numpy.transpose((distStrike, distDip, rupTime))
 numpy.savetxt(fout, data, fmt='%14.6e')
 fout.close()
