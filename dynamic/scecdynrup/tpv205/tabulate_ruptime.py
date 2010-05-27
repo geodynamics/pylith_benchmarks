@@ -38,7 +38,7 @@ npts = vertices.shape[0]
 nsteps = timestamps.shape[0]
 
 # Set default rupture time to a large value (1.0e+30)
-rupTime = 1.0e+30 * numpy.ones( (npts,), dtype=numpy.float64)
+rupTime = 1.0e+9 * numpy.ones( (npts,), dtype=numpy.float64)
 
 # Create buffer for current rupture time
 tmpTime = numpy.zeros( (npts,), dtype=numpy.float64)
@@ -87,8 +87,8 @@ headerA = \
 
 lengthScale = 1000.0
 timeScale = 1000.0
-distDip = -vertices[:,2] / lengthScale
-distStrike = vertices[:,0] / lengthScale
+distDip = -vertices[:,2]
+distStrike = vertices[:,0]
 time =  timestamps / timeScale
 print "time", time
 

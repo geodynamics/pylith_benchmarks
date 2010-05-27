@@ -10,7 +10,7 @@
 # ----------------------------------------------------------------------
 #
 
-cell = "tet4"
+cell = "hex8"
 dx = 200
 dt = 0.05
 
@@ -145,8 +145,8 @@ for iloc in xrange(ntargets):
                             -slip[:,iloc,0],
                             -slip_rate[:,iloc,0],
                             -traction[:,iloc,0]/1e+6,
-                            -slip[:,iloc,1],
-                            -slip_rate[:,iloc,1],
-                            -traction[:,iloc,1]/1e+6))
+                            +slip[:,iloc,1],
+                            +slip_rate[:,iloc,1],
+                            +traction[:,iloc,1]/1e+6))
     numpy.savetxt(fout, data, fmt='%14.6e')
     fout.close()
