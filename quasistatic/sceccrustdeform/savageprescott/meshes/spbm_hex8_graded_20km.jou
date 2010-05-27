@@ -139,3 +139,4 @@ nodeset 19 name "face_ypos_nofault"
 # Export exodus file
 # ----------------------------------------------------------------------
 export mesh "spbm_hex8_graded_20km.exo" dimension 3 overwrite
+export Abaqus "spbm_hex8_graded_20km.inp"
