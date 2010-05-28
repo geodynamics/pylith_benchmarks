@@ -7,11 +7,10 @@ block 1 name "elastic"
 # ----------------------------------------------------------------------
 # Create nodeset for fault
 # ----------------------------------------------------------------------
-group "fault" add node with x_min >= -15.001e+3 and x_max <= 15.001e+3 and z_min >= -15.001e+3
-#group "fault" add node in fault_surface
-#group "fault" remove node with x_coord > +15.0001e+3
-#group "fault" remove node with x_coord < -15.0001e+3
-#group "fault" remove node with z_coord < -15.0001e+3
+group "fault" add node in fault_surface
+group "fault" remove node with x_coord > +15.0001e+3
+group "fault" remove node with x_coord < -15.0001e+3
+group "fault" remove node with z_coord < -15.0001e+3
 nodeset 10 group fault
 nodeset 10 name "fault"
 
@@ -78,3 +77,4 @@ nodeset 20 name "face zpos_subset"
 group "off_fault" add node with x_min >= -12.001e+3 and x_max <= 12.001e+3 and z_min >= -7.501e+3 and z_coord = 3.000e+3
 nodeset 25 group off_fault
 nodeset 25 name "off_fault"
+

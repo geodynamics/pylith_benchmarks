@@ -1,0 +1,7 @@
+# ----------------------------------------------------------------------
+# Smooth the mesh
+# ----------------------------------------------------------------------
+volume all smooth scheme condition number beta 2.0 cpu 10
+smooth volume all
+volume all smooth scheme condition number beta 1.7 cpu 20
+smooth volume all
