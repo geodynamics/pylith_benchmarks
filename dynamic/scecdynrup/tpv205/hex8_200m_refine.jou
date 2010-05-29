@@ -20,7 +20,7 @@ mesh volume all
 # ----------------------------------------------------------------------
 # Refine elements within 1/2 of rupture width
 # ----------------------------------------------------------------------
-playback 'refinecells.jou'
+playback 'refinecells_hex8.jou'
 
 # ----------------------------------------------------------------------
 # Smooth mesh to improve quality

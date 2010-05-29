@@ -10,7 +10,7 @@
 # ----------------------------------------------------------------------
 #
 
-cell = "hex8"
+cell = "tet4"
 dx = 200
 dt = 0.05
 
@@ -37,8 +37,9 @@ npts = vertices.shape[0]
 # Extract values
 nsteps = timestamps.shape[0]
 
-# Set default rupture time to a large value (1.0e+30)
+# Set default rupture time to a large value (1.0e+9)
 rupTime = 1.0e+9 * numpy.ones( (npts,), dtype=numpy.float64)
+#rupTime = numpy.zeros( (npts,), dtype=numpy.float64)
 
 # Create buffer for current rupture time
 tmpTime = numpy.zeros( (npts,), dtype=numpy.float64)
@@ -59,13 +60,29 @@ for timestamp in timestamps:
     # Set rupture time at locations where threshold is exceeded
     tmpTime[slipRateMag > threshold] = t
 
+    #print "slipRateMag \n", slipRateMag
+    #print "slipRateMag > threshold \n ", slipRateMag > threshold
+
+    #print "tmpTime \n", tmpTime[1:50]
+    #print "time", t
+
     # Get indicates where current time is less than current rupture
     # time (this is only the locations that just started slipping)
-    indices = numpy.where(tmpTime < rupTime)[0]
+    #indices = numpy.where((tmpTime < rupTime) and (rupTime < 0.00001))[0]
+    #indices = ((tmpTime < rupTime) & (rupTime < testarr))
+    indices = numpy.where((tmpTime < rupTime) & (tmpTime > 0.00001))[0]
+
+    #print "indices \n", indices[1:200]
+
 
     rupTime[indices] = t
 
+    #print "rupTime \n", rupTime[1:200]
+
     itime += 1
+
+# print "rupTime \n", rupTime
+# rupTime[rupTime < 0.00001] = 1.0e+9
 
 # Write data
 headerA = \

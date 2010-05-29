@@ -21,15 +21,12 @@ mesh volume all
 # ----------------------------------------------------------------------
 # Refine elements within 1/2 of rupture width
 # ----------------------------------------------------------------------
-playback 'refinecells.jou'
+playback 'refinecells_tet4.jou'
 
 # ----------------------------------------------------------------------
 # Smooth mesh to improve quality
 # ----------------------------------------------------------------------
-volume all smooth scheme laplacian
-smooth volume all
-volume all smooth scheme condition number beta 1.3 cpu 10
-smooth volume all
+playback 'tet4_smooth.jou'
 
 # ----------------------------------------------------------------------
 # Setup boundary conditions.
