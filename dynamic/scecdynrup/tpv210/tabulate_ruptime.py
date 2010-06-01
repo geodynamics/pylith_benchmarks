@@ -105,7 +105,7 @@ headerA = \
 lengthScale = 1000.0
 timeScale = 1000.0
 distDip = -2*vertices[:,0]
-distStrike = vertices[:,2]
+distStrike = vertices[:,1]
 time =  timestamps / timeScale
 print "time", time
 

@@ -9,8 +9,8 @@ block 1 name "elastic"
 # ----------------------------------------------------------------------
 group "fault" add node in fault_surface
 group "fault" remove node with x_coord < -7.5001e+3
-group "fault" remove node with z_coord < -15.0001e+3
-group "fault" remove node with z_coord > +15.0001e+3
+group "fault" remove node with y_coord < -15.0001e+3
+group "fault" remove node with y_coord > +15.0001e+3
 nodeset 10 group fault
 nodeset 10 name "fault"
 
@@ -31,16 +31,16 @@ nodeset 12 name "face_xneg"
 # ----------------------------------------------------------------------
 # Create nodeset for +y face
 # ----------------------------------------------------------------------
-group "face_ypos" add node in surface 12
-group "face_ypos" add node in surface 14
+group "face_ypos" add node in surface 10
+group "face_ypos" add node in surface 17
 nodeset 13 group face_ypos
 nodeset 13 name "face_ypos"
 
 # ----------------------------------------------------------------------
 # Create nodeset for -y face
 # ----------------------------------------------------------------------
-group "face_yneg" add node in surface 10
-group "face_yneg" add node in surface 17
+group "face_yneg" add node in surface 12
+group "face_yneg" add node in surface 14
 nodeset 14 group face_yneg
 nodeset 14 name "face_yneg"
 
@@ -63,8 +63,6 @@ nodeset 16 name "face_zpos"
 # ----------------------------------------------------------------------
 # Create nodeset for off-fault stations
 # ----------------------------------------------------------------------
-group "off_fault" add node with x_min >= -4.001e+3 and x_max <= 4.001e+3 and y_min >= -1.001e+3 and z_coord = 0.0
+group "off_fault" add node with x_min >= -4.001e+3 and x_max <= 4.001e+3 and z_min >= -1.001e+3 and y_coord = 0.0
 nodeset 25 group off_fault
 nodeset 25 name "off_fault"
-
-

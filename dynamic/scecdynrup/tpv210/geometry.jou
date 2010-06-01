@@ -1,24 +1,24 @@
 # ----------------------------------------------------------------------
 # Create block
 # ----------------------------------------------------------------------
-# Block is 36.0 km x 18.0*sqrt(3) km x 56000
+# Block is 36.0 km x 56000 km x 18.0*sqrt(3) km 
 # -21.75 km <= x <= 14.25 km
-# -18*Sqrt(3) km <= y <= 0 km
-# -28 km <= z <= 28km
+# -28 km <= y <= 28km
+# -18*Sqrt(3) km <= z <= 0 km
 #
 reset
-brick x 36000 y 31176.914 z 56000 
+brick x 36000 y 56000 z 31176.914
 
 # ----------------------------------------------------------------------
 # Set z=0 at free surface
 # ----------------------------------------------------------------------
-move volume 1 x -3750 y -15588.457
+move volume 1 x -3750 z -15588.457
 
 # ----------------------------------------------------------------------
 # Create interface surfaces
 # ----------------------------------------------------------------------
-create surface extended from surface 5
-body 2 rotate +60 about z 
+create surface extended from surface 1
+body 2 rotate -60 about y 
 surface 7 name "fault_surface"
 webcut volume 1 with plane surface fault_surface
 
@@ -29,8 +29,3 @@ imprint all
 merge all
 
 delete body 2
-
-
-
-
-
