@@ -4,7 +4,7 @@ SimpleDB {
   value-names = static-coefficient dynamic-coefficient slip-weakening-parameter cohesion
   value-units =  none none m MPa
   num-locs = 8  
-  data-dim = 1
+  data-dim = 2
   space-dim = 3
   cs-data = cartesian {
     to-meters = 1.0e+3  // x, y, z are in km
