@@ -10,7 +10,7 @@
 # ----------------------------------------------------------------------
 #
 
-cell = "hex8"
+cell = "tet4"
 dx = 200
 dt = 0.05
 
@@ -39,15 +39,16 @@ targets = numpy.array([[-3000.0, 0.0,  -0.0],
                        [ -500.0, 0.0,-300.0],
                        [ +500.0, 0.0,-300.0],
                        [+1000.0, 0.0,-300.0],
-                       [-3000.0, 12000.0,  -0.0],
-                       [+3000.0, 12000.0,  -0.0]])
+                       [-3000.0, +12000.0,  -0.0],
+                       [+3000.0, +12000.0,  -0.0]])
 
 
 reader = VTKDataReader()
 tolerance = 1.0e-6
 
 # Get vertices and find indices of target locations
-filename = "%s-off_fault_t%05d.vtk" % (outputRoot,timestamps[0])
+#filename = "%s-off_fault_t%05d.vtk" % (outputRoot,timestamps[0])
+filename = "%s_t%05d.vtk" % (outputRoot,timestamps[0])
 data = reader.read(filename)
 
 vertices = numpy.array(data['vertices'])
@@ -69,7 +70,8 @@ disp = numpy.zeros((nsteps,ntargets,3))  # 3-D array (time, targets, components)
 vel = numpy.zeros((nsteps,ntargets,3))
 itime = 0
 for timestamp in timestamps:
-    filename = "%s-off_fault_t%05d.vtk" % (outputRoot,timestamp)
+    #filename = "%s-off_fault_t%05d.vtk" % (outputRoot,timestamp)
+    filename = "%s_t%05d.vtk" % (outputRoot,timestamp)
     data = reader.read(filename)
     fields = data['vertex_fields']
     disp[itime,0:ntargets,:] = fields['displacement'][indices,:].squeeze()
@@ -80,7 +82,7 @@ for timestamp in timestamps:
 # Write data
 headerA = \
     "# problem = TPV210\n" + \
-    "# author = Surendra N. Somala\n" + \
+    "# author = Surendra Somala, Brad Aagaard\n" + \
     "# date = %s\n" % (time.asctime()) + \
     "# code = PyLith\n" + \
     "# code_version = 1.5.0a\n" + \
@@ -124,11 +126,11 @@ for iloc in xrange(ntargets):
                              dip[iloc]))
     fout.write(headerB)
     data = numpy.transpose((time,
-                            disp[:,iloc,0],
-                            vel[:,iloc,0],
-                            -disp[:,iloc,1],
-                            -vel[:,iloc,1],
+                            disp[:,iloc,1],
+                            vel[:,iloc,1],
                             -disp[:,iloc,2],
-                            -vel[:,iloc,2]))
+                            -vel[:,iloc,2],
+                            -disp[:,iloc,0],
+                            -vel[:,iloc,0]))
     numpy.savetxt(fout, data, fmt='%14.6e')
     fout.close()
