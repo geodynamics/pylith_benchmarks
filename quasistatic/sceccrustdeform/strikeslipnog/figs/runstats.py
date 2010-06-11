@@ -455,3 +455,84 @@ dataScaling_v1_4_2 = {
        'compute': 4.7358e+00 + 9.8182e+01 + 7.0615e+02},
       ],
     }
+
+# ----------------------------------------------------------------------
+# Version 1.4.2 (August 2009)
+# ----------------------------------------------------------------------
+# Hydra (2.2 GHz Opteron)
+data_v1_5_0 = {
+    "Tet4 1000m": {
+        'ncells': 79756,
+        'nvertices': 15625,
+        'nflops': 1.189e+09,
+        'run_time': 2.271e+01,
+        'error': 0,
+        'niterations': 70,
+        'memory': 186.25},
+
+    "Hex8 1000m": {
+        'ncells': 13824,
+        'nvertices': 15625,
+        'nflops': 2.244e+09,
+        'run_time': 1.174e+01,
+        'error': 0,
+        'niterations': 46,
+        'memory': 157.62},
+
+    "Tet4 500m": {
+        'ncells': 661929,
+        'nvertices': 117649,
+        'nflops': 1.505e+10,
+        'run_time': 1.944e+02,
+        'error': 0,
+        'niterations': 124,
+        'memory': 1259},
+
+    "Hex8 500m": {
+        'ncells': 110592,
+        'nvertices': 117649,
+        'nflops': 2.482e+10,
+        'run_time': 1.013e+02,
+        'error': 0,
+        'niterations': 89,
+        'memory': 1003.89},
+
+
+    "Tet4 250m": {
+        'ncells': 5244768,
+        'nvertices': 912673,
+        'nflops': 2.251e+11,
+        'run_time': 0,
+        'error': 0,
+        'niterations': 248,
+        'memory': 9810.49},
+
+    "Hex8 250m" : {
+        'ncells': 884736,
+        'nvertices': 912673,
+        'nflops': 2.860e+11,
+        'run_time': 1.055e+03,
+        'error': 0,
+        'niterations': 158,
+        'memory': 7830.93}
+    }
+
+# Hydra (2.2 GHz Opteron)
+# compute is ReformJacobian + ReformResidual + Solve
+dataScaling_v1_5_0 = {
+    "Hex8":
+     [{'nprocs': 1, 'total': 3941.0, 'compute': 3641.41},
+      {'nprocs': 2, 'total': 3243.0, 'compute': 2990.53},
+      {'nprocs': 4, 'total': 2232.0, 'compute': 2021.825},
+#      {'nprocs': 8, 'total': 0, 'compute': 0},
+#      {'nprocs': 16, 'total': 0, 'compute': 0},
+      ],
+    
+    "Tet4":
+     [{'nprocs': 1, 'total': 4926.0, 'compute': 4145.554},
+      {'nprocs': 2, 'total': 4914.0, 'compute': 4132.822},
+      {'nprocs': 4, 'total': 2899.0, 'compute': 2208.235},
+      {'nprocs': 8, 'total': 1797.0, 'compute': 1144.05},
+      {'nprocs': 16, 'total': 1368.0, 'compute': 732.32},
+      ],
+    }
