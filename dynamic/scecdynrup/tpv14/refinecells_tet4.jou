@@ -1,0 +1,9 @@
+# ----------------------------------------------------------------------
+# Refine elements within 1/2 of rupture width
+# ----------------------------------------------------------------------
+group "refinecells1" add tet with x_min >= -36.001e+3 and x_max <= 36.001e+3 and y_min >= -30.001e+3 and y_max <= 42.001e+3 and z_min >= -36.001e+3
+refine tet in refinecells1 depth 1
+group "refinecells2" add tet with x_min >= -24.001e+3 and x_max <= 24.001e+3 and y_min >= -18.001e+3 and y_max <= 30.001e+3 and z_min >= -24.001e+3
+refine tet in refinecells2 depth 1
+
+
