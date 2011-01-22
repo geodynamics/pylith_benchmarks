@@ -1,6 +1,6 @@
 # Parameters for smaller mesh.
 #
-#{Units('si')
+#{Units('si')}
 #
 # ----------------------------------------------------------------------
 # Parameters for geometry.
@@ -16,13 +16,13 @@
 #
 # Main fault is 28.0 km long
 #
-#{mainFaultLength=28*km}
+#{mainFaultLength=28.001*km}
 #
 # Branch fault is 12.0 km long and intersects main fault at y=+2.0 km
 # at angle of 30.0 degrees.
 #
 #{branchAngle=30.0}
-#{branchFaultLength=12*km}
+#{branchFaultLength=12.001*km}
 #{branchOffsetY=2*km}
 #
 #
@@ -40,12 +40,15 @@
 # 
 # Within 24 km of rupture perpendicular to strike
 # Within 36 km of rupture along strike
-#{refine1Width=24*km}
-#{refine1Length=36*km}
+#{refine1Width=24.01*km}
+#{refine1Length=36.01*km}
 #
 # Level 2
 # 
 # Within 12 km of rupture perpendicular to strike
 # Within 24 km of rupture along strike
-#{refine1Width=12*km}
-#{refine1Length=24*km}
+#{refine2Width=12.01*km}
+#{refine2Length=24.01*km}
+
+
+
