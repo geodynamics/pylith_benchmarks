@@ -1,8 +1,0 @@
-# ----------------------------------------------------------------------
-# Refine elements within 1/2 of rupture width
-# ----------------------------------------------------------------------
-group "refinecells1" add node with x_min >= -30.001e+3 and x_max <= 42.001e+3 and y_min >= -36.001e+3 and y_max <= 36.001e+3
-refine node in refinecells1 depth 1
-group "refinecells2" add node with x_min >= -18.001e+3 and x_max <= 30.001e+3 and y_min >= -24.001e+3 and y_max <= 24.001e+3
-refine node in refinecells2 depth 1
-
