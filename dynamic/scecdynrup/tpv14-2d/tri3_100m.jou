@@ -15,7 +15,7 @@ playback 'geometry.jou'
 # ----------------------------------------------------------------------
 # Set discretization size and scheme
 # ----------------------------------------------------------------------
-surface all size {8*dx}
+surface all size {4*dx}
 surface all scheme trimesh
 
 # ----------------------------------------------------------------------
@@ -24,7 +24,7 @@ surface all scheme trimesh
 mesh surface all
 
 # ----------------------------------------------------------------------
-# Refine elements within 1/2 of rupture width
+# Refine elements near rupture
 # ----------------------------------------------------------------------
 playback 'refinecells.jou'
 
@@ -45,4 +45,5 @@ playback 'createbc.jou'
 # Export exodus file
 # ----------------------------------------------------------------------
 export mesh "tri3_100m.exo" dimension 2 overwrite
+
 

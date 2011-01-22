@@ -21,7 +21,7 @@ split surface 7 across location position 0 {-blockLength} 0 location position 0 
 curve 17 name "fault_surface_main"
 
 # Create Branch Fault 
-split surface 9 across location position 0 {branchOffsetY} 0 location position {blockLength*tand(branchAngle)} {blockLength} 0
+split surface 9 across location position 0 {branchOffsetY} 0 location position {blockLength*tand(branchAngle)} {branchOffsetY + blockLength} 0
 curve 22 name "fault_surface_branch"
 
 # ----------------------------------------------------------------------
@@ -29,3 +29,4 @@ curve 22 name "fault_surface_branch"
 # ----------------------------------------------------------------------
 imprint all
 merge all
+

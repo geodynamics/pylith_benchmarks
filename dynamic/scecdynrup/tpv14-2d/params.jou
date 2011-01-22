@@ -16,15 +16,17 @@
 #
 # Main fault is 28.0 km long
 #
-#{mainFaultLength=28.001*km}
+#{mainFaultLength=28.1*km}
 #
 # Branch fault is 12.0 km long and intersects main fault at y=+2.0 km
 # at angle of 30.0 degrees.
 #
 #{branchAngle=30.0}
-#{branchFaultLength=12.001*km}
+#{branchFaultLength=12.1*km}
 #{branchOffsetY=2*km}
 #
+# Note: Fault lengths are slightly longer than necessary to insure that
+# we capture the nodes that span the rupture.
 #
 # ----------------------------------------------------------------------
 # Parameters for mesh.
@@ -49,6 +51,4 @@
 # Within 24 km of rupture along strike
 #{refine2Width=12.01*km}
 #{refine2Length=24.01*km}
-
-
 
