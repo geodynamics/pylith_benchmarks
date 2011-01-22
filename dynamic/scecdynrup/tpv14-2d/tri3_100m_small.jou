@@ -1,6 +1,11 @@
 # ----------------------------------------------------------------------
-# Create quad4 mesh at 100m resolution.
+# Create small tri3 mesh at 100m resolution.
 # ----------------------------------------------------------------------
+
+# ----------------------------------------------------------------------
+# Set parameters.
+# ----------------------------------------------------------------------
+playback 'params_small.jou'
 
 # ----------------------------------------------------------------------
 # Generate geometry
@@ -8,9 +13,10 @@
 playback 'geometry.jou'
 
 # ----------------------------------------------------------------------
-# Set discretization size
+# Set discretization size and scheme
 # ----------------------------------------------------------------------
-surface all size 100
+surface all size {dx}
+surface all scheme trimesh 
 
 # ----------------------------------------------------------------------
 # Generate the mesh
@@ -25,4 +31,4 @@ playback 'createbc.jou'
 # ----------------------------------------------------------------------
 # Export exodus file
 # ----------------------------------------------------------------------
-export mesh "quad4_100m.exo" dimension 2 overwrite
+export mesh "tri3_100m_small.exo" dimension 2 overwrite

@@ -1,33 +1,31 @@
 # ----------------------------------------------------------------------
-# Create tri3 mesh at 100m resolution.
+# Create quad4 mesh at 100m resolution.
 # ----------------------------------------------------------------------
+
+# ----------------------------------------------------------------------
+# Set parameters.
+# ----------------------------------------------------------------------
+playback 'params_small.jou'
 
 # ----------------------------------------------------------------------
 # Generate geometry
 # ----------------------------------------------------------------------
-playback 'geometry_refine.jou'
+playback 'geometry.jou'
 
 # ----------------------------------------------------------------------
-# Set discretization size and scheme
+# Set discretization size
 # ----------------------------------------------------------------------
-surface all size 400
-surface all scheme trimesh
+surface all size {dx}
 
 # ----------------------------------------------------------------------
 # Generate the mesh
 # ----------------------------------------------------------------------
+surface all scheme pave
 mesh surface all
 
 # ----------------------------------------------------------------------
-# Refine elements within 1/2 of rupture width
+# Smooth mesh to improve quality.
 # ----------------------------------------------------------------------
-playback 'refinecells.jou'
-
-# ----------------------------------------------------------------------
-# Smooth mesh to improve quality
-# ----------------------------------------------------------------------
-surface all smooth scheme laplacian
-smooth surface all
 surface all smooth scheme condition number beta 1.3 cpu 10
 smooth surface all
 
@@ -39,8 +37,4 @@ playback 'createbc.jou'
 # ----------------------------------------------------------------------
 # Export exodus file
 # ----------------------------------------------------------------------
-export mesh "tri3_100m_refine.exo" dimension 2 overwrite
-
-
-
-
+export mesh "quad4_100m.exo" dimension 2 overwrite

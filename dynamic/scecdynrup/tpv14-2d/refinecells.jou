@@ -1,6 +1,23 @@
 # ----------------------------------------------------------------------
-# Refine elements within 1/2 of rupture width
+# Refine cells near rupture
 # ----------------------------------------------------------------------
+
+# Refine level 1
+
+# Main fault
+group "refinecells1" add node with x_min >= {-refine1Width} and x_max <= {refine1Width} and y_min >= {-refine1Length} and y_max <= {refine1Length}
+
+# Branch fault
+group "tmp_add" add node with y_coord + x_coord*{tand(branchAngle)} + {branchOffset} >= 0
+group "tmp_add" remove node with y_coord + x_coord*{tand(branchAngle)} + {branchOffset} - {(branchLength+refine1Length)*(cosd(branchAngle)+sind(branchAngle)*tand(branchAngle))} >= 0
+group "tmp_add" remove node with y_coord - x_coord/{tand(branchAngle)} + {branchOffset} + {refine1Width*(sind(branchAngle)+cosd(branchAngle)/tand(branchAngle))} <= 0
+group "tmp_add" remove node with y_coord - x_coord/{tand(branchAngle)} + {branchOffset} - {refine1Width*(sind(branchAngle)+cosd(branchAngle)/tand(branchAngle))} >= 0
+group "refinecells1" add node in group tmp_add
+delete tmp_add
+
+refine node in refinecells2 depth 1
+
+
 group "refinecells1" add node with x_min >= -30.001e+3 and x_max <= 42.001e+3 and y_min >= -36.001e+3 and y_max <= 36.001e+3
 refine node in refinecells1 depth 1
 group "refinecells2" add node with x_min >= -18.001e+3 and x_max <= 30.001e+3 and y_min >= -24.001e+3 and y_max <= 24.001e+3
