@@ -15,7 +15,7 @@ playback 'geometry.jou'
 # ----------------------------------------------------------------------
 # Set discretization size
 # ----------------------------------------------------------------------
-surface all size {4*dx}
+surface all size {8*dx}
 surface all scheme pave
 
 # ----------------------------------------------------------------------
@@ -34,6 +34,9 @@ playback 'refinecells.jou'
 surface all smooth scheme condition number beta 1.3 cpu 10
 smooth surface all
 
+# Refine to get final resolution
+refine surface all numsplit 1
+
 # ----------------------------------------------------------------------
 # Setup boundary conditions.
 # ----------------------------------------------------------------------
@@ -43,4 +46,5 @@ playback 'createbc.jou'
 # Export exodus file
 # ----------------------------------------------------------------------
 export mesh "quad4_100m.exo" dimension 2 overwrite
+
 
