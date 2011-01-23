@@ -9,9 +9,9 @@ block 1 name "elastic"
 # ----------------------------------------------------------------------
 group "main_fault" add node in fault_surface_main
 group "main_fault" add node in fault_surface_main@A
-group "main_fault" remove node with x_coord > +14.0001e+3
-group "main_fault" remove node with x_coord < -14.0001e+3
-group "main_fault" remove node with z_coord < -15.0001e+3
+group "main_fault" remove node with x_coord > {mainFaultLength/2.0}
+group "main_fault" remove node with x_coord < {-mainFaultLength/2.0}
+group "main_fault" remove node with z_coord < {-mainFaultDepth}
 nodeset 100 group main_fault
 nodeset 100 name "main_fault"
 
@@ -19,8 +19,8 @@ nodeset 100 name "main_fault"
 # Create nodeset for fault
 # ----------------------------------------------------------------------
 group "branch_fault" add node in fault_surface_branch
-group "branch_fault" remove node with x_coord > +6.0001e+3
-group "branch_fault" remove node with z_coord < -15.0001e+3
+group "branch_fault" remove node with x_coord > {branchFaultLength*sind(branchAngle)}
+group "branch_fault" remove node with z_coord < {-branchFaultDepth}
 group "branch_fault" remove node in main_fault
 nodeset 200 group branch_fault
 nodeset 200 name "branch_fault"
@@ -77,20 +77,21 @@ nodeset 16 name "face_zpos"
 # ----------------------------------------------------------------------
 # Create nodeset for subset of +z face
 # ----------------------------------------------------------------------
-group "face_zpos_subset" add node in group face_zpos
-group "face_zpos_subset" remove node with x_coord > +15.001e+3
-group "face_zpos_subset" remove node with x_coord < -15.001e+3
-group "face_zpos_subset" remove node with y_coord > +5.001e+3
-group "face_zpos_subset" remove node with y_coord < -10.001e+3
-nodeset 20 group face_zpos_subset
-nodeset 20 name "face zpos_subset"
+#group "face_zpos_subset" add node in group face_zpos
+#group "face_zpos_subset" remove node with x_coord > +15.001e+3
+#group "face_zpos_subset" remove node with x_coord < -15.001e+3
+#group "face_zpos_subset" remove node with y_coord > +5.001e+3
+#group "face_zpos_subset" remove node with y_coord < -10.001e+3
+#nodeset 20 group face_zpos_subset
+#nodeset 20 name "face zpos_subset"
 
 # ----------------------------------------------------------------------
 # Create nodeset for off-fault stations
 # ----------------------------------------------------------------------
-group "off_fault" add node with x_min >= -1.001e+3 and x_max <= 15.001e+3 and y_min >= -8.501e+3 and y_max <= 4.001e+3 and z_coord = 0.000e+3
+group "off_fault" add node with x_min >= {offfaultMinX} and x_max <= {offfaultMaxX} and y_min >= {offfaultMinY} and y_max <= {offfaultMaxY} and z_coord = {offfaultCoordZ}
 nodeset 25 group off_fault
 nodeset 25 name "off_fault"
+
 
 
 

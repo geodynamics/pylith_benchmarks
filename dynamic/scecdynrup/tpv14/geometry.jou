@@ -1,39 +1,37 @@
 # ----------------------------------------------------------------------
-# Create block
+# Reset geometry.
 # ----------------------------------------------------------------------
-# Block is 40.8 km x 20.4 km x 20.4 km
-# -20.4 km <= x <= 20.4 km
-# -10.2 km <= y <= 10.2 km
-# -20.4 km <= z <= 0.0 km
-#
 reset
-brick x 40800 y 20400 z 20400
-
-# Translate block so the top is at z=0
-volume 1 move x 0 y 0 z -10200
 
 # ----------------------------------------------------------------------
-# Create Main Fault
+# Create and position block.
 # ----------------------------------------------------------------------
+brick x {blockLength} y {blockWidth} z {blockHeight}
+volume 1 move z {-blockHeight/2.0}
+
+# ----------------------------------------------------------------------
+# Create interface surfaces
+# ----------------------------------------------------------------------
+
+# Create Main Fault 
 create planar surface with plane yplane offset 0
 surface 7 name "fault_surface_main"
 webcut volume 1 with plane surface fault_surface_main
 
-# ----------------------------------------------------------------------
 # Create Branch Fault
-# ----------------------------------------------------------------------
-create planar surface with plane xplane offset 20400
-Rotate body 4 about vertex 2 5 angle -60
-move body 4 x -18400 y -10200
+create planar surface with plane xplane offset {blockLength/2.0}
+Rotate body 4 about vertex 2 5 angle {branchAngle-90}
+move body 4 x {branchOffsetY-blockWidth/2.0} y {-blockWidth/2.0}
 webcut volume 3 with sheet body 4
 surface 19 name "fault_surface_branch"
-
+ 
 # ----------------------------------------------------------------------
 # Imprint all volumes, merging surfaces
 # ----------------------------------------------------------------------
 imprint all
 merge all
 delete body 2 4
+
 
 
 

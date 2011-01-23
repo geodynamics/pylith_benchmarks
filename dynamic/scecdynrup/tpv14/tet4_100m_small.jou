@@ -5,12 +5,12 @@
 # ----------------------------------------------------------------------
 # Generate geometry
 # ----------------------------------------------------------------------
-playback 'geometry_refine.jou'
+playback 'geometry.jou'
 
 # ----------------------------------------------------------------------
 # Set discretization size and scheme
 # ----------------------------------------------------------------------
-volume all size 800
+volume all size {dx}
 volume all scheme tetmesh 
 
 # ----------------------------------------------------------------------
@@ -19,12 +19,7 @@ volume all scheme tetmesh
 mesh volume all
 
 # ----------------------------------------------------------------------
-# Refine elements within 1/2 of rupture width
-# ----------------------------------------------------------------------
-playback 'refinecells_tet4.jou'
-
-# ----------------------------------------------------------------------
-# Smooth mesh to improve quality
+# Improve element quality.
 # ----------------------------------------------------------------------
 playback 'tet4_smooth.jou'
 
@@ -36,8 +31,7 @@ playback 'createbc.jou'
 # ----------------------------------------------------------------------
 # Export exodus file
 # ----------------------------------------------------------------------
-export mesh "tet4_100m_refine.exo" dimension 3 overwrite
-
+export mesh "tet4_100m_small.exo" dimension 3 overwrite
 
 
 

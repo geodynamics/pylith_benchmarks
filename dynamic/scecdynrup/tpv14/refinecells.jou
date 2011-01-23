@@ -1,0 +1,35 @@
+# ----------------------------------------------------------------------
+# Refine cells near rupture
+# ----------------------------------------------------------------------
+
+# Refine level 1
+
+# Main fault
+group "refinecells" add node with x_min >= {-refine1Length} and x_max <= {refine1Length} and y_min >= {-refine1Width} and y_max <= {refine1Width} and z_min >= {-refine1Depth}
+
+# Branch fault
+group "tmp_add" add node with x_coord - y_coord*{tand(branchAngle)} - {branchOffsetY} >= 0 and z_min >= {-refine1Depth}
+group "tmp_add" remove node with x_coord - y_coord*{tand(branchAngle)} - {branchOffsetY} - {(branchFaultLength+refine1Length)/cosd(branchAngle)} >= 0
+group "tmp_add" remove node with x_coord + y_coord/{tand(branchAngle)} - {branchOffsetY} + {refine1Width/sind(branchAngle)} <= 0
+group "tmp_add" remove node with x_coord + y_coord/{tand(branchAngle)} - {branchOffsetY} - {refine1Width/sind(branchAngle)} >= 0
+group "refinecells" add node in group tmp_add
+delete group tmp_add
+
+refine node in group refinecells depth 1
+delete group refinecells
+
+# Refine level 2
+
+# Main fault
+group "refinecells" add node with x_min >= {-refine2Length} and x_max <= {refine2Length} and y_min >= {-refine2Width} and y_max <= {refine2Width} and z_min >= {-refine2Depth}
+
+# Branch fault
+group "tmp_add" add node with x_coord - y_coord*{tand(branchAngle)} - {branchOffsetY} >= 0 and z_min >= {-refine2Depth}
+group "tmp_add" remove node with x_coord - y_coord*{tand(branchAngle)} - {branchOffsetY} - {(branchLength+refine2Length)/cosd(branchAngle)} >= 0
+group "tmp_add" remove node with x_coord + y_coord/{tand(branchAngle)} - {branchOffsetY} + {refine2Width/sind(branchAngle)} <= 0
+group "tmp_add" remove node with x_coord + y_coord/{tand(branchAngle)} - {branchOffsetY} - {refine2Width/sind(branchAngle)} >= 0
+group "refinecells" add node in group tmp_add
+delete group tmp_add
+
+refine node in group refinecells depth 1
+delete group refinecells
