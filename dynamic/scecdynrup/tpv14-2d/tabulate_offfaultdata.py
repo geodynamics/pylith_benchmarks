@@ -14,8 +14,8 @@ cell = "quad4"
 dx = 100
 dt = 0.05
 
-outputRoot = "output/%s_%3dm_%s" % (cell,dx,"refine")
-outdir = "scecfiles/%s_%3dm_%s/" % (cell,dx,"refine")
+outputRoot = "output/%s_%3dm" % (cell,dx)
+outdir = "scecfiles/%s_%3dm/" % (cell,dx)
 
 # ----------------------------------------------------------------------
 

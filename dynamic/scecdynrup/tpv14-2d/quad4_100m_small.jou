@@ -37,4 +37,4 @@ playback 'createbc.jou'
 # ----------------------------------------------------------------------
 # Export exodus file
 # ----------------------------------------------------------------------
-export mesh "quad4_100m.exo" dimension 2 overwrite
+export mesh "quad4_100m_small.exo" dimension 2 overwrite
