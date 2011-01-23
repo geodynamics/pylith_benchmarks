@@ -46,7 +46,7 @@ tolerance = 1.0e-6
 
 # Get vertices and find indices of target locations on MAIN Fault
 targets = targets_main
-filename = "%s-mainFault_t%05d.vtk" % (outputRoot,timestamps[0])
+filename = "%s-main_fault_t%05d.vtk" % (outputRoot,timestamps[0])
 data = reader.read(filename)
 
 vertices = numpy.array(data['vertices'])
@@ -69,7 +69,7 @@ slip_rate = numpy.zeros((nsteps,ntargets,3))
 traction = numpy.zeros((nsteps,ntargets,3))
 itime = 0
 for timestamp in timestamps:
-    filename = "%s-mainFault_t%05d.vtk" % (outputRoot,timestamp)
+    filename = "%s-main_fault_t%05d.vtk" % (outputRoot,timestamp)
     data = reader.read(filename)
     fields = data['vertex_fields']
     slip[itime,0:ntargets,:] = fields['slip'][indices,:].squeeze()
@@ -144,7 +144,7 @@ targets_branch[:,1] = targets_branch[:,1] + 2000.0
 
 # Get vertices and find indices of target locations on BRANCH Fault
 targets = targets_branch
-filename = "%s-branchFault_t%05d.vtk" % (outputRoot,timestamps[0])
+filename = "%s-branch_fault_t%05d.vtk" % (outputRoot,timestamps[0])
 data = reader.read(filename)
 
 vertices = numpy.array(data['vertices'])
@@ -169,7 +169,7 @@ slip_rate = numpy.zeros((nsteps,ntargets,3))
 traction = numpy.zeros((nsteps,ntargets,3))
 itime = 0
 for timestamp in timestamps:
-    filename = "%s-branchFault_t%05d.vtk" % (outputRoot,timestamp)
+    filename = "%s-branch_fault_t%05d.vtk" % (outputRoot,timestamp)
     data = reader.read(filename)
     fields = data['vertex_fields']
     slip[itime,0:ntargets,:] = fields['slip'][indices,:].squeeze()

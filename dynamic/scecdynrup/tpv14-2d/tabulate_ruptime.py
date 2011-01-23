@@ -29,7 +29,7 @@ timestamps = numpy.arange(50,12001,50)
 reader = VTKDataReader()
 threshold = 0.001 # threshold for detecting slip has started
 
-filename = "%s-mainFault_t%05d.vtk" % (outputRoot,timestamps[0])
+filename = "%s-main_fault_t%05d.vtk" % (outputRoot,timestamps[0])
 data = reader.read(filename)
 vertices = numpy.array(data['vertices'])
 npts = vertices.shape[0]
@@ -49,10 +49,10 @@ for timestamp in timestamps:
     t = (itime+1)*dt # itime=0, t=dt
 
     # Get slip rate field
-    filename = "%s-mainFault_t%05d.vtk" % (outputRoot,timestamp)
+    filename = "%s-main_fault_t%05d.vtk" % (outputRoot,timestamp)
     data = reader.read(filename)
     fields = data['vertex_fields']
-    slipRate = fields['slip_rate'][:,:].squeeze()
+    slipRate = fields['slip'][:,:].squeeze()
 
     # Compute magnitude of slip rate
     slipRateMag = (slipRate[:,0]**2 + slipRate[:,1]**2)**0.5
@@ -127,7 +127,7 @@ timestamps = numpy.arange(50,12001,50)
 reader = VTKDataReader()
 threshold = 0.001 # threshold for detecting slip has started
 
-filename = "%s-branchFault_t%05d.vtk" % (outputRoot,timestamps[0])
+filename = "%s-branch_fault_t%05d.vtk" % (outputRoot,timestamps[0])
 data = reader.read(filename)
 vertices = numpy.array(data['vertices'])
 npts = vertices.shape[0]
@@ -147,10 +147,10 @@ for timestamp in timestamps:
     t = (itime+1)*dt # itime=0, t=dt
 
     # Get slip rate field
-    filename = "%s-branchFault_t%05d.vtk" % (outputRoot,timestamp)
+    filename = "%s-branch_fault_t%05d.vtk" % (outputRoot,timestamp)
     data = reader.read(filename)
     fields = data['vertex_fields']
-    slipRate = fields['slip_rate'][:,:].squeeze()
+    slipRate = fields['slip'][:,:].squeeze()
 
     # Compute magnitude of slip rate
     slipRateMag = (slipRate[:,0]**2 + slipRate[:,1]**2)**0.5

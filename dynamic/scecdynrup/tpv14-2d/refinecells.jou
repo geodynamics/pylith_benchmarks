@@ -9,9 +9,9 @@ group "refinecells" add node with x_min >= {-refine1Width} and x_max <= {refine1
 
 # Branch fault
 group "tmp_add" add node with y_coord + x_coord*{tand(branchAngle)} - {branchOffsetY} >= 0
-group "tmp_add" remove node with y_coord + x_coord*{tand(branchAngle)} - {branchOffsetY} - {(branchLength+refine1Length)*(cosd(branchAngle)+sind(branchAngle)*tand(branchAngle))} >= 0
-group "tmp_add" remove node with y_coord - x_coord/{tand(branchAngle)} - {branchOffsetY} + {refine1Width*(sind(branchAngle)+cosd(branchAngle)/tand(branchAngle))} <= 0
-group "tmp_add" remove node with y_coord - x_coord/{tand(branchAngle)} - {branchOffsetY} - {refine1Width*(sind(branchAngle)+cosd(branchAngle)/tand(branchAngle))} >= 0
+group "tmp_add" remove node with y_coord + x_coord*{tand(branchAngle)} - {branchOffsetY} - {(branchFaultLength+refine1Length)/cosd(branchAngle)} >= 0
+group "tmp_add" remove node with y_coord - x_coord/{tand(branchAngle)} - {branchOffsetY} + {refine1Width/sind(branchAngle)} <= 0
+group "tmp_add" remove node with y_coord - x_coord/{tand(branchAngle)} - {branchOffsetY} - {refine1Width/sind(branchAngle)} >= 0
 group "refinecells" add node in group tmp_add
 delete group tmp_add
 
@@ -25,9 +25,9 @@ group "refinecells" add node with x_min >= {-refine2Width} and x_max <= {refine2
 
 # Branch fault
 group "tmp_add" add node with y_coord + x_coord*{tand(branchAngle)} - {branchOffsetY} >= 0
-group "tmp_add" remove node with y_coord + x_coord*{tand(branchAngle)} - {branchOffsetY} - {(branchLength+refine2Length)*(cosd(branchAngle)+sind(branchAngle)*tand(branchAngle))} >= 0
-group "tmp_add" remove node with y_coord - x_coord/{tand(branchAngle)} - {branchOffsetY} + {refine2Width*(sind(branchAngle)+cosd(branchAngle)/tand(branchAngle))} <= 0
-group "tmp_add" remove node with y_coord - x_coord/{tand(branchAngle)} - {branchOffsetY} - {refine2Width*(sind(branchAngle)+cosd(branchAngle)/tand(branchAngle))} >= 0
+group "tmp_add" remove node with y_coord + x_coord*{tand(branchAngle)} - {branchOffsetY} - {(branchFaultLength+refine2Length)/cosd(branchAngle)} >= 0
+group "tmp_add" remove node with y_coord - x_coord/{tand(branchAngle)} - {branchOffsetY} + {refine2Width/sind(branchAngle)} <= 0
+group "tmp_add" remove node with y_coord - x_coord/{tand(branchAngle)} - {branchOffsetY} - {refine2Width/sind(branchAngle)} >= 0
 group "refinecells" add node in group tmp_add
 delete group tmp_add
 
