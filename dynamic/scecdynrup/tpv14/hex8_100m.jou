@@ -16,6 +16,9 @@ playback 'geometry.jou'
 # Set discretization size
 # ----------------------------------------------------------------------
 volume all size {16*dx}
+surface 21 23 26 28 scheme pave
+volume 3 scheme sweep source 21 target 23
+volume 5 scheme sweep source 26 target 28
 
 # ----------------------------------------------------------------------
 # Generate the mesh
@@ -45,6 +48,7 @@ playback 'createbc.jou'
 # Export exodus file
 # ----------------------------------------------------------------------
 export mesh "hex8_100m.exo" dimension 3 overwrite
+
 
 
 
