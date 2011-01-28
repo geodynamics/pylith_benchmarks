@@ -1,0 +1,5 @@
+surface all size {dx}
+
+surface 8 sizing function type bias start curve fault_surface_main fault_surface_main@A factor 1.02
+surface 10 sizing function type bias start curve fault_surface_main fault_surface_branch factor 1.02
+surface 11 sizing function type bias start curve fault_surface_branch fault_surface_main@A factor 1.02

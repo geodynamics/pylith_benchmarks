@@ -1,11 +1,12 @@
 # ----------------------------------------------------------------------
-# Create small tri3 mesh at 100m resolution.
+# Create tri3 mesh at 100m resolution.
 # ----------------------------------------------------------------------
 
 # ----------------------------------------------------------------------
 # Set parameters.
 # ----------------------------------------------------------------------
-playback 'params_small.jou'
+playback 'params.jou'
+#{dx=100*m}
 
 # ----------------------------------------------------------------------
 # Generate geometry
@@ -15,13 +16,21 @@ playback 'geometry.jou'
 # ----------------------------------------------------------------------
 # Set discretization size and scheme
 # ----------------------------------------------------------------------
-surface all size {dx}
-surface all scheme trimesh 
+surface all scheme trimesh
+playback 'gradient.jou'
 
 # ----------------------------------------------------------------------
 # Generate the mesh
 # ----------------------------------------------------------------------
 mesh surface all
+
+# ----------------------------------------------------------------------
+# Smooth mesh to improve quality
+# ----------------------------------------------------------------------
+surface all smooth scheme laplacian
+smooth surface all
+surface all smooth scheme condition number beta 1.3 cpu 10
+smooth surface all
 
 # ----------------------------------------------------------------------
 # Setup boundary conditions.
@@ -31,4 +40,7 @@ playback 'createbc.jou'
 # ----------------------------------------------------------------------
 # Export exodus file
 # ----------------------------------------------------------------------
-export mesh "tri3_100m_small.exo" dimension 2 overwrite
+export mesh "tri3_100m_gradient.exo" dimension 2 overwrite
+
+
+

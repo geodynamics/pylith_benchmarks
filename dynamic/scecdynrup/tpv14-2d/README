@@ -1,0 +1,15 @@
+SCEC Spontaneous Rupture Benchmarks TPV14-2D and TPV15-2D
+
+This directory contains CUBIT journal scripts to generate the mesh
+files and PyLith input files to run these two benchmarks for tri3 and
+quad4 cell types. Additionally, there are meshes with jumps in cell
+size and meshes with smooth gradations in cell size (*_gradient). For
+the smooth gradations in cell size, input files are provided to run
+the simulations at 25m, 50m, and 100m resolutions.
+
+To run the simulations, several .cfg files must be specified on the
+command line.
+
+TPV14-2D, quad4, 100m:
+
+  pylith quad4.cfg tpv14.cfg tpv14_quad4_100m.cfg
