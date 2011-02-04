@@ -12,10 +12,10 @@
 
 sim = "tpv14"
 cell = "tri3"
-dx = 25
+dx = 100
 dt = 0.05
 
-inputRoot = "output/%s_%s_%03dm_gradient" % (sim, cell,dx)
+inputRoot = "output/%s_%s_%03dm" % (sim, cell,dx)
 outputRoot = "scecfiles/%s_%s_%03dm" % (sim, cell,dx)
 
 # ----------------------------------------------------------------------
@@ -116,9 +116,9 @@ def extract(fault, targets):
 
 # Target coordinates are relative to faults intersection.
 targets = numpy.array([[0.0,  -2000.0],
-                            [0.0,  +2000.0],
-                            [0.0,  +5000.0],
-                            [0.0,  +9000.0]])
+                       [0.0,  +2000.0],
+                       [0.0,  +5000.0],
+                       [0.0,  +9000.0]])
 # Origin of coordinate system is at center of main fault
 targets[:,1] += 2000.0
 
