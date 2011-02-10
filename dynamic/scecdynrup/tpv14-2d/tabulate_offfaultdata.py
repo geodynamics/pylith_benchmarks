@@ -24,17 +24,17 @@ import numpy
 import time
 
 # ----------------------------------------------------------------------
-targets = numpy.array([[+3000.0, -2000.0],
-                       [-3000.0, -2000.0],
-                       [+3000.0, +2000.0],
-                       [ -600.0, +2000.0],
-                       [-4200.0, +2000.0],
-                       [+3000.0, +5000.0],
-                       [-1400.0, +5000.0],
-                       [-5900.0, +5000.0],
-                       [+3000.0, +8000.0],
-                       [-2300.0, +8000.0],
-                       [-7600.0, +8000.0]])
+targets = numpy.array([[-3000.0, -2000.0],
+                       [+3000.0, -2000.0],
+                       [-3000.0, +2000.0],
+                       [ +600.0, +2000.0],
+                       [+4200.0, +2000.0],
+                       [-3000.0, +5000.0],
+                       [+1400.0, +5000.0],
+                       [+5900.0, +5000.0],
+                       [-3000.0, +8000.0],
+                       [+2300.0, +8000.0],
+                       [+7600.0, +8000.0]])
 targets[:,1] += 2000.0
 
 
@@ -97,7 +97,7 @@ locName = "%+04dst%+04ddp%03d"
 lengthScale = 1000.0
 timeScale = 1000.0
 dip = 7.5
-body = targets[:,0] / lengthScale
+body = -targets[:,0] / lengthScale
 strike = (targets[:,1] - 2000) / lengthScale
 
 for iloc in xrange(ntargets):
@@ -114,8 +114,8 @@ for iloc in xrange(ntargets):
                             dip))
     fout.write(headerB)
     data = numpy.transpose((timeStamps,
-                            -disp[:,iloc,1],
-                            -vel[:,iloc,1],
+                            +disp[:,iloc,1],
+                            +vel[:,iloc,1],
                             zero,
                             zero,
                             -disp[:,iloc,0],
