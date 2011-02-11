@@ -52,7 +52,7 @@ for timestamp in timestamps:
     filename = "%s-main_fault_t%05d.vtk" % (outputRoot,timestamp)
     data = reader.read(filename)
     fields = data['vertex_fields']
-    slipRate = fields['slip'][:,:].squeeze()
+    slipRate = fields['slip_rate'][:,:].squeeze()
 
     # Compute magnitude of slip rate
     slipRateMag = (slipRate[:,0]**2 + slipRate[:,1]**2)**0.5
