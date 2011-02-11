@@ -11,12 +11,12 @@
 #
 
 sim = "tpv14"
-cell = "tri3"
-dx = 100
+cell = "quad4"
+dx = 50
 dt = 0.05
 
-inputRoot = "output/%s_%s_%03dm" % (sim, cell,dx)
-outputRoot = "scecfiles/%s_%s_%03dm" % (sim, cell,dx)
+inputRoot = "output/%s_%s_%03dm_gradient" % (sim, cell,dx)
+outputRoot = "scecfiles/%s_%s_%03dm_gradient" % (sim, cell,dx)
 
 # ----------------------------------------------------------------------
 import tables
@@ -48,7 +48,7 @@ def extract(fault, targets):
     # BEGIN TEMPORARY
     #timeStamps =  h5.root.vertex_fields.time (not yet available)
     ntimesteps = slip.shape[0]
-    timeStamps = numpy.arange(dt, dt*ntimesteps, dt)
+    timeStamps = numpy.linspace(dt, dt*ntimesteps, ntimesteps-1, endpoint=True)
     # END TEMPORARY
 
     slip = slip[1:,indices,:]
@@ -86,6 +86,8 @@ def extract(fault, targets):
     timeScale = 1000.0
     dip = 7.5
     strike = (targets[:,1] - 2000) / lengthScale
+
+    print timeStamps.shape, ntimesteps, slip.shape
 
     zero = numpy.zeros( (ntimesteps-1, 1), dtype=numpy.float64)
     for iloc in xrange(ntargets):

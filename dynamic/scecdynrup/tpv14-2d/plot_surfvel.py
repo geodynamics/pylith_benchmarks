@@ -10,10 +10,10 @@
 # ======================================================================
 #
 
-sim = "tpv15_tri3_100m_gradient"
-tBegin = 2.0
-tEnd = 10.01
-dt = 0.05
+sim = "tpv14_tri3_100m"
+tBegin = 0.0
+tEnd = 12.01
+dt = 0.2
 exaggeration = 0.1
 
 # ======================================================================
@@ -197,7 +197,7 @@ class PlotScene(Mayavi):
     timestamp = Text()
     script.add_module(timestamp)
     script.engine.current_object.name = "Time Stamp"
-    timestamp.text = "Time = %04.1f s" % t
+    timestamp.text = "Time = %05.2f s" % t
     timestamp.property.bold = True
     timestamp.property.justification = "centered"
     timestamp.actor.width = 0.16
@@ -234,7 +234,7 @@ class PlotScene(Mayavi):
     """
     """
     self.dataVtk = self.surfdata.toVtk(t)
-    self.timestamp.text = "Time = %04.1f s" % t
+    self.timestamp.text = "Time = %05.2f s" % t
     return
 
 

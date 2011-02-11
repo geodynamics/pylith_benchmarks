@@ -59,7 +59,7 @@ vel = h5.root.vertex_fields.velocity[:]
 # BEGIN TEMPORARY
 #timeStamps =  h5.root.vertex_fields.time (not yet available)
 ntimesteps = disp.shape[0]
-timeStamps = numpy.arange(0, dt*ntimesteps, dt)
+timeStamps = numpy.linspace(0, dt*ntimesteps, ntimesteps, endpoint=True)
 # END TEMPORARY
 
 disp = disp[:,indices,:]

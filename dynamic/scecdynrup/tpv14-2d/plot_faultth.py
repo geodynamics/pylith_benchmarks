@@ -11,7 +11,7 @@
 #
 
 sim = "tpv14"
-cell = "tri3"
+cell = "quad4"
 dx = 50
 dt = 0.05
 
@@ -28,7 +28,12 @@ targets = numpy.array([[0.0,   1800.0],
                        [0.0,   1900.0],
                        [0.0,   2000.0],
                        [0.0,   2100.0],
-                       [0.0,   2200.0]])
+                       [0.0,   2200.0],
+])
+#targets = numpy.array([[0.0,   -7500.0],
+#                       [0.0,   -6000.0],
+#                       [0.0,   -4500.0],
+#                       ])
 
 # ----------------------------------------------------------------------
 tolerance = 1.0e-6
@@ -54,9 +59,13 @@ traction = h5.root.vertex_fields.traction[:]
 # BEGIN TEMPORARY
 #time =  h5.root.vertex_fields.time (not yet available)
 ntimesteps = slip.shape[0]
-time = numpy.arange(0, dt*ntimesteps, dt)
+time = numpy.linspace(0, dt*ntimesteps, ntimesteps, endpoint=True)
 # END TEMPORARY
 
+h5.close()
+
+print slip.shape
+print time.shape
 
 nrows = 1
 ncols = 3
@@ -64,15 +73,15 @@ irow = 1
 icol = 1
 
 fig = Figure(fontsize=8, color="lightbg")
-fig.open(7.0, 7.25, margins=[[0.1, 0.15, 0.1],
-                             [0.4, 0, 0.0]])
+fig.open(7.0, 7.25, margins=[[0.5, 0.4, 0.1],
+                             [0.5, 4, 0.2]])
 
 ax = fig.axes(nrows, ncols, irow, icol)
 ax.plot(time, slip[:,indices,0])
 icol += 1
 
 ax = fig.axes(nrows, ncols, irow, icol)
-ax.plot(time, slip[:,indices,1])
+ax.plot(time, slip_rate[:,indices,0])
 icol += 1
 
 ax = fig.axes(nrows, ncols, irow, icol)
