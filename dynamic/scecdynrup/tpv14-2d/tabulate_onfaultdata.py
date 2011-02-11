@@ -85,7 +85,10 @@ def extract(fault, targets):
     lengthScale = 1000.0
     timeScale = 1000.0
     dip = 7.5
-    strike = (targets[:,1] - 2000) / lengthScale
+    if fault == "main_fault":
+        strike = (targets[:,1] - 2000) / lengthScale
+    elif fault == "branch_fault":
+        strike = 2.0 * targets[:,0] / lengthScale
 
     print timeStamps.shape, ntimesteps, slip.shape
 
@@ -130,9 +133,9 @@ extract("main_fault", targets)
 # BRANCH FAULT
 
 # Target coordinates are relative to faults intersection.
-targets = numpy.array([[0.0,  +2000.0],
-                       [0.0,  +5000.0],
-                       [0.0,  +9000.0]])
+targets = numpy.array([[1000.0,  1732.0508],
+                       [2500.0,  4330.1270],
+                       [4500.0,  7794.2286]])
 # Origin of coordinate system is at center of main fault
 targets[:,1] += 2000.0
 
