@@ -41,6 +41,3 @@ playback 'createbc.jou'
 # Export exodus file
 # ----------------------------------------------------------------------
 export mesh "tri3_100m_gradient.exo" dimension 2 overwrite
-
-
-

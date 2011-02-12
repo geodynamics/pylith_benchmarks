@@ -18,15 +18,17 @@ delete volume 1
 
 # Create Main Fault 
 split surface 7 across location position 0 {-blockLength} 0 location position 0 {+blockLength} 0
-curve 17 name "fault_surface_main"
+split curve 17 at position 0.0 {14.0*km} 0.0
+split curve 23 at position 0.0 {-14.0*km} 0.0
+curve 25 name "fault_surface_main"
 
 # Create Branch Fault 
 split surface 9 across location position 0 {branchOffsetY} 0 location position {blockLength*tand(branchAngle)} {branchOffsetY + blockLength} 0
-curve 22 name "fault_surface_branch"
+split curve 26 at location on curve 26 distance {12.0*km} from end
+curve 32 name "fault_surface_branch"
 
 # ----------------------------------------------------------------------
 # Imprint all volumes, merging surfaces
 # ----------------------------------------------------------------------
 imprint all
 merge all
-

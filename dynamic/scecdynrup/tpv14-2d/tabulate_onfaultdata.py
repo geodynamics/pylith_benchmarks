@@ -11,7 +11,7 @@
 #
 
 sim = "tpv14"
-cell = "quad4"
+cell = "tri3"
 dx = 50
 dt = 0.05
 

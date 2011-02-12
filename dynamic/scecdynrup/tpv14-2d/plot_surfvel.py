@@ -10,9 +10,9 @@
 # ======================================================================
 #
 
-sim = "tpv14_tri3_100m"
+sim = "tpv14_tri3_100m_gradient"
 tBegin = 0.0
-tEnd = 12.01
+tEnd = 6.01
 dt = 0.2
 exaggeration = 0.1
 
@@ -224,7 +224,7 @@ class PlotScene(Mayavi):
     camera.focal_point = ptTo
     camera.position = ptFrom
     camera.clipping_range = clipRange
-    camera.parallel_scale = 2.0
+    camera.parallel_scale = 12.0
     camera.parallel_projection = True
 
     return

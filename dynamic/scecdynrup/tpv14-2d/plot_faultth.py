@@ -11,7 +11,7 @@
 #
 
 sim = "tpv14"
-cell = "quad4"
+cell = "tri3"
 dx = 50
 dt = 0.05
 
@@ -64,8 +64,6 @@ time = numpy.linspace(0, dt*ntimesteps, ntimesteps, endpoint=True)
 
 h5.close()
 
-print slip.shape
-print time.shape
 
 nrows = 1
 ncols = 3
@@ -77,7 +75,8 @@ fig.open(7.0, 7.25, margins=[[0.5, 0.4, 0.1],
                              [0.5, 4, 0.2]])
 
 ax = fig.axes(nrows, ncols, irow, icol)
-ax.plot(time, slip[:,indices,0])
+ax.plot(time, slip[:,indices,0],
+        timeO, slipO[:,indices,0], '--')
 icol += 1
 
 ax = fig.axes(nrows, ncols, irow, icol)

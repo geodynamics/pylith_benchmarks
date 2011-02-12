@@ -12,11 +12,11 @@
 
 sim = "tpv14"
 cell = "tri3"
-dx = 100
+dx = 50
 dt = 0.05
 
-inputRoot = "output/%s_%s_%3dm_gradient" % (sim, cell,dx)
-outputRoot = "scecfiles/%s_%s_%3dm" % (sim, cell,dx)
+inputRoot = "output/%s_%s_%03dm_gradient" % (sim, cell,dx)
+outputRoot = "scecfiles/%s_%s_%03dm_gradient" % (sim, cell,dx)
 
 # ----------------------------------------------------------------------
 import tables

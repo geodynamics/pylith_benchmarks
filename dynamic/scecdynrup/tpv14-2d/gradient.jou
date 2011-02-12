@@ -1,6 +1,12 @@
+#{bias_factor=1.01}
+
 surface all size {dx}
 
-surface 8 sizing function type bias start curve fault_surface_main fault_surface_main@A factor 1.01
-surface 10 sizing function type bias start curve fault_surface_main fault_surface_branch factor 1.01
-surface 11 sizing function type bias start curve fault_surface_branch fault_surface_main@A factor 1.01
+curve 22 scheme bias fine size {dx} factor {bias_factor} start vertex 15
+curve 31 scheme bias fine size {dx} factor {bias_factor} start vertex 19
+curve 24 scheme bias fine size {dx} factor {bias_factor} start vertex 16
+surface 8 sizing function type bias start curve 28 29 factor {bias_factor}
+surface 10 sizing function type bias start curve 28 32 factor {bias_factor}
+surface 11 sizing function type bias start curve 29 32 factor {bias_factor}
+
 
