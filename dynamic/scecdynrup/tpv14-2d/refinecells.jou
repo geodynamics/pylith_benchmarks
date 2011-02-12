@@ -2,10 +2,28 @@
 # Refine cells near rupture
 # ----------------------------------------------------------------------
 
+# ----------------------------------------------------------------------
+# Parameters for refinement.
+# ----------------------------------------------------------------------
+#
+# Level 1
+# Within 24 km of rupture perpendicular to strike
+# Within 36 km of rupture along strike
+#{refine1Width=16.1*km}
+#{refine1Length=16.1*km}
+#
+# Level 2
+# Within 12 km of rupture perpendicular to strike
+# Within 24 km of rupture along strike
+#{refine2Width=8.1*km}
+#{refine2Length=8.1*km}
+
+
+
 # Refine level 1
 
 # Main fault
-group "refinecells" add node with x_min >= {-refine1Width} and x_max <= {refine1Width} and y_min >= {-refine1Length} and y_max <= {refine1Length}
+group "refinecells" add node with x_min >= {-refine1Width} and x_max <= {refine1Width} and y_min >= {-mainFaultLength/2-refine1Length} and y_max <= {mainFaultLength/2+refine1Length}
 
 # Branch fault
 group "tmp_add" add node with y_coord + x_coord*{tand(branchAngle)} - {branchOffsetY} >= 0
@@ -21,7 +39,7 @@ delete group refinecells
 # Refine level 2
 
 # Main fault
-group "refinecells" add node with x_min >= {-refine2Width} and x_max <= {refine2Width} and y_min >= {-refine2Length} and y_max <= {refine2Length}
+group "refinecells" add node with x_min >= {-refine2Width} and x_max <= {refine2Width} and y_min >= {-mainFaultLength/2-refine2Length} and y_max <= {mainFaultLength/2+refine2Length}
 
 # Branch fault
 group "tmp_add" add node with y_coord + x_coord*{tand(branchAngle)} - {branchOffsetY} >= 0
@@ -33,3 +51,4 @@ delete group tmp_add
 
 refine node in group refinecells depth 1
 delete group refinecells
+

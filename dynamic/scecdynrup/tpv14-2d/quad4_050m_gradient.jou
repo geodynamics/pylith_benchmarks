@@ -18,6 +18,7 @@ playback 'geometry.jou'
 # ----------------------------------------------------------------------
 surface all scheme pave
 playback 'gradient.jou'
+curve 30 interval 26 
 
 # ----------------------------------------------------------------------
 # Generate the mesh
@@ -39,3 +40,4 @@ playback 'createbc.jou'
 # Export exodus file
 # ----------------------------------------------------------------------
 export mesh "quad4_050m_gradient.exo" dimension 2 overwrite
+
