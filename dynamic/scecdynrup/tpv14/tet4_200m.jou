@@ -32,11 +32,6 @@ playback 'refinecells.jou'
 refine volume all numsplit 1
 
 # ----------------------------------------------------------------------
-# Smooth mesh to improve quality
-# ----------------------------------------------------------------------
-playback 'tet4_smooth.jou'
-
-# ----------------------------------------------------------------------
 # Setup boundary conditions.
 # ----------------------------------------------------------------------
 playback 'createbc.jou'
@@ -44,7 +39,8 @@ playback 'createbc.jou'
 # ----------------------------------------------------------------------
 # Export exodus file
 # ----------------------------------------------------------------------
-export mesh "tet4_100m.exo" dimension 3 overwrite
+export mesh "tet4_200m.exo" dimension 3 overwrite
+
 
 
 

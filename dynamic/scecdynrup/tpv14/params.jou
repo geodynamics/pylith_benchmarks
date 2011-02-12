@@ -6,14 +6,14 @@
 # Parameters for geometry.
 # ----------------------------------------------------------------------
 #
-# Block is 128.0 km x 128.0 km x 64.0 km
-# -64.0 km <= x <= 64.0 km
-# -64.0 km <= y <= 64.0 km
-# -64.0 km <= z <= 0 km
+# Block is 64.0 km x 64.0 km x 32.0 km
+# -32.0 km <= x <= 32.0 km
+# -32.0 km <= y <= 32.0 km
+# -32.0 km <= z <= 0 km
 #
-#{blockWidth=128*km}
-#{blockLength=128*km}
-#{blockHeight=64*km}
+#{blockWidth=64*km}
+#{blockLength=64*km}
+#{blockHeight=32*km}
 #
 # Main fault is 28.0 km long
 #
@@ -35,7 +35,7 @@
 # Parameters for mesh.
 # ----------------------------------------------------------------------
 #
-#{dx=100*m}
+#{dx=200*m}
 #
 # ----------------------------------------------------------------------
 # Parameters for refinement.
@@ -45,19 +45,19 @@
 # 
 # Within 24 km of deeper than fault depth
 # Within 24 km of rupture perpendicular to strike
-# Within 36 km of rupture along strike
-#{refine1Depth=24.01*km}
+# Within 24 km of rupture along strike
+#{refine1Depth=40.01*km}
 #{refine1Width=24.01*km}
-#{refine1Length=36.01*km}
+#{refine1Length=24.01*km}
 #
 # Level 2
 # 
 # Within 12 km of deeper than fault depth
 # Within 12 km of rupture perpendicular to strike
-# Within 24 km of rupture along strike
-#{refine1Depth=12.01*km}
-#{refine2Width=12.01*km}
-#{refine2Length=24.01*km}
+# Within 12 km of rupture along strike
+#{refine2Depth=28.81*km}
+#{refine2Width=12.81*km}
+#{refine2Length=12.81*km}
 #
 # ----------------------------------------------------------------------
 # Parameters for off-fault stations.
@@ -69,4 +69,5 @@
 #{offfaultMinY=-8.51*km}
 #{offfaultMaxY=+4.01*km}
 #{offfaultCoordZ=0.0*km}
+
 

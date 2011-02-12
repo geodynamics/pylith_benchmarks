@@ -2,6 +2,9 @@
 # Refine cells near rupture
 # ----------------------------------------------------------------------
 
+# Smooth to improve quality
+playback 'tet4_smooth.jou'
+
 # Refine level 1
 
 # Main fault
@@ -18,6 +21,9 @@ delete group tmp_add
 refine node in group refinecells depth 1
 delete group refinecells
 
+# Smooth to improve quality
+playback 'tet4_smooth.jou'
+
 # Refine level 2
 
 # Main fault
@@ -33,3 +39,7 @@ delete group tmp_add
 
 refine node in group refinecells depth 1
 delete group refinecells
+
+# Smooth to improve quality
+playback 'tet4_smooth.jou'
+

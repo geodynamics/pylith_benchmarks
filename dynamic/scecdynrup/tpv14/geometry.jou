@@ -31,8 +31,3 @@ surface 19 name "fault_surface_branch"
 imprint all
 merge all
 delete body 2 4
-
-
-
-
-
