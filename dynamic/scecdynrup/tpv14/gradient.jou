@@ -1,0 +1,29 @@
+#{bias_factor=1.2}
+
+volume all size {dx}
+#surface fault_surface_mainA fault_surface_mainB fault_surface_branch size {dx}
+
+# Set bias on curves extending from faults
+curve 70 scheme bias fine size {dx} factor {bias_factor} start vertex 46
+curve 69 scheme bias fine size {dx} factor {bias_factor} start vertex 47
+curve 71 scheme bias fine size {dx} factor {bias_factor} start vertex 47
+
+curve 59 scheme bias fine size {dx} factor {bias_factor} start vertex 43
+curve 60 scheme bias fine size {dx} factor {bias_factor} start vertex 44
+curve 63 scheme bias fine size {dx} factor {bias_factor} start vertex 44
+
+curve 83 scheme bias fine size {dx} factor {bias_factor} start vertex 56
+curve 82 scheme bias fine size {dx} factor {bias_factor} start vertex 57
+curve 84 scheme bias fine size {dx} factor {bias_factor} start vertex 57
+
+curve 75 scheme bias fine size {dx} factor {bias_factor} start vertex 54
+
+# Extend to surfaces
+surface 31 sizing function type bias start curve 59 60 factor {bias_factor}
+surface 9 sizing function type bias start curve 59 70  factor {bias_factor}
+
+surface 10 sizing function type bias start curve 28 32 factor {bias_factor}
+surface 11 sizing function type bias start curve 29 32 factor {bias_factor}
+
+
+

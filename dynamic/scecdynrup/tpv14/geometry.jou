@@ -13,21 +13,60 @@ volume 1 move z {-blockHeight/2.0}
 # Create interface surfaces
 # ----------------------------------------------------------------------
 
-# Create Main Fault 
+# Create main fault 
 create planar surface with plane yplane offset 0
-surface 7 name "fault_surface_main"
-webcut volume 1 with plane surface fault_surface_main
+surface 7 name "temp_main"
+webcut volume 1 with sheet surface temp_main
+delete body 2
 
-# Create Branch Fault
+# Create branch fault
 create planar surface with plane xplane offset {blockLength/2.0}
-Rotate body 4 about vertex 2 5 angle {branchAngle-90}
-move body 4 x {branchOffsetY-blockWidth/2.0} y {-blockWidth/2.0}
-webcut volume 3 with sheet body 4
-surface 19 name "fault_surface_branch"
- 
+surface 18 name "temp_branch"
+rotate surface temp_branch about vertex 2 5 angle {branchAngle-90}
+move surface temp_branch x {branchOffsetY-blockLength/2.0} y {-blockWidth/2.0}
+webcut volume 3 with sheet surface temp_branch
+delete body 4 
+
+# ----------------------------------------------------------------------
+# Split surfaces involving faults into pieces, isolating rupture regions
+# ----------------------------------------------------------------------
+
+# Split main fault surface using volume 1 
+create vertex {-mainFaultLength/2} 0 0
+create vertex {+mainFaultLength/2} 0 0
+create vertex {-mainFaultLength/2} 0 {-faultWidth}
+create vertex {+mainFaultLength/2} 0 {-faultWidth}
+create vertex {-mainFaultLength/2} 0 {-blockHeight}
+create vertex {+mainFaultLength/2} 0 {-blockHeight}
+create vertex {-blockLength/2} 0 {-faultWidth}
+create vertex {+blockLength/2} 0 {-faultWidth}
+
+split surface 8 across location vertex 39 location vertex 40
+split surface 30 across location vertex 33 location vertex 35
+split surface 29 across location vertex 35 location vertex 37
+split surface 32 across location vertex 34 location vertex 36
+split surface 34 across location vertex 36 location vertex 38
+delete vertex all
+
+# Split branch fault surface using volume 3
+vertex 27 copy move z {-faultWidth}
+vertex 25 copy move z {-faultWidth}
+create vertex on curve 48 distance {12*km} from end
+vertex 51 copy move z {-faultWidth}
+vertex 51 copy move z {-blockHeight}
+
+split surface 19 across location vertex 49 location vertex 50
+split surface 40 across location vertex 51 location vertex 52
+split surface 39 across location vertex 52 location vertex 53
+delete vertex all
+
 # ----------------------------------------------------------------------
 # Imprint all volumes, merging surfaces
 # ----------------------------------------------------------------------
 imprint all
 merge all
-delete body 2 4
+
+surface 45 name "fault_surface_mainB"
+surface 48 name "fault_surface_mainA"
+surface 41 name "fault_surface_branch"
+

@@ -6,6 +6,7 @@
 # Set parameters.
 # ----------------------------------------------------------------------
 playback 'params.jou'
+#{dx=800*m}
 
 # ----------------------------------------------------------------------
 # Generate geometry
@@ -15,8 +16,8 @@ playback 'geometry.jou'
 # ----------------------------------------------------------------------
 # Set discretization size and scheme
 # ----------------------------------------------------------------------
-volume all size {16*dx}
-volume all scheme tetmesh 
+volume all scheme tetmesh
+playback 'gradient.jou'
 
 # ----------------------------------------------------------------------
 # Generate the mesh
@@ -40,6 +41,7 @@ playback 'createbc.jou'
 # Export exodus file
 # ----------------------------------------------------------------------
 export mesh "tet4_200m.exo" dimension 3 overwrite
+
 
 
 
