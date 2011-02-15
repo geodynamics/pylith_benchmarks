@@ -34,12 +34,9 @@
 #{dx=200*m}
 #
 # ----------------------------------------------------------------------
-# Parameters for off-fault stations.
+# Parameters for off-fault stations on ground surface
 # ----------------------------------------------------------------------
-#
-# All off-fault stations are at Earth's surface so Z-coord=0.0
-#{offfaultMinX=-1.01*km}
-#{offfaultMaxX=+15.01*km}
-#{offfaultMinY=-10.01*km}
-#{offfaultMaxY=+10.01*km}
-#{offfaultMinZ=-10.0*m}
+#{offFaultMinX=-25.01*km}
+#{offFaultMaxX=+25.01*km}
+#{offFaultMinY=-20.01*km}
+#{offFaultMaxY=+20.01*km}
