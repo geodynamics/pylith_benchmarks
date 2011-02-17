@@ -6,7 +6,7 @@ reset
 # ----------------------------------------------------------------------
 # Create and position block.
 # ----------------------------------------------------------------------
-brick x {blockLength} y {blockWidth} z {blockHeight}
+brick x {blockWidth} y {blockLength} z {blockHeight}
 volume 1 move z {-blockHeight/2.0}
 
 # ----------------------------------------------------------------------
@@ -14,17 +14,17 @@ volume 1 move z {-blockHeight/2.0}
 # ----------------------------------------------------------------------
 
 # Create main fault 
-create planar surface with plane yplane offset 0
+create planar surface with plane xplane offset 0
 surface 7 name "temp_main"
 webcut volume 1 with sheet surface temp_main
 delete body 2
 
 # Create branch fault
-create planar surface with plane xplane offset {blockLength/2.0}
+create planar surface with plane yplane offset 0.0
 surface 18 name "temp_branch"
-rotate surface temp_branch about vertex 2 5 angle {branchAngle-90}
-move surface temp_branch x {branchOffsetY-blockLength/2.0} y {-blockWidth/2.0}
-webcut volume 3 with sheet surface temp_branch
+move surface temp_branch x {blockWidth/2} y {branchOffsetY} z 0
+rotate surface temp_branch about vertex 21 vertex 22 angle {90-branchAngle}
+webcut volume 1 with sheet surface temp_branch
 delete body 4 
 
 # ----------------------------------------------------------------------
@@ -32,20 +32,20 @@ delete body 4
 # ----------------------------------------------------------------------
 
 # Split main fault surface using volume 1 
-create vertex {-mainFaultLength/2} 0 0
-create vertex {+mainFaultLength/2} 0 0
-create vertex {-mainFaultLength/2} 0 {-faultWidth}
-create vertex {+mainFaultLength/2} 0 {-faultWidth}
-create vertex {-mainFaultLength/2} 0 {-blockHeight}
-create vertex {+mainFaultLength/2} 0 {-blockHeight}
-create vertex {-blockLength/2} 0 {-faultWidth}
-create vertex {+blockLength/2} 0 {-faultWidth}
+create vertex 0 {-mainFaultLength/2} 0
+create vertex 0 {+mainFaultLength/2} 0
+create vertex 0 {-mainFaultLength/2} {-faultWidth}
+create vertex 0 {+mainFaultLength/2} {-faultWidth}
+create vertex 0 {-mainFaultLength/2} {-blockHeight}
+create vertex 0 {+mainFaultLength/2} {-blockHeight}
+create vertex 0 {-blockLength/2} {-faultWidth}
+create vertex 0 {+blockLength/2} {-faultWidth}
 
-split surface 8 across location vertex 39 location vertex 40
-split surface 30 across location vertex 33 location vertex 35
-split surface 29 across location vertex 35 location vertex 37
-split surface 32 across location vertex 34 location vertex 36
-split surface 34 across location vertex 36 location vertex 38
+split surface 13 across location vertex 39 location vertex 40
+split surface 29 across location vertex 33 location vertex 35
+split surface 30 across location vertex 35 location vertex 37
+split surface 31 across location vertex 34 location vertex 36
+split surface 33 across location vertex 36 location vertex 38
 delete vertex all
 
 # Split branch fault surface using volume 3
@@ -66,7 +66,9 @@ delete vertex all
 imprint all
 merge all
 
-surface 45 name "fault_surface_mainB"
-surface 48 name "fault_surface_mainA"
+surface 47 name "fault_surface_mainB"
+surface 52 name "fault_surface_mainA"
 surface 41 name "fault_surface_branch"
+
+
 

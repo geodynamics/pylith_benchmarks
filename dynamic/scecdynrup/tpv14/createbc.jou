@@ -21,40 +21,40 @@ nodeset 101 group branch_fault
 nodeset 101 name "branch_fault"
 
 # ----------------------------------------------------------------------
-# Create nodeset for +x face
-# ----------------------------------------------------------------------
-group "face_xpos" add node in surface 10
-group "face_xpos" add node in surface 20
-group "face_xpos" add node in surface 25
-nodeset 11 group face_xpos
-nodeset 11 name "face_xpos"
-
-# ----------------------------------------------------------------------
-# Create nodeset for -x face
-# ----------------------------------------------------------------------
-group "face_xneg" add node in surface 12
-group "face_xneg" add node in surface 15
-nodeset 12 group face_xneg
-nodeset 12 name "face_xneg"
-
-# ----------------------------------------------------------------------
 # Create nodeset for +y face
 # ----------------------------------------------------------------------
-group "face_ypos" add node in surface 5
-nodeset 13 group face_ypos
-nodeset 13 name "face_ypos"
+group "face_ypos" add node in surface 15
+group "face_ypos" add node in surface 20
+group "face_ypos" add node in surface 25
+nodeset 11 group face_ypos
+nodeset 11 name "face_ypos"
 
 # ----------------------------------------------------------------------
 # Create nodeset for -y face
 # ----------------------------------------------------------------------
-group "face_yneg" add node in surface 3
-nodeset 14 group face_yneg
-nodeset 14 name "face_yneg"
+group "face_yneg" add node in surface 10
+group "face_yneg" add node in surface 17
+nodeset 12 group face_yneg
+nodeset 12 name "face_yneg"
+
+# ----------------------------------------------------------------------
+# Create nodeset for +x face
+# ----------------------------------------------------------------------
+group "face_xpos" add node in surface 6
+nodeset 13 group face_xpos
+nodeset 13 name "face_xpos"
+
+# ----------------------------------------------------------------------
+# Create nodeset for -x face
+# ----------------------------------------------------------------------
+group "face_xneg" add node in surface 4
+nodeset 14 group face_xneg
+nodeset 14 name "face_xneg"
 
 # ----------------------------------------------------------------------
 # Create nodeset for -z face
 # ----------------------------------------------------------------------
-group "face_zneg" add node in surface 11
+group "face_zneg" add node in surface 16
 group "face_zneg" add node in surface 21
 group "face_zneg" add node in surface 28
 nodeset 15 group face_zneg
@@ -63,7 +63,7 @@ nodeset 15 name "face_zneg"
 # ----------------------------------------------------------------------
 # Create nodeset for +z face
 # ----------------------------------------------------------------------
-group "face_zpos" add node in surface 9
+group "face_zpos" add node in surface 14
 group "face_zpos" add node in surface 23
 group "face_zpos" add node in surface 26
 nodeset 16 group face_zpos
@@ -81,3 +81,4 @@ nodeset 20 group face_zpos_subset
 nodeset 20 name "face zpos_subset"
 
 # End of file
+

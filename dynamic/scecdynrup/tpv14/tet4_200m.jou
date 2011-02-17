@@ -34,7 +34,6 @@ mesh volume all
 # ----------------------------------------------------------------------
 # Smooth mesh to improve quality
 # ----------------------------------------------------------------------
-cleanup volume all
 volume all smooth scheme condition number beta 2.0 cpu 10
 smooth volume all
 volume all smooth scheme condition number beta 1.9 cpu 10
@@ -49,3 +48,4 @@ playback 'createbc.jou'
 # Export exodus file
 # ----------------------------------------------------------------------
 export mesh "tet4_200m.exo" dimension 3 overwrite
+
