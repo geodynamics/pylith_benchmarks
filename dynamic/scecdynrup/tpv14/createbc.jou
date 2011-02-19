@@ -78,7 +78,7 @@ group "face_zpos_subset" remove node with x_coord < {offFaultMinX}
 group "face_zpos_subset" remove node with y_coord > {offFaultMaxY}
 group "face_zpos_subset" remove node with y_coord < {offFaultMinY}
 nodeset 20 group face_zpos_subset
-nodeset 20 name "face zpos_subset"
+nodeset 20 name "face_zpos_subset"
 
 # End of file
 
