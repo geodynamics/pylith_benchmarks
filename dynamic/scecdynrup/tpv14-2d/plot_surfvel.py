@@ -10,11 +10,11 @@
 # ======================================================================
 #
 
-sim = "tpv14_tri3_100m_gradient"
-tBegin = 0.0
-tEnd = 6.01
-dt = 0.2
-exaggeration = 0.1
+sim = "tpv15_tri3_050m_gradient"
+tBegin = 2.0
+tEnd = 4.01
+dt = 0.1
+exaggeration = 0.05
 
 # ======================================================================
 from enthought.mayavi.plugins.app import Mayavi
@@ -83,7 +83,7 @@ class SurfData:
 
     (nvertices, spaceDim) = self.vertices.shape
 
-    tstep = int(t / dataDt)
+    tstep = int(t / dataDt + 0.001)
     mag = (self.vel[tstep,:,0]**2 + self.vel[tstep,:,1]**2)**0.5
     mask = mag < magMin
     mag[mask] = magMin
@@ -224,7 +224,7 @@ class PlotScene(Mayavi):
     camera.focal_point = ptTo
     camera.position = ptFrom
     camera.clipping_range = clipRange
-    camera.parallel_scale = 12.0
+    camera.parallel_scale = 0.5
     camera.parallel_projection = True
 
     return

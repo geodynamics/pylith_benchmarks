@@ -1,12 +1,57 @@
-#{bias_factor=1.01}
+# ----------------------------------------------------------------------
+# Set vertex spacing with increasing spacing away from fault
+# ----------------------------------------------------------------------
+#{bias_factor=1.02}
 
-surface all size {dx}
+# Function for computing discretization size at end of curve with bias
+#{fun_dx='dxStart*bias_factor**ceil( ln(1-curveL/dxStart*(1-bias_factor))/ln(bias_factor))'}
 
+# ----------------------------------------------------------------------
+# Compute sizes at curve endpoints
+# ----------------------------------------------------------------------
+
+# dxA - size at vertex 13 14
+#{dxStart=dx}{curveL=Length(22)}{execute("dxA="//fun_dx)}
+
+# dxB - size at vertex 17
+#{dxStart=dx}{curveL=Length(27)}{execute("dxB="//fun_dx)}
+
+# dxC - size at vertex 9 10 12
+#{dxStart=dxA}{curveL=Length(18)}{execute("dxC="//fun_dx)}
+
+# dxD - size at vertex 11
+#{dxStart=dxB}{curveL=Length(30)}{execute("dxD="//fun_dx)}
+
+# ----------------------------------------------------------------------
+# Reset sizes
+# ----------------------------------------------------------------------
+curve all scheme default
+surface all sizing function none
+
+# Set size on faults
+curve fault_surface_main fault_surface_main@A fault_surface_branch size {dx}
+
+# Set bias on curves extending from faults
 curve 22 scheme bias fine size {dx} factor {bias_factor} start vertex 15
 curve 31 scheme bias fine size {dx} factor {bias_factor} start vertex 19
 curve 24 scheme bias fine size {dx} factor {bias_factor} start vertex 16
-surface 8 sizing function type bias start curve 28 29 factor {bias_factor}
-surface 10 sizing function type bias start curve 28 32 factor {bias_factor}
-surface 11 sizing function type bias start curve 29 32 factor {bias_factor}
+
+# A to B
+curve 27 scheme bias fine size {dxA} factor {bias_factor} start vertex 13
+
+# A to C
+curve 18 scheme bias fine size {dxA} factor {bias_factor} start vertex 13
+curve 19 scheme bias fine size {dxA} factor {bias_factor} start vertex 14
+curve 20 scheme bias fine size {dxA} factor {bias_factor} start vertex 14
+
+# B to D
+curve 30 scheme bias fine size {dxB} coarse size {dxD} start vertex 17
+
+# D to C
+curve 14 scheme bias fine size {dxD} coarse size {dxC} start vertex 11
+
+# C to C
+curve 16 size {dxC}
 
 
+# End of file

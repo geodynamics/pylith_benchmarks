@@ -10,9 +10,9 @@
 # ======================================================================
 #
 
-sim = "tpv14"
+sim = "tpv15"
 cell = "tri3"
-dx = 50
+dx = 100
 dt = 0.05
 
 # ======================================================================
@@ -24,12 +24,19 @@ from mypylab.Figure import Figure
 
 inputRoot = "output/%s_%s_%03dm_gradient" % (sim, cell,dx)
 
-targets = numpy.array([[0.0,   1800.0],
-                       [0.0,   1900.0],
-                       [0.0,   2000.0],
+targets = numpy.array([[0.0,   2000.0],
                        [0.0,   2100.0],
                        [0.0,   2200.0],
+                       [0.0,   2300.0],
+                       [0.0,   2400.0],
+                       [0.0,   2500.0],
+                       [0.0,   2600.0],
+                       [0.0,   2700.0],
+                       [0.0,   2800.0],
+                       [0.0,   2900.0],
+                       [0.0,   3000.0],
 ])
+targets[:,1] += 2*1000.0
 #targets = numpy.array([[0.0,   -7500.0],
 #                       [0.0,   -6000.0],
 #                       [0.0,   -4500.0],
@@ -54,7 +61,10 @@ print "Coordinates of selected points:\n",vertices[indices,:]
 # Get datasets
 slip = h5.root.vertex_fields.slip[:]
 slip_rate = h5.root.vertex_fields.slip_rate[:]
-traction = h5.root.vertex_fields.traction[:]
+traction = h5.root.vertex_fields.traction[:] / 1.0e+6
+
+imask = numpy.where(numpy.abs(traction[1,:,1]) < 1.0e-6)[0]
+traction[:,imask,1] = 1.0
 
 # BEGIN TEMPORARY
 #time =  h5.root.vertex_fields.time (not yet available)
@@ -65,29 +75,44 @@ time = numpy.linspace(0, dt*ntimesteps, ntimesteps, endpoint=True)
 h5.close()
 
 
-nrows = 1
-ncols = 3
+nrows = 2
+ncols = 2
 irow = 1
 icol = 1
 
 fig = Figure(fontsize=8, color="lightbg")
-fig.open(7.0, 7.25, margins=[[0.5, 0.4, 0.1],
-                             [0.5, 4, 0.2]])
-
-ax = fig.axes(nrows, ncols, irow, icol)
-ax.plot(time, slip[:,indices,0],
-        timeO, slipO[:,indices,0], '--')
-icol += 1
+fig.open(7.0, 7.25, margins=[[0.6, 0.6, 0.2],
+                             [0.6, 0.5, 0.2]])
 
 ax = fig.axes(nrows, ncols, irow, icol)
 ax.plot(time, slip_rate[:,indices,0])
+ax.set_xlabel("Time (s)")
+ax.set_ylabel("Slip Rate (m/s)")
+icol += 1
+
+ax = fig.axes(nrows, ncols, irow, icol)
+ax.plot(time, -traction[:,indices,0]/traction[:,indices,1])
+ax.set_xlabel("Time (s)")
+ax.set_ylabel("Shear/Normal Traction")
+icol += 1
+
+irow = 2
+icol = 1
+ax = fig.axes(nrows, ncols, irow, icol)
+ax.plot(time, -traction[:,indices,0])
+ax.set_xlabel("Time (s)")
+ax.set_ylabel("Shear Traction (MPa)")
 icol += 1
 
 ax = fig.axes(nrows, ncols, irow, icol)
 ax.plot(time, traction[:,indices,1])
+ax.set_xlabel("Time (s)")
+ax.set_ylabel("Normal Traction (MPa)")
 icol += 1
 
 pylab.show()
 
+
+print slip[ntimesteps-1,indices,0]
 
 # End of file
