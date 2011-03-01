@@ -9,8 +9,6 @@ block 1 name "elastic"
 # ----------------------------------------------------------------------
 group "main_fault" add node in fault_surface_main
 group "main_fault" add node in fault_surface_main@A
-#group "main_fault" remove node with y_coord > {mainFaultLength/2.0}
-#group "main_fault" remove node with y_coord < {-mainFaultLength/2.0}
 nodeset 20 group main_fault
 nodeset 20 name "main_fault"
 
@@ -18,10 +16,25 @@ nodeset 20 name "main_fault"
 # Create nodeset for fault branch
 # ----------------------------------------------------------------------
 group "branch_fault" add node in fault_surface_branch
-#group "branch_fault" remove node with x_coord > {branchFaultLength*sind(branchAngle)}
 group "branch_fault" remove node in main_fault
 nodeset 21 group branch_fault
 nodeset 21 name "branch_fault"
+
+# ----------------------------------------------------------------------
+# Create nodeset for main-branch fault (alternative geometry)
+# ----------------------------------------------------------------------
+group "mainbranch_fault" add node in fault_surface_main@A
+group "mainbranch_fault" add node in fault_surface_branch
+nodeset 22 group mainbranch_fault
+nodeset 22 name "mainbranch_fault"
+
+# ----------------------------------------------------------------------
+# Create nodeset for main-ext fault (alternative geometry)
+# ----------------------------------------------------------------------
+group "mainext_fault" add node in fault_surface_main
+group "mainext_fault" remove node in mainbranch_fault
+nodeset 23 group mainext_fault
+nodeset 23 name "mainext_fault"
 
 # ----------------------------------------------------------------------
 # Create nodeset for +x face
@@ -53,5 +66,6 @@ group "face_yneg" add node in curve 19
 group "face_yneg" add node in curve 20
 nodeset 13 group face_yneg
 nodeset 13 name "face_yneg"
+
 
 

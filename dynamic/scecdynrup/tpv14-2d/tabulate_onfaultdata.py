@@ -10,7 +10,7 @@
 # ----------------------------------------------------------------------
 #
 
-sim = "tpv14"
+sim = "tpv15_alt"
 cell = "tri3"
 dx = 50
 dt = 0.05
@@ -89,14 +89,31 @@ def extract(fault, targets):
         strike = (targets[:,1] - 2000) / lengthScale
     elif fault == "branch_fault":
         strike = 2.0 * targets[:,0] / lengthScale
+    elif fault == "mainbranch_fault":
+        maskM = targets[:,0] <= +10.0
+        strike = maskM*(targets[:,1] - 2000) / lengthScale + \
+                 ~maskM*(2.0 * targets[:,0]) / lengthScale
+    elif fault == "mainext_fault":
+        strike = (targets[:,1] - 2000) / lengthScale
+    else:
+        raise ValueError("Unknown fault '%s'" % fault)
 
     print timeStamps.shape, ntimesteps, slip.shape
 
     zero = numpy.zeros( (ntimesteps-1, 1), dtype=numpy.float64)
     for iloc in xrange(ntargets):
+        if fault == "mainbranch_fault":
+            if targets[iloc,0] <= 10.0:
+                faultName = "main_fault"
+            else:
+                faultName = "branch_fault"
+        elif fault == "mainext_fault":
+            faultName = "main_fault"
+        else:
+            faultName = fault;
         pt = locName % (round(10*strike[iloc]), 
                         round(10*dip))
-        filename = "%s-%s-%s.dat" % (outputRoot, fault, pt)
+        filename = "%s-%s-%s.dat" % (outputRoot, faultName, pt)
         fout = open(filename, 'w');
         fout.write(headerA)
         fout.write("# time_step = %14.6E\n" % dt)
@@ -116,30 +133,57 @@ def extract(fault, targets):
 
     return
 
-# ----------------------------------------------------------------------
-# MAIN FAULT
+if sim in ["tpv14", "tpv15"]:
+    # ------------------------------------------------------------------
+    # MAIN FAULT
 
-# Target coordinates are relative to faults intersection.
-targets = numpy.array([[0.0,  -2000.0],
-                       [0.0,  +2000.0],
-                       [0.0,  +5000.0],
-                       [0.0,  +9000.0]])
-# Origin of coordinate system is at center of main fault
-targets[:,1] += 2000.0
+    # Target coordinates are relative to faults intersection.
+    targets = numpy.array([[0.0,  -2000.0],
+                           [0.0,  +2000.0],
+                           [0.0,  +5000.0],
+                           [0.0,  +9000.0]])
+    # Origin of coordinate system is at center of main fault
+    targets[:,1] += 2000.0
+    
+    extract("main_fault", targets)
+    
+    # ------------------------------------------------------------------
+    # BRANCH FAULT
 
-extract("main_fault", targets)
+    # Target coordinates are relative to faults intersection.
+    targets = numpy.array([[1000.0,  1732.0508],
+                           [2500.0,  4330.1270],
+                           [4500.0,  7794.2286]])
+    # Origin of coordinate system is at center of main fault
+    targets[:,1] += 2000.0
+    
+    extract("branch_fault", targets)
 
-# ----------------------------------------------------------------------
-# BRANCH FAULT
+else:
+    # ------------------------------------------------------------------
+    # MAIN-BRANCH FAULT
 
-# Target coordinates are relative to faults intersection.
-targets = numpy.array([[1000.0,  1732.0508],
-                       [2500.0,  4330.1270],
-                       [4500.0,  7794.2286]])
-# Origin of coordinate system is at center of main fault
-targets[:,1] += 2000.0
+    # Target coordinates are relative to faults intersection.
+    targets = numpy.array([[0.0,  -2000.0],
+                           [1000.0,  1732.0508],
+                           [2500.0,  4330.1270],
+                           [4500.0,  7794.2286]])
+    # Origin of coordinate system is at center of main fault
+    targets[:,1] += 2000.0
 
-extract("branch_fault", targets)
+    extract("mainbranch_fault", targets)
+
+    # ------------------------------------------------------------------
+    # MAIN-EXT FAULT
+    
+    # Target coordinates are relative to faults intersection.
+    targets = numpy.array([[0.0,  +2000.0],
+                           [0.0,  +5000.0],
+                           [0.0,  +9000.0]])
+    # Origin of coordinate system is at center of main fault
+    targets[:,1] += 2000.0
+    
+    extract("mainext_fault", targets)
 
 
 # End of file
