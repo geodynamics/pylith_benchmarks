@@ -137,6 +137,9 @@ group "fault" add node in fault_surface
 group "fault" add node in fault_surface@D
 group "fault" add node in fault_surface@A
 group "fault" add node in fault_surface@E
+group "fault" add node in surface 85
+group "fault" add node in surface 91
+group "fault" remove node with z_coord < -82000.0
 nodeset 10 fault
 nodeset 10 name "fault"
 
@@ -205,5 +208,7 @@ nodeset 18 name "face_ypos_nofault"
 # ----------------------------------------------------------------------
 # Export exodus file
 # ----------------------------------------------------------------------
-export mesh "tet4_4km.exo" dimension 3 overwrite
+export mesh "tet4_graded_4km.exo" dimension 3 overwrite
+export Abaqus "tet4_graded_4km.inp"
+
 
