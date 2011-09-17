@@ -1,0 +1,209 @@
+# Description:
+# This journal uses the geometry from file geometry.jou to create a mesh
+# with dimensions of 2000 km (x), 1000 km (y), and 400 km (z).  The mesh is
+# divided into 2 horizontal layers:
+# a surface layer from 0 to 40 km, marking the elastic layer;
+# a bottom layer from 40 to 400 km, which approximates the viscoelastic
+# half-space.
+# The fault plane is also cut horizontally at 20 km depth, representing
+# the division between the upper locked section and the lower creeping
+# section.
+#
+# The mesh is cut vertically by the fault surface, which lies along the
+# x-axis, and by a symmetry plane, which lies along the y-axis.
+# The fault is restricted to the upper (elastic) layer.
+#
+# The volume is meshed at a variable resolution, with a maximum resolution
+# of 4 km at the upper center of the mesh, and a minimum resolution of
+# 20 km at the outer x-edges of the mesh.
+# The final mesh contains 125760 vertices and 705181 cells.
+# ----------------------------------------------------------------------
+# Generate geometry
+# ----------------------------------------------------------------------
+playback 'geometry.jou'
+
+# ----------------------------------------------------------------------
+# Set intervals for curves coincident with fault
+# ----------------------------------------------------------------------
+curve 118 scheme bias fine size 4000.0 factor 1.02 start vertex 76
+curve 126 scheme bias fine size 4000.0 factor 1.02 start vertex 76
+curve 120 scheme bias fine size 4000.0 factor 1.02 start vertex 74
+curve 213 scheme bias fine size 4000.0 factor 1.02 start vertex 129
+curve 125 scheme bias fine size 4000.0 factor 1.02 start vertex 74
+curve 219 scheme bias fine size 4000.0 factor 1.02 start vertex 129
+
+# ----------------------------------------------------------------------
+# Set intervals for curves at end of fault
+# ----------------------------------------------------------------------
+curve 221 223 size 10000.0
+curve 214 218 size 10000.0
+
+# ----------------------------------------------------------------------
+# Set intervals for outer x-edges
+# ----------------------------------------------------------------------
+surface 55 size 40000.0
+surface 61 size 40000.0
+surface 73 size 40000.0
+surface 75 size 40000.0
+surface 89 size 40000.0
+surface 87 size 40000.0
+surface 97 size 40000.0
+surface 104 size 40000.0
+
+# ----------------------------------------------------------------------
+# Set intervals for curves perpendicular to fault
+# ----------------------------------------------------------------------
+curve 113 scheme bias fine size 4000.0 factor 1.05 start vertex 74
+curve 115 scheme bias fine size 4000.0 factor 1.05 start vertex 76
+curve 147 scheme bias fine size 4000.0 factor 1.05 start vertex 74
+curve 149 scheme bias fine size 4000.0 factor 1.05 start vertex 76
+#curve 34 scheme bias fine size 52000.0 factor 1.05 start vertex 12
+#curve 64 scheme bias fine size 52000.0 factor 1.05 start vertex 45
+#curve 42 scheme bias fine size 52000.0 factor 1.05 start vertex 12
+#curve 94 scheme bias fine size 52000.0 factor 1.05 start vertex 45
+#curve 33 scheme bias fine size 52000.0 factor 1.05 start vertex 9
+#curve 66 scheme bias fine size 52000.0 factor 1.05 start vertex 46
+#curve 44 scheme bias fine size 52000.0 factor 1.05 start vertex 9
+#curve 92 scheme bias fine size 52000.0 factor 1.05 start vertex 46
+#surface 43 size 52000.0
+#surface 31 size 52000.0
+#surface 29 size 52000.0
+#surface 45 size 52000.0
+surface 29 sizing function type bias start curve 214 218 finish curve 67
+surface 45 sizing function type bias start curve 214 218 finish curve 96
+surface 31 sizing function type bias start curve 221 223 finish curve 68
+surface 43 sizing function type bias start curve 221 223 finish curve 95
+
+# ----------------------------------------------------------------------
+# Set intervals in vertical direction
+# ----------------------------------------------------------------------
+curve 215 size 4000.0
+curve 217 size 4000.0
+curve 176 scheme bias fine size 4000.0 factor 1.02 start vertex 74
+curve 75 scheme bias fine size 10000.0 factor 1.02 start vertex 46
+curve 77 scheme bias fine size 10000.0 factor 1.02 start vertex 45
+
+# ----------------------------------------------------------------------
+# Set intervals for bottom outer edges
+# ----------------------------------------------------------------------
+curve 36 scheme bias fine size 20000.0 coarse size 40000.0 start vertex 26
+curve 41 scheme bias fine size 20000.0 coarse size 40000.0 start vertex 26
+curve 35 scheme bias fine size 20000.0 coarse size 40000.0 start vertex 25
+curve 43 scheme bias fine size 20000.0 coarse size 40000.0 start vertex 25
+
+# ----------------------------------------------------------------------
+# Set intervals for bottom inner edges
+# ----------------------------------------------------------------------
+curve 177 scheme bias fine size 12000.0 coarse size 40000.0 start vertex 111
+curve 179 scheme bias fine size 12000.0 coarse size 20000.0 start vertex 111
+curve 190 scheme bias fine size 12000.0 coarse size 20000.0 start vertex 111
+curve 199 scheme bias fine size 12000.0 coarse size 40000.0 start vertex 111
+
+# ----------------------------------------------------------------------
+# Set meshing scheme for all volumes
+# ----------------------------------------------------------------------
+volume all scheme tetmesh
+
+# ----------------------------------------------------------------------
+# Mesh the volume.
+# ----------------------------------------------------------------------
+mesh volume all
+
+# ----------------------------------------------------------------------
+# Smooth the mesh.
+# ----------------------------------------------------------------------
+set debug 91 on
+volume all smooth scheme condition number
+smooth volume all
+volume all smooth scheme condition number beta 1.9
+smooth volume all
+volume all smooth scheme condition number beta 1.8
+smooth volume all
+volume all smooth scheme condition number beta 1.7
+smooth volume all
+
+# ----------------------------------------------------------------------
+# Create blocks for materials
+# ----------------------------------------------------------------------
+block 1 volume 1 6 15 19
+block 1 name "elastic"
+block 2 volume 10 13 22 24
+block 2 name "viscoelastic"
+
+# ----------------------------------------------------------------------
+# Create fault nodeset
+# ----------------------------------------------------------------------
+group "fault" add node in fault_surface
+group "fault" add node in fault_surface@D
+group "fault" add node in fault_surface@A
+group "fault" add node in fault_surface@E
+nodeset 10 fault
+nodeset 10 name "fault"
+
+# ----------------------------------------------------------------------
+# Create nodeset for +x face
+# ----------------------------------------------------------------------
+group "face_xpos" add node in surface 61 55 89 87
+nodeset 11 face_xpos
+nodeset 11 name "face_xpos"
+
+# ----------------------------------------------------------------------
+# Create nodeset for -x face
+# ----------------------------------------------------------------------
+group "face_xneg" add node in surface 73 75 97 104
+nodeset 12 face_xneg
+nodeset 12 name "face_xneg"
+
+# ----------------------------------------------------------------------
+# Create nodeset for +y face
+# ----------------------------------------------------------------------
+group "face_ypos" add node in surface 29 45 35 47
+nodeset 13 face_ypos
+nodeset 13 name "face_ypos"
+
+# ----------------------------------------------------------------------
+# Create nodeset for -y face
+# ----------------------------------------------------------------------
+group "face_yneg" add node in surface 43 31 49 33
+nodeset 14 face_yneg
+nodeset 14 name "face_yneg"
+
+# ----------------------------------------------------------------------
+# Create nodeset for -z face
+# ----------------------------------------------------------------------
+group "face_zneg" add node in surface 103 92 96 84
+nodeset 15 face_zneg
+nodeset 15 name "face_zneg"
+
+# ----------------------------------------------------------------------
+# Create nodeset for +z face
+# ----------------------------------------------------------------------
+group "face_zpos" add node in surface 78 62 70 54
+nodeset 16 face_zpos
+nodeset 16 name "face_zpos"
+
+# ----------------------------------------------------------------------
+# Create nodeset for -y face without fault or x-boundaries
+# ----------------------------------------------------------------------
+group "face_yneg_nofault" add node in face_yneg
+group "face_yneg_nofault" remove node in fault
+group "face_yneg_nofault" remove node in face_xpos
+group "face_yneg_nofault" remove node in face_xneg
+nodeset 17 face_yneg_nofault
+nodeset 17 name "face_yneg_nofault"
+
+# ----------------------------------------------------------------------
+# Create nodeset for +y face without fault or x-boundaries
+# ----------------------------------------------------------------------
+group "face_ypos_nofault" add node in face_ypos
+group "face_ypos_nofault" remove node in fault
+group "face_ypos_nofault" remove node in face_xpos
+group "face_ypos_nofault" remove node in face_xneg
+nodeset 18 face_ypos_nofault
+nodeset 18 name "face_ypos_nofault"
+
+# ----------------------------------------------------------------------
+# Export exodus file
+# ----------------------------------------------------------------------
+export mesh "tet4_4km.exo" dimension 3 overwrite
+
