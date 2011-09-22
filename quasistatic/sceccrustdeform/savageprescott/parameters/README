@@ -1,54 +1,86 @@
 This directory contains the .cfg files and spatial databases needed to run
 the benchmark. The simulations may either be run using the shell scripts
-(spbm_xxx.sh) or by running the commands contained in the scripts. This
-will take the form:
-pylith spbm_xxx.cfg timedep.cfg
+or by running the commands contained in the scripts. This will take the
+form:
+pylith MMMM.cfg fault_lockDD.cfg solmeth.cfg MMMM_lockDD_tau0-X.cfg
 
-The default parameters, which are independent of the mesh used, are
-contained in pylithapp.cfg. Additional mesh-dependent parameters are given
-in the spbm_xxx.cfg files. The timedep.cfg file contains parameters specific
-to time-dependent fault slip. At present, there are four different meshes
-(the meshes and corresponding Cubit journal files are contained in the
-meshes directory). Make sure that you unzip the appropriate mesh before
-trying to run a simulation. Each mesh requires a different .cfg file.
-These files are:
+The MMMM represents the type of mesh (hex8 or tet4), the DD represents the
+locking depth (20 or 40 km), the X represents the ratio of earthquake
+recurrence time to Maxwell time (tau0), and solmeth refers to the type of
+linear solution (asm or fieldsplit).
 
-spbm_hex8_unif_20km.cfg:	This is a simple uniform mesh composed of
-hexahedral elements, with a fault completely contained in the elastic layer.
-The mesh resolution is 20 km throughout.
+The parameters common to all simulations are contained in pylithapp.cfg.
+Additional .cfg files are:
 
-spbm_hex8_graded_20km.cfg:	This mesh is similar to the uniform mesh,
-but an inner region of the mesh is put through one level of refinement, so
-the region surrounding the fault has a finer resolution. This mesh will
-yield more accurate results, but since it contains more cells and vertices
-it will take longer to run.
+Mesh-specific:	
+	hex8.cfg:	Hexahedral mesh with one level of uniform
+			refinement near the mesh center.
+	tet4.cfg:	Tetrahedral mesh that is graded from the center to
+			the outer edges.
 
-spbm_tet4_unif_20km.cfg:	This mesh is exactly analagous to the
-uniform hex mesh, but it is composed of tetrahedral elements. The resulting
-mesh has slightly fewer vertices than the corresponding hex mesh, but many
-more elements (cells).
+Fault locking:
+	fault_lock20.cfg:	Specifies parameters for a locking depth of
+				20 km.
+	fault_lock40.cfg:	Specifies parameters for a locking depth of
+				40 km.
 
-spbm_tet4_graded_20km.cfg:	This mesh is exactly analagous to the
-graded hex mesh, but it is composed of tetrahedral elements. The resulting
-mesh has slightly fewer vertices than the corresponding hex mesh, but many
-more elements (cells). As for the hex case, this mesh should produce more
-accurate results than the graded mesh equivalent, but it will take longer
-to run.
+Solution method:
+	asm.cfg:	Use the generic ASM solution method.
+	fieldsplit.cfg:	Use the field split method with a custom
+			preconditioner.
 
-The spatial databases are as follows:
+Problem-specific:
+	hex8_lock20_tau0-1.cfg:	Use hex mesh with 20 km locking depth and
+				tau0 value of 1.
+	hex8_lock20_tau0-2.cfg:	Use hex mesh with 20 km locking depth and
+				tau0 value of 2.
+	hex8_lock40_tau0-1.cfg:	Use hex mesh with 40 km locking depth and
+				tau0 value of 1.
+	hex8_lock40_tau0-2.cfg:	Use hex mesh with 40 km locking depth and
+				tau0 value of 2.
+	tet4_lock20_tau0-1.cfg:	Use tet mesh with 20 km locking depth and
+				tau0 value of 1.
+	tet4_lock20_tau0-2.cfg:	Use tet mesh with 20 km locking depth and
+				tau0 value of 2.
+	tet4_lock40_tau0-1.cfg:	Use tet mesh with 40 km locking depth and
+				tau0 value of 1.
+	tet4_lock40_tau0-2.cfg:	Use tet mesh with 40 km locking depth and
+				tau0 value of 2.
+				
+The spatial databases used are:
+Elastic material:
+	mat_elastic.spatialdb:	Uniform elastic properties consistent with
+				lambda = mu = 30 GPa.
 
-finalslip_rupture.spatialdb:	File used to specify coseismic slip.
+Viscoelastic material:
+	mat_maxwell_tau0-1.spatialdb:	Uniform viscoelastic properties
+					consistent with a Maxwell time of
+					200 years (tau0 = 1).
+	mat_maxwell_tau0-2.spatialdb:	Uniform viscoelastic properties
+					consistent with a Maxwell time of
+					100 years (tau0 = 2).
 
-mat_elastic.spatialdb:		File describing uniform elastic properties.
+Fault rupture:
+	finalslip_rupture_lock20.spatialdb:	Fault rupture parameters for
+						a locking depth of 20 km.
+	finalslip_rupture_lock40.spatialdb:	Fault rupture parameters for
+						a locking depth of 40 km.
 
-mat_maxwell.spatialdb:		File describing uniform viscoelastic
-				properties.
-sliprate_creep.spatialdb:	File describing constant velocity slip.
+Fault creep:
+	sliprate_creep_lock20.spatialdb:	Fault creep parameters for a
+						locking depth of 20 km.
+	sliprate_creep_lock40.spatialdb:	Fault creep parameters for a
+						locking depth of 40 km.
 
-sliptime.spatialdb:		File describing slip initiation time.
+Slip time:
+	sliptime.spatialdb:	Slip initial time for all fault sources.
 
-Once you have run a simulation, the output VTK files will be in the
-corresponding subdirectory in the results directory. These files may be
-viewed with a visualization package such as ParaView. To compare the
-results with an analytical solution, there are also some utility programs
-in the utils directory.
+Shell scripts are provided for convenience, to supply all the necessary
+.cfg files to PyLith for each simulation. The names correspond to the
+problem-specific .cfg files listed above.
+
+Once a problem has run, there will be a number of HDF5 files (*.h5) in the
+corresponding output directory (../results/MMMM_lockDD_tau0-X), along with
+XDMF files (*.xmf) that describe the contents of the HDF5 files. The XDMF
+files may be used with visualization packages such as ParaView. There are
+also some postprocessing utilities in the utils directory.
