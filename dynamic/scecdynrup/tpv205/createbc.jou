@@ -61,9 +61,10 @@ nodeset 16 name "face_zpos"
 # Create nodeset for subset of +z face
 # ----------------------------------------------------------------------
 group "face_zpos_subset" add node in group face_zpos
-group "face_zpos_subset" remove node with x_coord > +15.001e+3
-group "face_zpos_subset" remove node with x_coord < -15.001e+3
-group "face_zpos_subset" remove node with y_coord > +5.001e+3
-group "face_zpos_subset" remove node with y_coord < -5.001e+3
+group "face_zpos_subset" remove node with y_coord > +15.001e+3
+group "face_zpos_subset" remove node with y_coord < -15.001e+3
+group "face_zpos_subset" remove node with x_coord > +10.001e+3
+group "face_zpos_subset" remove node with x_coord < -10.001e+3
 nodeset 17 group face_zpos_subset
 nodeset 17 name "face zpos_subset"
+
