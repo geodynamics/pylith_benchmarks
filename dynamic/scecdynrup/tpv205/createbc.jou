@@ -8,41 +8,38 @@ block 1 name "elastic"
 # Create nodeset for fault
 # ----------------------------------------------------------------------
 group "fault" add node in fault_surface
-group "fault" remove node with x_coord > +15.0001e+3
-group "fault" remove node with x_coord < -15.0001e+3
-group "fault" remove node with z_coord < -15.0001e+3
-nodeset 10 group fault
-nodeset 10 name "fault"
+nodeset 20 group fault
+nodeset 20 name "fault"
 
 # ----------------------------------------------------------------------
 # Create nodeset for +x face
 # ----------------------------------------------------------------------
-group "face_xpos" add node in surface 10
-group "face_xpos" add node in surface 17
-nodeset 11 group face_xpos
-nodeset 11 name "face_xpos"
+group "face_xpos" add node in surface 6
+nodeset 10 group face_xpos
+nodeset 10 name "face_xpos"
 
 # ----------------------------------------------------------------------
 # Create nodeset for -x face
 # ----------------------------------------------------------------------
-group "face_xneg" add node in surface 12
-group "face_xneg" add node in surface 14
-nodeset 12 group face_xneg
-nodeset 12 name "face_xneg"
+group "face_xneg" add node in surface 4
+nodeset 11 group face_xneg
+nodeset 11 name "face_xneg"
 
 # ----------------------------------------------------------------------
 # Create nodeset for +y face
 # ----------------------------------------------------------------------
-group "face_ypos" add node in surface 5
-nodeset 13 group face_ypos
-nodeset 13 name "face_ypos"
+group "face_ypos" add node in surface 12
+group "face_ypos" add node in surface 14
+nodeset 12 group face_ypos
+nodeset 12 name "face_ypos"
 
 # ----------------------------------------------------------------------
 # Create nodeset for -y face
 # ----------------------------------------------------------------------
-group "face_yneg" add node in surface 3
-nodeset 14 group face_yneg
-nodeset 14 name "face_yneg"
+group "face_yneg" add node in surface 10
+group "face_yneg" add node in surface 17
+nodeset 13 group face_yneg
+nodeset 13 name "face_yneg"
 
 # ----------------------------------------------------------------------
 # Create nodeset for -z face
@@ -68,13 +65,5 @@ group "face_zpos_subset" remove node with x_coord > +15.001e+3
 group "face_zpos_subset" remove node with x_coord < -15.001e+3
 group "face_zpos_subset" remove node with y_coord > +5.001e+3
 group "face_zpos_subset" remove node with y_coord < -5.001e+3
-nodeset 20 group face_zpos_subset
-nodeset 20 name "face zpos_subset"
-
-# ----------------------------------------------------------------------
-# Create nodeset for off-fault stations
-# ----------------------------------------------------------------------
-group "off_fault" add node with x_min >= -12.001e+3 and x_max <= 12.001e+3 and z_min >= -7.501e+3 and y_coord = 3.000e+3
-nodeset 25 group off_fault
-nodeset 25 name "off_fault"
-
+nodeset 17 group face_zpos_subset
+nodeset 17 name "face zpos_subset"
