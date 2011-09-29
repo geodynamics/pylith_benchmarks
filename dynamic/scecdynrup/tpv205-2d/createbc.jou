@@ -2,17 +2,12 @@
 # Create blocks for materials
 # ----------------------------------------------------------------------
 block 1 surface 8 9
-#block 1 surface 11 12 13 14
 block 1 name "elastic"
 
 # ----------------------------------------------------------------------
 # Create nodeset for fault
 # ----------------------------------------------------------------------
 group "fault" add node in fault_surface
-#group "fault" add node in fault_surface@A
-#group "fault" add node in fault_surface@B
-group "fault" remove node with y_coord > +15.0001e+3
-group "fault" remove node with y_coord < -15.0001e+3
 nodeset 10 group fault
 nodeset 10 name "fault"
 
@@ -45,11 +40,3 @@ group "face_yneg" add node in curve 19
 group "face_yneg" add node in curve 20
 nodeset 14 group face_yneg
 nodeset 14 name "face_yneg"
-
-# ----------------------------------------------------------------------
-# Create nodeset for Off-Fault stations
-# ----------------------------------------------------------------------
-#group "off_fault_stat" add node in vertex 15
-#group "off_fault_stat" add node in vertex 16
-#nodeset 15 group off_fault_stat
-#nodeset 15 name "off_fault_stat"

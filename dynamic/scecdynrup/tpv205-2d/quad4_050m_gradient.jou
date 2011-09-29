@@ -1,5 +1,5 @@
 # ----------------------------------------------------------------------
-# Create quad4 mesh at 200m resolution.
+# Create tri3 mesh at 100m resolution.
 # ----------------------------------------------------------------------
 
 # ----------------------------------------------------------------------
@@ -8,14 +8,24 @@
 playback 'geometry.jou'
 
 # ----------------------------------------------------------------------
-# Set discretization size
+# Set discretization size and scheme
 # ----------------------------------------------------------------------
-surface all size 200
+#{dx=50*m}
+surface all scheme pave
+playback 'gradient.jou'
 
 # ----------------------------------------------------------------------
 # Generate the mesh
 # ----------------------------------------------------------------------
 mesh surface all
+
+# ----------------------------------------------------------------------
+# Smooth mesh to improve quality
+# ----------------------------------------------------------------------
+surface all smooth scheme laplacian
+smooth surface all
+surface all smooth scheme condition number beta 1.5 cpu 10
+smooth surface all
 
 # ----------------------------------------------------------------------
 # Setup boundary conditions.
@@ -25,5 +35,6 @@ playback 'createbc.jou'
 # ----------------------------------------------------------------------
 # Export exodus file
 # ----------------------------------------------------------------------
-export mesh "quad4_200m.exo" dimension 2 overwrite
+export mesh "quad4_050m_gradient.exo" dimension 2 overwrite
+
 

@@ -3,7 +3,7 @@ SimpleDB {
   num-values = 2
   value-names =  traction-shear traction-normal
   value-units =  MPa   MPa
-  num-locs = 12 
+  num-locs = 12
   data-dim = 2
   space-dim = 2
   cs-data = cartesian {

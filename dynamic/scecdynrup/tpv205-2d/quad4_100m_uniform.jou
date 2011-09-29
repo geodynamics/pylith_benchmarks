@@ -1,5 +1,5 @@
 # ----------------------------------------------------------------------
-# Create tri3 mesh at 200m resolution.
+# Create tri3 mesh at 100m resolution.
 # ----------------------------------------------------------------------
 
 # ----------------------------------------------------------------------
@@ -10,8 +10,9 @@ playback 'geometry.jou'
 # ----------------------------------------------------------------------
 # Set discretization size and scheme
 # ----------------------------------------------------------------------
-surface all size 200
-surface all scheme trimesh
+#{dx=100*m}
+surface all scheme map
+surface all size {dx}
 
 # ----------------------------------------------------------------------
 # Generate the mesh
@@ -26,7 +27,6 @@ playback 'createbc.jou'
 # ----------------------------------------------------------------------
 # Export exodus file
 # ----------------------------------------------------------------------
-export mesh "tri3_200m.exo" dimension 2 overwrite
-
+export mesh "quad4_100m_uniform.exo" dimension 2 overwrite
 
 

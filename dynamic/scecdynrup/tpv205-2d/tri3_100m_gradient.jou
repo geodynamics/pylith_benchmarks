@@ -1,16 +1,18 @@
 # ----------------------------------------------------------------------
-# Create quad4 mesh at 200m resolution.
+# Create tri3 mesh at 100m resolution.
 # ----------------------------------------------------------------------
 
 # ----------------------------------------------------------------------
 # Generate geometry
 # ----------------------------------------------------------------------
-playback 'geometry_refine.jou'
+playback 'geometry.jou'
 
 # ----------------------------------------------------------------------
-# Set discretization size
+# Set discretization size and scheme
 # ----------------------------------------------------------------------
-surface all size 800
+#{dx=100*m}
+surface all scheme trimesh
+playback 'gradient.jou'
 
 # ----------------------------------------------------------------------
 # Generate the mesh
@@ -18,13 +20,10 @@ surface all size 800
 mesh surface all
 
 # ----------------------------------------------------------------------
-# Refine elements within 1/2 of rupture width
-# ----------------------------------------------------------------------
-playback 'refinecells.jou'
-
-# ----------------------------------------------------------------------
 # Smooth mesh to improve quality
 # ----------------------------------------------------------------------
+surface all smooth scheme laplacian
+smooth surface all
 surface all smooth scheme condition number beta 1.3 cpu 10
 smooth surface all
 
@@ -36,4 +35,4 @@ playback 'createbc.jou'
 # ----------------------------------------------------------------------
 # Export exodus file
 # ----------------------------------------------------------------------
-export mesh "quad4_200m_refine.exo" dimension 2 overwrite
+export mesh "tri3_100m_gradient.exo" dimension 2 overwrite

@@ -5,23 +5,19 @@
 # ----------------------------------------------------------------------
 # Generate geometry
 # ----------------------------------------------------------------------
-playback 'geometry_refine.jou'
+playback 'geometry.jou'
 
 # ----------------------------------------------------------------------
 # Set discretization size and scheme
 # ----------------------------------------------------------------------
-surface all size 400
-surface all scheme trimesh
+#{dx=100*m}
+surface all scheme pave
+playback 'gradient.jou'
 
 # ----------------------------------------------------------------------
 # Generate the mesh
 # ----------------------------------------------------------------------
 mesh surface all
-
-# ----------------------------------------------------------------------
-# Refine elements within 1/2 of rupture width
-# ----------------------------------------------------------------------
-playback 'refinecells.jou'
 
 # ----------------------------------------------------------------------
 # Smooth mesh to improve quality
@@ -39,8 +35,5 @@ playback 'createbc.jou'
 # ----------------------------------------------------------------------
 # Export exodus file
 # ----------------------------------------------------------------------
-export mesh "tri3_100m_refine.exo" dimension 2 overwrite
-
-
-
+export mesh "quad4_100m_gradient.exo" dimension 2 overwrite
 
