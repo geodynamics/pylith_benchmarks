@@ -2,7 +2,7 @@
 
 # Calculate error in solution field and fault tractions.
 
-test = "stable_tol8"
+test = "revised_tol8"
 base = "stable_smalltol"
 
 import tables
