@@ -51,13 +51,26 @@ split surface 7 across location vertex {vAn} location vertex {vBn}
 split surface 18 across location vertex {vAp} location vertex {vBp}
 split surface 21 across location vertex {vCn} location vertex {vCp}
 surface 22 name "fault_surface"
+delete vertex all
+
+# asperities (to ensure exact alignment with mesh)
+brick x {3.0*km} y {3.0*km} z {3.0*km}
+{idChopper=Id("volume")}
+volume {idChopper} move x 0 y 0 z {-7.5*km}
+chop volume 2 with volume {idChopper} keep
+volume {idChopper} move x 0 y {7.5*km} z 0
+chop volume 2 with volume {idChopper} keep
+volume {idChopper} move x 0 y {-15.0*km} z 0
+chop volume 2 with volume {idChopper} keep
+delete volume {idChopper}
 
 # ----------------------------------------------------------------------
 # Imprint all volumes, merging surfaces
 # ----------------------------------------------------------------------
 imprint all
 merge all
-delete body 2
+delete body 2 5 6 7 8 9 10
+
 
 
 

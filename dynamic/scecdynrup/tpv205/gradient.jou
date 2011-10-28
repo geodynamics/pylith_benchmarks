@@ -12,7 +12,7 @@
 # dxA - size at vertex 9 12
 #{dxStart=dx}{curveL=Length(40)}{execute("dxA="//fun_dx)}
 
-# dxB - size at vertex 23 24
+# dxB - size at vertex 27 29
 #{dxStart=dx}{curveL=Length(46)}{execute("dxB="//fun_dx)}
 
 # dxC - size at vertex 10 11
@@ -29,15 +29,15 @@
 # ----------------------------------------------------------------------
 curve all scheme default
 surface all sizing function none
-surface fault_surface size {dx}
+surface fault_surface fault_surface@A fault_surface@B fault_surface@C size {dx}
 
 # Set bias on curves extending from faults
 
-curve 40 scheme bias fine size {dx} factor {bias_factor} start vertex 22
-curve 36 scheme bias fine size {dx} factor {bias_factor} start vertex 21
+curve 40 scheme bias fine size {dx} factor {bias_factor} start vertex 30
+curve 36 scheme bias fine size {dx} factor {bias_factor} start vertex 28
 
-curve 46 scheme bias fine size {dx} factor {bias_factor} start vertex 26
-curve 47 scheme bias fine size {dx} factor {bias_factor} start vertex 25
+curve 46 scheme bias fine size {dx} factor {bias_factor} start vertex 31
+curve 47 scheme bias fine size {dx} factor {bias_factor} start vertex 32
 
 # ----------------------------------------------------------------------
 # B to B
@@ -55,8 +55,8 @@ curve 13 scheme bias fine size {dxA} coarse size {dxC} start vertex 9
 curve 15 scheme bias fine size {dxA} coarse size {dxC} start vertex 12
 
 # bias starting at B
-curve 39 scheme bias fine size {dxB} factor {bias_factor} start vertex 24
-curve 37 scheme bias fine size {dxB} factor {bias_factor} start vertex 23
+curve 39 scheme bias fine size {dxB} factor {bias_factor} start vertex 29
+curve 37 scheme bias fine size {dxB} factor {bias_factor} start vertex 27
 
 # bias starting at C
 curve 24 scheme bias fine size {dxC} factor {bias_factor} start vertex 11
@@ -80,4 +80,5 @@ curve 5 size {dxE}
 curve 7 size {dxE}
 
 # End of file
+
 
