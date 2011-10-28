@@ -10,7 +10,7 @@
 # ======================================================================
 #
 
-cell = "quad4"
+cell = "tri3"
 dx = 200
 
 inputRoot = "output/%s_%3dm_%s-fault" % (cell,dx,"gradient")
@@ -66,7 +66,7 @@ dt = timeStamps[1] - timeStamps[0]
 h5.close()
 
 
-nrows = 2
+nrows = 3
 ncols = 2
 irow = 1
 icol = 1
@@ -99,6 +99,14 @@ ax = fig.axes(nrows, ncols, irow, icol)
 ax.plot(timeStamps, traction[:,indices,1])
 ax.set_xlabel("Time (s)")
 ax.set_ylabel("Normal Traction (MPa)")
+icol += 1
+
+irow = 3
+icol = 1
+ax = fig.axes(nrows, ncols, irow, icol)
+ax.plot(-slip[:,:,0], -traction[:,:,0])
+ax.set_xlabel("Slip (s)")
+ax.set_ylabel("Shear Traction (MPa)")
 icol += 1
 
 pylab.show()
