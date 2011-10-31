@@ -10,11 +10,11 @@
 # ----------------------------------------------------------------------
 #
 
-cell = "tri3"
-dx = 200
+cell = "quad4"
+dx = 50
 
-inputRoot = "output/%s_%3dm_%s-fault" % (cell,dx,"gradient")
-outdir = "scecfiles/%s_%3dm_%s/" % (cell,dx,"gradient")
+inputRoot = "output/%s_%03dm_%s-fault" % (cell,dx,"gradient")
+outdir = "scecfiles/%s_%03dm_%s/" % (cell,dx,"gradient")
 
 # ----------------------------------------------------------------------
 import tables
