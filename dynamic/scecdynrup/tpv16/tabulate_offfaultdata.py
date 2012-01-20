@@ -67,7 +67,7 @@ vel = vel[:,indices,:]
 
 # Write data
 headerA = \
-    "# problem = %s-2D\n" % sim.upper() + \
+    "# problem = %s\n" % sim.upper() + \
     "# author = Brad Aagaard\n" + \
     "# date = %s\n" % (time.asctime()) + \
     "# code = PyLith\n" + \

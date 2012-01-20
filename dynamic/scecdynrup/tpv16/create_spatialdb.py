@@ -11,7 +11,7 @@
 # Requires input files from SCEC website.
 # http://scecdata.usc.edu/cvws/download/tpv16/tpv16_17_input_files.zip
 
-sim = "tpv16"
+sim = "tpv17"
 
 # ----------------------------------------------------------------------
 import numpy

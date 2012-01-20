@@ -61,7 +61,7 @@ traction = traction[:,indices,:]
 
 # Write data
 headerA = \
-    "# problem = TPV16\n" + \
+    "# problem = %s\n" % sim.upper() + \
     "# author = Brad Aagaard\n" + \
     "# date = %s\n" % (time.asctime()) + \
     "# code = PyLith\n" + \
