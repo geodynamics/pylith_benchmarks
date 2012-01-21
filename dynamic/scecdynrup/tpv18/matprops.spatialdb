@@ -1,0 +1,14 @@
+#SPATIAL.ascii 1
+SimpleDB {
+  num-values = 6
+  value-names =  density  vs  vp  cohesion  friction-angle dilatation-angle
+  value-units =  kg/m**3  m/s  m/s  MPa  degree  degree
+  num-locs = 1
+  data-dim = 0
+  space-dim = 3
+  cs-data = cartesian {
+    to-meters = 1.0
+    space-dim = 3
+  }
+}
+0.0  0.0  0.0  2700.0	3300.0	 5716.0   5.0  40.36453657309736  40.36453657309736

@@ -1,0 +1,97 @@
+# ----------------------------------------------------------------------
+# Create block
+# ----------------------------------------------------------------------
+# Block is 48.0 km x 64.0 km x 32.0 km
+# -24.0 km <= x <= 24.0 km
+# -32.0 km <= y <= 32.0 km
+# -32.0 km <= z <= 0.0 km
+#
+#{Units('si')}
+#
+#{blockWidth=48.0*km}
+#{blockLength=64.0*km}
+#{blockHeight=32.0*km}
+#
+# Faults have a common width of 15 km
+#{faultWidth=15.0*km}
+#
+# Main fault is 28.0 km long.
+#{mainFaultLength=28.0*km}
+#
+# Branch fault is 12.0 km long and intersects main fault at y=+2.0 km
+# at angle of 30.0 degrees.
+#
+#{branchAngle=30.0}
+#{branchFaultLength=12.0*km}
+#{branchOffsetY=2*km}
+#
+
+reset
+brick x {blockWidth} y {blockLength} z {blockHeight}
+
+# Translate block so the top is at z=0
+volume 1 move x 0 y 0 z {-0.5*blockHeight}
+
+# ----------------------------------------------------------------------
+# Create interface surfaces
+# ----------------------------------------------------------------------
+
+# Create main fault 
+create planar surface with plane xplane offset 0
+surface 7 name "temp_main"
+webcut volume 1 with sheet surface temp_main
+delete body 2
+
+# Create branch fault
+create planar surface with plane yplane offset 0.0
+surface 18 name "temp_branch"
+move surface temp_branch x {blockWidth/2} y {branchOffsetY} z 0
+rotate surface temp_branch about vertex 21 vertex 22 angle {90-branchAngle}
+webcut volume 1 with sheet surface temp_branch
+delete body 4 
+
+# ----------------------------------------------------------------------
+# Split surfaces involving faults into pieces, isolating rupture regions
+# ----------------------------------------------------------------------
+
+# Split main fault surface using volume 1 
+create vertex 0 {-mainFaultLength/2} 0
+create vertex 0 {+mainFaultLength/2} 0
+create vertex 0 {-mainFaultLength/2} {-faultWidth}
+create vertex 0 {+mainFaultLength/2} {-faultWidth}
+create vertex 0 {-mainFaultLength/2} {-blockHeight}
+create vertex 0 {+mainFaultLength/2} {-blockHeight}
+create vertex 0 {-blockLength/2} {-faultWidth}
+create vertex 0 {+blockLength/2} {-faultWidth}
+
+split surface 13 across location vertex 39 location vertex 40
+split surface 29 across location vertex 33 location vertex 35
+split surface 30 across location vertex 35 location vertex 37
+split surface 31 across location vertex 34 location vertex 36
+split surface 33 across location vertex 36 location vertex 38
+delete vertex all
+
+# Split branch fault surface using volume 3
+vertex 27 copy move z {-faultWidth}
+vertex 25 copy move z {-faultWidth}
+create vertex on curve 48 distance {12*km} from end
+vertex 51 copy move z {-faultWidth}
+vertex 51 copy move z {-blockHeight}
+
+split surface 19 across location vertex 49 location vertex 50
+split surface 40 across location vertex 51 location vertex 52
+split surface 39 across location vertex 52 location vertex 53
+delete vertex all
+
+# ----------------------------------------------------------------------
+# Imprint all volumes, merging surfaces
+# ----------------------------------------------------------------------
+imprint all
+merge all
+
+surface 47 name "fault_surface_mainB"
+surface 52 name "fault_surface_mainA"
+surface 41 name "fault_surface_branch"
+
+
+# End of file
