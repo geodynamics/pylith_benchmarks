@@ -50,8 +50,8 @@ mask1 = z >= -15.0e+3
 Pf = -densityW*gacc*z
 Szz = density*gacc*z
 
-Syy = mask1*(b22*(Szz+Pf)-Pf) + ~mask1*Szz
-Sxx = mask1*(b33*(Szz+Pf)-Pf) + ~mask1*Szz
+Syy = mask1*(b22*(Szz+Pf)-0*Pf) + ~mask1*Szz
+Sxx = mask1*(b33*(Szz+Pf)-0*Pf) + ~mask1*Szz
 Sxy = mask1*(-b23*(Szz+Pf)) + ~mask1*0.0
 
 Syz = 0.0*z
@@ -99,14 +99,19 @@ nx = 1.0
 ny = 0.0
 nz = 0.0
 
-# normal traction is Tx
-tractionNormal = Sxx*nx + Sxy*ny + Sxz*nz
+Tx = Sxx*nx + Sxy*ny + Sxz*nz
+Ty = Sxy*nx + Syy*ny + Syz*nz
+Tz = Sxz*nx + Syz*ny + Szz*nz
 
-# LL shear traction is Ty
-tractionShearLL = Sxy*nx + Syy*ny + Syz*nz
-
-# Up-dip shear traction is Tz
-tractionShearUD = Sxz*nx + Syz*ny + Szz*nz
+tractionNormal = Tx*nx + Ty*ny + Tz*nz
+sx = 0.0
+sy = 1.0
+sz = 0.0
+tractionShearLL = Tx*sx + Ty*sy + Tz*sz
+sx = 0.0
+sy = 0.0
+sz = 1.0
+tractionShearUD = Tx*sx + Ty*sy + Tz*sz
 
 writer.filename("%s_traction_main.spatialdb" % sim)
 dataOut = {'points': points,
@@ -136,14 +141,19 @@ nx = cos(branchAngle)
 ny = -sin(branchAngle)
 nz = 0.0
 
-# normal traction is Tx
-tractionNormal = Sxx*nx + Sxy*ny + Sxz*nz
+Tx = Sxx*nx + Sxy*ny + Sxz*nz
+Ty = Sxy*nx + Syy*ny + Syz*nz
+Tz = Sxz*nx + Syz*ny + Szz*nz
 
-# LL shear traction is Ty
-tractionShearLL = Sxy*nx + Syy*ny + Syz*nz
-
-# Up-dip shear traction is Tz
-tractionShearUD = Sxz*nx + Syz*ny + Szz*nz
+tractionNormal = Tx*nx + Ty*ny + Tz*nz
+sx = sin(branchAngle)
+sy = cos(branchAngle)
+sz = 0.0
+tractionShearLL = Tx*sx + Ty*sy + Tz*sz
+sx = 0.0
+sy = 0.0
+sz = 1.0
+tractionShearUD = Tx*sx + Ty*sy + Tz*sz
 
 writer.filename("%s_traction_branch.spatialdb" % sim)
 dataOut = {'points': points,
