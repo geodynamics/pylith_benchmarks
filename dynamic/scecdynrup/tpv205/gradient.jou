@@ -30,6 +30,10 @@
 curve all scheme default
 surface all sizing function none
 surface fault_surface fault_surface@A fault_surface@B fault_surface@C size {dx}
+surface 9 16 sizing function type bias start curve 41 factor {bias_factor}
+surface 19 sizing function type bias start curve 45 factor {bias_factor}
+surface 20 sizing function type bias start curve 44 factor {bias_factor}
+surface 23 sizing function type bias start curve 43 factor {bias_factor}
 
 # Set bias on curves extending from faults
 
@@ -80,5 +84,6 @@ curve 5 size {dxE}
 curve 7 size {dxE}
 
 # End of file
+
 
 
