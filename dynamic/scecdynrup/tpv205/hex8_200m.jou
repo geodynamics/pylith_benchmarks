@@ -22,8 +22,8 @@ mesh volume all
 # ----------------------------------------------------------------------
 # Refine around fault
 # ----------------------------------------------------------------------
-#{refineWidth=18.001*km}
-#{refineLength=45.001*km}
+#{refineWidth=6.001*km}
+#{refineLength=42.001*km}
 #{refineDepth=21.001*km}
 group "refinecells" add Hex with x_min >= {-0.5*refineWidth} and x_max <= {+0.5*refineWidth} and y_min >= {-0.5*refineLength} and y_max <= {+0.5*refineLength} and z_min >= {-refineDepth}
 refine hex in group refinecells depth 1
