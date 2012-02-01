@@ -77,8 +77,8 @@ headerA = \
     "# author = Brad Aagaard\n" + \
     "# date = %s\n" % (time.asctime()) + \
     "# code = PyLith\n" + \
-    "# code_version = 1.6.2\n" + \
-    "# element_size = %s\n" % dx
+    "# code_version = 1.7.0a (scecdynrup branch)\n" + \
+    "# element_size = %s m\n" % dx
 headerB = \
     "# Time series in 7 columns of E14.6:\n" + \
     "# Column #1 = time (s)\n" + \
