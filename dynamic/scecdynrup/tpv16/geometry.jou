@@ -1,15 +1,15 @@
 # ----------------------------------------------------------------------
 # Create block
 # ----------------------------------------------------------------------
-# Block is 48.0 km x 72.0 km x 32.0 km
-# -24.0 km <= x <= 24.0 km
-# -36.0 km <= y <= 36.0 km
+# Block is 36.0 km x 64.0 km x 32.0 km
+# -18.0 km <= x <= 18.0 km
+# -32.0 km <= y <= 32.0 km
 # -32.0 km <= z <= 0.0 km
 #
 #{Units('si')}
 #
-#{blockWidth=48.0*km}
-#{blockLength=72.0*km}
+#{blockWidth=36.0*km}
+#{blockLength=64.0*km}
 #{blockHeight=32.0*km}
 #
 #{faultLength=48.0*km}
@@ -59,6 +59,7 @@ delete vertex all
 imprint all
 merge all
 delete body 2
+
 
 
 

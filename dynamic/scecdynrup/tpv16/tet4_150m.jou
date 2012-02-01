@@ -30,7 +30,7 @@ mesh volume all
 #{condnum=2.0}
 #{loop(4)}
 cleanup volume all
-volume all smooth scheme condition number beta {condnum} cpu 10
+volume all smooth scheme condition number beta {condnum} cpu 20
 smooth volume all
 #{condnum=condnum-0.1}
 #{endloop}
@@ -47,3 +47,4 @@ export mesh "tet4_150m.exo" dimension 3 overwrite
 
 
 # End of file
+
