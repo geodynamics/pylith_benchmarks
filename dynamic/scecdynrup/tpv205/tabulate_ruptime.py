@@ -9,7 +9,7 @@
 #
 
 cell = "tet4"
-dx = 200
+dx = 100
 
 inputRoot = "output/%s_%3dm-fault" % (cell,dx)
 outdir = "scecfiles/%s_%3dm/" % (cell,dx)
@@ -63,7 +63,7 @@ headerA = \
     "# author = Brad Aagaard\n" + \
     "# date = %s\n" % (time.asctime()) + \
     "# code = PyLith\n" + \
-    "# code_version = 1.6.2\n" + \
+    "# code_version = 1.7.0a (scecdynrup branch)\n" + \
     "# element_size = %s\n" % dx + \
     "# Contour data in 3 columns of E14.6:\n" + \
     "# Column #1 = Distance along strike from hypocenter (m)\n" + \
