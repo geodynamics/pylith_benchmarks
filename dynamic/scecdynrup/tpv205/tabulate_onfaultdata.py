@@ -93,7 +93,7 @@ headerA = \
     "# author = Brad Aagaard\n" + \
     "# date = %s\n" % (time.asctime()) + \
     "# code = PyLith\n" + \
-    "# code_version = 1.6.2\n" + \
+    "# code_version = 1.7.0a (scecdynrup branch)\n" + \
     "# element_size = %s\n" % dx
 headerB = \
     "# Time series in 7 columns of E14.6:\n" + \
@@ -128,10 +128,10 @@ for iloc in xrange(ntargets):
     fout.write(headerB)
     data = numpy.transpose((timeStamps, 
                             -slip[:,iloc,0],
-                            +slip_rate[:,iloc,0],
+                            -slip_rate[:,iloc,0],
                             -traction[:,iloc,0]/1e+6,
-                            +slip[:,iloc,1],
+                            -slip[:,iloc,1],
                             -slip_rate[:,iloc,1],
-                            +traction[:,iloc,1]/1e+6))
+                            -traction[:,iloc,1]/1e+6))
     numpy.savetxt(fout, data, fmt='%14.6e')
     fout.close()
