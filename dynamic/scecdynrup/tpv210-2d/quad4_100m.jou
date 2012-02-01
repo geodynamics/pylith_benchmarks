@@ -8,19 +8,25 @@
 playback 'geometry.jou'
 
 # ----------------------------------------------------------------------
-# Set meshing scheme
+# Set discretization size and scheme
 # ----------------------------------------------------------------------
-surface 18 19  scheme pave
+#{dx=100*m}
+surface all scheme pave
+playback 'gradient.jou'
 
-# ----------------------------------------------------------------------
-# Set discretization size
-# ----------------------------------------------------------------------
-surface all size 100
+# A to D
+curve 14 scheme bias fine size {dxA*1.01} factor {bias_factor} start vertex 11
 
 # ----------------------------------------------------------------------
 # Generate the mesh
 # ----------------------------------------------------------------------
 mesh surface all
+
+# ----------------------------------------------------------------------
+# Smooth mesh to improve quality
+# ----------------------------------------------------------------------
+surface all smooth scheme condition number beta 1.3 cpu 10
+smooth surface all
 
 # ----------------------------------------------------------------------
 # Setup boundary conditions.
@@ -31,4 +37,7 @@ playback 'createbc.jou'
 # Export exodus file
 # ----------------------------------------------------------------------
 export mesh "quad4_100m.exo" dimension 2 overwrite
+
+
+# End of file
 

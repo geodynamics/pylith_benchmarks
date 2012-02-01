@@ -10,13 +10,20 @@ playback 'geometry.jou'
 # ----------------------------------------------------------------------
 # Set discretization size and scheme
 # ----------------------------------------------------------------------
-surface all size 200
-surface all scheme trimesh 
+#{dx=200*m}
+surface all scheme trimesh
+playback 'gradient.jou'
 
 # ----------------------------------------------------------------------
 # Generate the mesh
 # ----------------------------------------------------------------------
 mesh surface all
+
+# ----------------------------------------------------------------------
+# Smooth mesh to improve quality
+# ----------------------------------------------------------------------
+surface all smooth scheme condition number beta 1.3 cpu 10
+smooth surface all
 
 # ----------------------------------------------------------------------
 # Setup boundary conditions.
@@ -29,4 +36,4 @@ playback 'createbc.jou'
 export mesh "tri3_200m.exo" dimension 2 overwrite
 
 
-
+# End of file

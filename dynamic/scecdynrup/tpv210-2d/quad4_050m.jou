@@ -1,21 +1,18 @@
 # ----------------------------------------------------------------------
-# Create quad4 mesh at 100m resolution.
+# Create quad4 mesh at 50m resolution.
 # ----------------------------------------------------------------------
 
 # ----------------------------------------------------------------------
 # Generate geometry
 # ----------------------------------------------------------------------
-playback 'geometry_refine.jou'
+playback 'geometry.jou'
 
 # ----------------------------------------------------------------------
-# Set meshing scheme
+# Set discretization size and scheme
 # ----------------------------------------------------------------------
+#{dx=50*m}
 surface all scheme pave
-
-# ----------------------------------------------------------------------
-# Set discretization size
-# ----------------------------------------------------------------------
-surface all size 400
+playback 'gradient.jou'
 
 # ----------------------------------------------------------------------
 # Generate the mesh
@@ -23,14 +20,9 @@ surface all size 400
 mesh surface all
 
 # ----------------------------------------------------------------------
-# Refine elements within 1/2 of rupture width
-# ----------------------------------------------------------------------
-playback 'refinecells.jou'
-
-# ----------------------------------------------------------------------
 # Smooth mesh to improve quality
 # ----------------------------------------------------------------------
-surface all smooth scheme condition number beta 1.5 cpu 10
+surface all smooth scheme condition number beta 1.3 cpu 10
 smooth surface all
 
 # ----------------------------------------------------------------------
@@ -41,6 +33,8 @@ playback 'createbc.jou'
 # ----------------------------------------------------------------------
 # Export exodus file
 # ----------------------------------------------------------------------
-export mesh "quad4_100m_refine.exo" dimension 2 overwrite
+export mesh "quad4_050m.exo" dimension 2 overwrite
 
+
+# End of file
 
