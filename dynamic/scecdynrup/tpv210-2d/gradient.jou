@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------
 # Set vertex spacing with increasing spacing away from fault
 # ----------------------------------------------------------------------
-#{bias_factor=1.015}
+#{bias_factor=1.02}
 
 # Function for computing discretization size at end of curve with bias
 #{fun_dx='dxStart*bias_factor**ceil( ln(1-curveL/dxStart*(1-bias_factor))/ln(bias_factor))'}
