@@ -10,10 +10,10 @@
 
 sim = "tpv17"
 cell = "tet4"
-dx = 150
+dx = 75
 
-inputRoot = "output/%s_%s_%3dm-fault" % (sim,cell,dx)
-outdir = "scecfiles/%s_%s_%3dm/" % (sim,cell,dx)
+inputRoot = "output/%s_%s_%03dm-fault" % (sim,cell,dx)
+outdir = "scecfiles/%s_%s_%03dm/" % (sim,cell,dx)
 
 # ----------------------------------------------------------------------
 import tables
