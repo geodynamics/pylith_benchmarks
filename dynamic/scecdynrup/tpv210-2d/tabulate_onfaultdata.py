@@ -5,78 +5,69 @@
 #                           Brad T. Aagaard
 #                        U.S. Geological Survey
 #
-# <LicenseText>
-#
 # ----------------------------------------------------------------------
 #
 
-cell = "quad4"
+sim = "tpv10"
+cell = "tri3"
 dx = 100
-dt = 0.05
 
-outputRoot = "output/%s_%3dm_%s" % (cell,dx,"refine")
-outdir = "scecfiles/%s_%3dm_%s/" % (cell,dx,"refine")
+inputRoot = "output/%s_%s_%3dm-fault" % (sim,cell,dx)
+outdir = "scecfiles/%s_%s_%3dm/" % (sim,cell,dx)
 
+# ----------------------------------------------------------------------
+import tables
 import numpy
 import time
 
-from pylith.utils.VTKDataReader import VTKDataReader
-
 # ----------------------------------------------------------------------
-timestamps = numpy.arange(50,15001,50)
-targets = numpy.array([[ 0.0000000, 0.0000000, 0.0000000],
-                       [ -750.0000000, -1299.0381057, 0.0000000],
-                       [ -1500.0000000, -2598.0762114, 0.0000000],
-                       [ -2250.0000000, -3897.1143170, 0.0000000],
-                       [ -3750.0000000, -6495.1905284, 0.0000000],
-                       [ -6000.0000000, -10392.3048454, 0.0000000]])
+targets = numpy.array([[    0.0,      0.0,     ],
+                       [ -750.0,  -1299.0381057],
+                       [-1500.0,  -2598.0762114],
+                       [-2250.0,  -3897.1143170],
+                       [-3750.0,  -6495.1905284],
+                       [-6000.0, -10392.3048454]])
     
 
-reader = VTKDataReader()
 tolerance = 1.0e-6
 
-# Get vertices and find indices of target locations
-filename = "%s-fault_t%05d.vtk" % (outputRoot,timestamps[0])
-data = reader.read(filename)
-
-vertices = numpy.array(data['vertices'])
+h5 = tables.openFile("%s.h5" % inputRoot, 'r')
+vertices = h5.root.geometry.vertices[:]
 ntargets = targets.shape[0]
 indices = []
 for target in targets:
     dist = ( (vertices[:,0]-target[0])**2 + 
-             (vertices[:,1]-target[1])**2 +
-             (vertices[:,2]-target[2])**2 )**0.5
+             (vertices[:,1]-target[1])**2 )**0.5
     min = numpy.min(dist)
     indices.append(numpy.where(dist <= min+tolerance)[0][0])
 
-print "Indices", indices
-print "Coordinates of selected points:",vertices[indices,:]
+print "Indices: ", indices
+print "Coordinates of selected points:\n",vertices[indices,:]
 
-# Extract values
-nsteps = timestamps.shape[0]
-slip = numpy.zeros((nsteps,ntargets,3))  # 3-D array (time, targets, components)
-slip_rate = numpy.zeros((nsteps,ntargets,3))
-traction = numpy.zeros((nsteps,ntargets,3))
-itime = 0
-for timestamp in timestamps:
-    filename = "%s-fault_t%05d.vtk" % (outputRoot,timestamp)
-#    print "filename", filename
-    data = reader.read(filename)
-    fields = data['vertex_fields']
-    slip[itime,0:ntargets,:] = fields['slip'][indices,:].squeeze()
-    slip_rate[itime,0:ntargets,:] = fields['slip_rate'][indices,:].squeeze()
-    traction[itime,0:ntargets,:] = fields['traction'][indices,:].squeeze()
-    itime += 1
 
+# Get datasets
+slip = h5.root.vertex_fields.slip[:]
+slip_rate = h5.root.vertex_fields.slip_rate[:]
+traction = h5.root.vertex_fields.traction[:]
+timeStamps =  h5.root.time[:].ravel()
+nsteps = timeStamps.shape[0]
+dt = timeStamps[1] - timeStamps[0]
+
+h5.close()
+
+# Extract locations
+slip = slip[:,indices,:]
+slip_rate = slip_rate[:,indices,:]
+traction = traction[:,indices,:]
 
 # Write data
 headerA = \
-    "# problem = TPV205\n" + \
-    "# author = Surendra N. Somala\n" + \
+    "# problem = %s\n" % sim.upper() + \
+    "# author = Brad Aagaard\n" + \
     "# date = %s\n" % (time.asctime()) + \
     "# code = PyLith\n" + \
-    "# code_version = 1.5.0a\n" + \
-    "# element_size = %s\n" % dx
+    "# code_version = 1.7.0a (scecdynrup branch)\n" + \
+    "# element_size = %s m\n" % dx
 headerB = \
     "# Time series in 8 columns of E14.6:\n" + \
     "# Column #1 = time (s)\n" + \
@@ -96,11 +87,10 @@ locHeader = "# location = on fault, %3.1f km along strike and %3.1f km depth\n"
 locName = "st%03ddp%03d"
 
 lengthScale = 1000.0
-timeScale = 1000.0
+zero = numpy.zeros( (nsteps,), dtype=numpy.float64)
 dip = -2*targets[:,0] / lengthScale
-strike = targets[:,2] / lengthScale
-time =  timestamps / timeScale
-print "time", time
+strike = 0.0*dip
+
 
 for iloc in xrange(ntargets):
     pt = locName % (round(10*strike[iloc]), 
@@ -112,10 +102,10 @@ for iloc in xrange(ntargets):
     fout.write("# num_timesteps = %8d\n" % nsteps)
     fout.write(locHeader % (strike[iloc], dip[iloc]))
     fout.write(headerB)
-    data = numpy.transpose((time, 
-                            slip[:,iloc,2],
-                            slip_rate[:,iloc,2],
-                            traction[:,iloc,2]/1e+6,
+    data = numpy.transpose((timeStamps, 
+                            zero,
+                            zero,
+                            zero,
                             slip[:,iloc,0],
                             slip_rate[:,iloc,0],
                             traction[:,iloc,0]/1e+6,
