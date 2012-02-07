@@ -9,7 +9,7 @@
 #
 
 sim = "tpv10"
-cell = "tri3"
+cell = "quad4"
 dx = 50
 
 inputRoot = "output/%s_%s_%03dm" % (sim,cell,dx)
