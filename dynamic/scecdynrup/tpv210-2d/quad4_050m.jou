@@ -15,7 +15,10 @@ surface all scheme pave
 playback 'gradient.jou'
 
 # A to D
-curve 14 scheme bias fine size {dxA*1.01} factor {bias_factor} start vertex 11
+curve 31 scheme bias fine size {dxA*0.98} factor {bias_factor} start vertex 11
+
+# C to F
+curve 18 scheme bias fine size {dxC*0.95} coarse size {dxF} start vertex 13
 
 # ----------------------------------------------------------------------
 # Generate the mesh
@@ -40,5 +43,6 @@ export mesh "quad4_050m.exo" dimension 2 overwrite
 
 
 # End of file
+
 
 

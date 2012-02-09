@@ -34,10 +34,12 @@ undo off
 #
 #{faultDipAngle=60.0}
 #{faultWidth=15.0*km}
+#
+#{xoffset=0.5*faultWidth*cosd(faultDipAngle)}
 brick x {blockWidth} y {blockHeight} z {blockWidth}
 
 # Translate block so the top is at z=0
-volume 1 move x {-0.5*faultWidth*cosd(faultDipAngle)} y {-0.5*blockHeight} z 0
+volume 1 move x {-xoffset} y {-0.5*blockHeight} z 0
 
 create midsurface volume 1 surface 1 2
 delete volume 1
@@ -51,6 +53,11 @@ split surface 7 across location position 0 0 0 location position {-blockHeight/t
 split curve 17 at position {-faultWidth*cosd(faultDipAngle)} {-faultWidth*sind(faultDipAngle)} 0
 curve 23 name "fault_surface"
 
+# Create interface at 13.8 km down-dip
+# to honor discontinuity in stress in TPV13
+split surface 9 across location position {-blockWidth/2-xoffset} {sind(faultDipAngle)*-13.8*km} 0 location position {cosd(faultDipAngle)*-13.8*km} {sind(faultDipAngle)*-13.8*km} 0
+split surface 8 across location position {+blockWidth/2-xoffset} {sind(faultDipAngle)*-13.8*km} 0 location position {cosd(faultDipAngle)*-13.8*km} {sind(faultDipAngle)*-13.8*km} 0
+
 # ----------------------------------------------------------------------
 # Imprint all volumes, merging surfaces
 # ----------------------------------------------------------------------
@@ -58,3 +65,4 @@ imprint all
 merge all
 
 # End of file
+
