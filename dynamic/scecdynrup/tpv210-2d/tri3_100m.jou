@@ -14,6 +14,8 @@ playback 'geometry.jou'
 surface all scheme trimesh
 playback 'gradient.jou'
 
+surface 11 12 sizing function type bias start curve fault_surface@A factor {bias_factor*0.995}
+
 # ----------------------------------------------------------------------
 # Generate the mesh
 # ----------------------------------------------------------------------
@@ -37,4 +39,5 @@ export mesh "tri3_100m.exo" dimension 2 overwrite
 
 
 # End of file
+
 
