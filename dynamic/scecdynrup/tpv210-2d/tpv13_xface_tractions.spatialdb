@@ -4,7 +4,7 @@ SimpleDB {
   num-values = 3
   value-names =  traction-shear  traction-normal  change-start-time
   value-units =  MPa  MPa  year
-  num-locs = 2
+  num-locs = 4
   data-dim = 1
   space-dim = 2
   cs-data = cartesian {
@@ -12,5 +12,7 @@ SimpleDB {
     space-dim = 2
   }
 }
-0.0    0.0        0.0      0.0     0.0
-0.0  -80.00000    0.0  -465.94688  0.0
+0.0    0.0       0.0      0.0      0.0
+0.0  -11.95115   0.0    -69.60751  0.0
+0.0  -11.95116   0.0   -199.10633  0.0
+0.0  -80.00000   0.0  -1332.8      0.0

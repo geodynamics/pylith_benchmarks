@@ -4,7 +4,7 @@ SimpleDB {
   num-values = 5
   value-names =  stress-zz-initial  plastic-strain-xx  plastic-strain-yy  plastic-strain-xy  plastic-strain-zz
   value-units =  MPa  None  None  None  None
-  num-locs = 4
+  num-locs = 5
   data-dim = 1
   space-dim = 2
   cs-data = cartesian {
@@ -12,7 +12,8 @@ SimpleDB {
     space-dim = 2
   }
 }
-0.0    0.0          0.0       0.0  0.0  0.0  0.0
-0.0  -11.95115    -134.35684  0.0  0.0  0.0  0.0
-0.0  -11.95116    -199.10633  0.0  0.0  0.0  0.0
-0.0  -80.00000  -1332.8       0.0  0.0  0.0  0.0
+0.0    0.0        0.0       0.0  0.0  0.0  0.0
+0.0  -11.950    -134.34391  0.0  0.0  0.0  0.0
+0.0  -11.951    -166.72940  0.0  0.0  0.0  0.0
+0.0  -11.952    -199.12032  0.0  0.0  0.0  0.0
+0.0  -80.000  -1332.8       0.0  0.0  0.0  0.0
