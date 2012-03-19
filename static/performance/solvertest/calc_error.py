@@ -3,7 +3,7 @@
 # Calculate error in solution field and fault tractions.
 
 test = "revised_tol8"
-base = "stable_smalltol"
+base = "revised_smalltol"
 
 import tables
 import numpy
