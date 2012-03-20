@@ -1,31 +1,103 @@
+# -*- Python -*- (syntax highlighting)
+# ----------------------------------------------------------------------
+#
+# Brad T. Aagaard, U.S. Geological Survey
+#
+# ----------------------------------------------------------------------
+#
+# CUBIT journal file with geometry for TPV210.
+#
+# ----------------------------------------------------------------------
+# Set units to SI.
+# ----------------------------------------------------------------------
+#{Units('si')}
+#
+# ----------------------------------------------------------------------
+# Reset geometry.
+# ----------------------------------------------------------------------
+reset
+
+# Make sure undo is off to prevent errors in stitching volumes.
+undo off
+
 # ----------------------------------------------------------------------
 # Create block
 # ----------------------------------------------------------------------
-# Block is 36.0 km x 56000 km x 18.0*sqrt(3) km 
-# -21.75 km <= x <= 14.25 km
-# -28 km <= y <= 28km
-# -18*Sqrt(3) km <= z <= 0 km
+# Block is 48.0 km x 64.0 km x 36.0 km 
+# Not including offset (top of fault is at x=0)
+# -24 km <= x <= 24 km
+# -32 km <= y <= 32 km
+# -36 km <= z <= 0 km
 #
-reset
-brick x 36000 y 56000 z 31176.914
+# Fault dip is 60 degrees and width is 15.0 km.
+#
+#{blockWidth=48.0*km}
+#{blockLength=64.0*km}
+#{blockHeight=36.0*km}
+#{faultDipAngle=60.0}
+#{faultWidth=15.0*km}
+#{faultLength=30.0*km}
+#
+#{xoffset=0.5*faultWidth*cosd(faultDipAngle)}
+
+brick x {blockWidth} y {blockLength} z {blockHeight}
+
+# Translate block so the top is at z=0
+volume 1 move x {-xoffset} y 0 z {-0.5*blockHeight}
 
 # ----------------------------------------------------------------------
-# Set z=0 at free surface
+# Create fault surface
 # ----------------------------------------------------------------------
-move volume 1 x -3750 z -15588.457
+create planar surface with plane xplane offset 0
+#{fI=Id("surface")}
+rotate surface {fI} angle {faultDipAngle-90}  about vertex 12 9 include_merged 
+create surface extended from surface {fI}
+delete surface {fI}
+#{fI=Id("surface")}
+webcut volume 1 with plane surface {fI}
+surface 9 name "fault_body"
+
+# Split fault surface
+create vertex 0.0 {-0.5*faultLength} 0
+#{vAn=Id("vertex")}
+create vertex 0.0 {+0.5*faultLength} 0
+#{vAp=Id("vertex")}
+create vertex {-blockHeight/tand(faultDipAngle)} {-0.5*faultLength} {-blockHeight}
+#{vBn=Id("vertex")}
+create vertex {-blockHeight/tand(faultDipAngle)} {+0.5*faultLength} {-blockHeight}
+#{vBp=Id("vertex")}
+create vertex {-faultWidth*cosd(faultDipAngle)} {-0.5*faultLength} {-faultWidth*sind(faultDipAngle)}
+#{vCn=Id("vertex")}
+create vertex {-faultWidth*cosd(faultDipAngle)} {+0.5*faultLength} {-faultWidth*sind(faultDipAngle)}
+#{vCp=Id("vertex")}
+split surface fault_body across location vertex {vAn} location vertex {vBn}
+split surface fault_body@A across location vertex {vAp} location vertex {vBp}
+split surface fault_body@A across location vertex {vCn} location vertex {vCp}
+surface fault_body@C rename "fault_surface"
+delete vertex all
+
+# asperity (to ensure exact alignment with mesh)
+brick x {3.0*km} y {3.0*km} z {3.0*km}
+{idChopper=Id("volume")}
+rotate volume {idChopper} angle {-faultDipAngle} about y
+volume {idChopper} move x {-12.0*km*cosd(faultDipAngle)} y 0 z {-12.0*km*sind(faultDipAngle)}
+chop volume 3 with volume {idChopper} keep
+delete volume {idChopper}
 
 # ----------------------------------------------------------------------
-# Create interface surfaces
+# Create interface surface to honor stress discontinuity in TPV13
 # ----------------------------------------------------------------------
-create surface extended from surface 1
-body 2 rotate -60 about y 
-surface 7 name "fault_surface"
-webcut volume 1 with plane surface fault_surface
+create planar surface with plane zplane offset {sind(faultDipAngle)*-13.8*km}
+#{sI=Id("surface")}
+webcut volume 1 4 with plane surface {sI}
 
 # ----------------------------------------------------------------------
 # Imprint all volumes, merging surfaces
 # ----------------------------------------------------------------------
 imprint all
 merge all
+delete body 3 6 7 8
 
-delete body 2
+# End of file
+
+
