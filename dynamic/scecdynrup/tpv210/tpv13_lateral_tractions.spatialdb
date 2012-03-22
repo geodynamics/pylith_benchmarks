@@ -1,0 +1,19 @@
+// -*- C++ -*-
+#SPATIAL.ascii 1
+SimpleDB {
+  num-values = 4
+  value-names =  traction-shear-horiz  traction-shear-vert  traction-normal  change-start-time
+  value-units =  MPa  MPa  MPa year
+  num-locs = 5
+  data-dim = 1
+  space-dim = 3
+  cs-data = cartesian {
+    to-meters = 1.0e+3
+    space-dim = 3
+  }
+}
+0.0  0.0    0.0       0.0  0.0      0.0      0.0
+0.0  0.0  -11.950     0.0  0.0    -69.60082  0.0
+0.0  0.0  -11.951     0.0  0.0   -134.35515  0.0
+0.0  0.0  -11.952     0.0  0.0   -199.12032  0.0
+0.0  0.0  -80.00000   0.0  0.0  -1332.8      0.0

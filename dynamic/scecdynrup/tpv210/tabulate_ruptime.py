@@ -8,9 +8,9 @@
 # ----------------------------------------------------------------------
 #
 
-sim = "tpv11"
+sim = "tpv10"
 cell = "tet4"
-dx = 200
+dx = 100
 
 inputRoot = "output/%s_%s_%03dm-fault" % (sim,cell,dx)
 outdir = "scecfiles/%s_%s_%03dm/" % (sim,cell,dx)
