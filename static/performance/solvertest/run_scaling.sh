@@ -18,8 +18,9 @@ else
   exit 1
 fi
 
+pbsfile="$HOME/.pyre/pylithapp/pylithapp_pbs.cfg"
 pcfiles="fieldsplit_mult.cfg custompc.cfg"
-args="--job.name=${cell}_np${nprocs} --job.stdout=${cell}_np${nprocs}.log"
+args="$pbsfile --job.name=${cell}_np${nprocs} --job.stdout=${cell}_np${nprocs}.log"
 
 if [ $nprocs == 1 ]; then
   pylith ${cell}.cfg ${cell}_np00${nprocs}.cfg $pcfiles $args --nodes=1 --scheduler.ppn=1
