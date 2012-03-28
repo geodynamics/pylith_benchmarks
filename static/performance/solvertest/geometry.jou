@@ -1,3 +1,22 @@
+# -*- Python -*- (syntax highlighting)
+# ----------------------------------------------------------------------
+#
+# Brad T. Aagaard, U.S. Geological Survey
+#
+# ----------------------------------------------------------------------
+#
+# CUBIT journal file with geometry for solvertest benchmark.
+#
+# ----------------------------------------------------------------------
+# Set units to SI.
+# ----------------------------------------------------------------------
+#{Units('si')}
+#
+# ----------------------------------------------------------------------
+# Reset geometry.
+# ----------------------------------------------------------------------
+reset
+
 # ----------------------------------------------------------------------
 # Create block
 # ----------------------------------------------------------------------
@@ -6,35 +25,43 @@
 # -36 km <= x <= 36 km
 # -36 km <= y <= 36 km
 # -36 km <= z <= 0 km
-reset
-brick x 72000 y 72000 z 36000
+#
+#{blockWidth=72.0*km}
+#{blockLength=72.0*km}
+#{blockHeight=36.0*km}
+
+brick x {blockWidth} y {blockLength} z {blockHeight}
 
 # Translate block so the top is at z=0
-volume 1 move x 0 y 0 z -18000
+volume 1 move x 0 y 0 z {-0.5*blockHeight}
 
 # ----------------------------------------------------------------------
 # Create interface surfaces
 # ----------------------------------------------------------------------
 # Center fault
 create planar surface with plane xplane offset 0
-surface 7 name "fault_middle"
+#{s=Id("surface")}
+surface {s} name "fault_middle"
 rotate surface fault_middle about z angle -15
 
 # Fault on +x side of middle fault
 create planar surface with plane yplane offset 0
-surface 8 name "fault_xpos"
+#{s=Id("surface")}
+surface {s} name "fault_xpos"
 rotate surface fault_xpos about z angle -45
-move surface fault_xpos x 12000 y 12000 z 0
+move surface fault_xpos x {12*km} y {12*km} z 0
 
 # Fault on -x side of middle fault
 create planar surface with plane yplane offset 0
-surface 9 name "fault_xneg"
+#{s=Id("surface")}
+surface {s} name "fault_xneg"
 rotate surface fault_xneg about z angle -45
-move surface fault_xneg x -12000 y -12000 z 0
+move surface fault_xneg x {-12*km} y {-12*km} z 0
 
 # Moho
-create planar surface with plane zplane offset -12000
-surface 10 name "material_interface"
+create planar surface with plane zplane offset {-12*km}
+#{s=Id("surface")}
+surface {s} name "material_interface"
 
 # ----------------------------------------------------------------------
 # Divide volumes using interface surfaces
@@ -61,3 +88,4 @@ delete body 2 3 4 5 10 11 12
 imprint all with volume all
 merge all
 
+# End of file

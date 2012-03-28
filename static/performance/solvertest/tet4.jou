@@ -1,3 +1,13 @@
+# -*- Python -*- (syntax highlighting)
+# ----------------------------------------------------------------------
+#
+# Brad T. Aagaard, U.S. Geological Survey
+#
+# ----------------------------------------------------------------------
+#
+# CUBIT journal file driver for creating tet4 mesh for solvertest
+# benchmark.
+#
 # ----------------------------------------------------------------------
 # Generate geometry
 # ----------------------------------------------------------------------
@@ -11,12 +21,23 @@ volume all scheme tetmesh
 # ----------------------------------------------------------------------
 # Set discretization size
 # ----------------------------------------------------------------------
-volume all size 3000
+volume all size {3.0*km}
 
 # ----------------------------------------------------------------------
 # Generate the mesh
 # ----------------------------------------------------------------------
 mesh volume all
+
+# ----------------------------------------------------------------------
+# Smooth mesh to improve quality
+# ----------------------------------------------------------------------
+#{condnum=2.0}
+#{loop(4)}
+cleanup volume all
+volume all smooth scheme condition number beta {condnum} cpu 10
+smooth volume all
+#{condnum=condnum-0.1}
+#{endloop}
 
 # ----------------------------------------------------------------------
 # Generate blocks and nodesets
@@ -28,3 +49,5 @@ playback 'setbc.jou'
 # ----------------------------------------------------------------------
 export mesh "tet4.exo" dimension 3 overwrite
 
+
+# End of file
