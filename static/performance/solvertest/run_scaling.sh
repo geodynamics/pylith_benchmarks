@@ -12,6 +12,7 @@ else
 fi
 
 if [ $cell == "tet4" ] || [ $cell == "hex8" ]; then
+  echo "do nothing" > /dev/null
 else
   echo "Unknown cell '$cell'."
   exit 1
