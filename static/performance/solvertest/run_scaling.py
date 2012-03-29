@@ -37,7 +37,7 @@ else:
 
 cmd = "pylith %s.cfg %s.cfg " % (cell, job) + \
     pcfiles + \
-    "--nodes=%d --scheduler.ppn=%d" % (nprocs, ppn) + \
+    " --nodes=%d --scheduler.ppn=%d " % (nprocs, ppn) + \
     args
 
 print cmd
