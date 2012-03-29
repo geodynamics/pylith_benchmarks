@@ -16,7 +16,7 @@ nprocs = int(sys.argv[2])
 
 if not cell in ["hex8", "tet4"]:
     raise ValueError("Cell type (%s) must be 'hex8' or 'tet4'." % cell)
-if (nprocs % 2) != 0:
+if nprocs != 1 and (nprocs % 2) != 0:
     raise ValueError("Number of processors (%d) must be a power of 2." % nprocs)
 
 
