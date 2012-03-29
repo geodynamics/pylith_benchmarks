@@ -2,6 +2,8 @@
 #
 # Python script to facilitate running scaling benchmarks using cluster
 # with PBS scheduler.
+#
+# REQUIRES: $HOME/.pyre/pylithapp/pylithapp_pbs.cfg file with PBS options.
 
 import os
 import sys
