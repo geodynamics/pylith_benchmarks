@@ -41,4 +41,4 @@ cmd = "pylith %s.cfg %s.cfg " % (cell, job) + \
     args
 
 print cmd
-subprocess.check_call(cmd, shell=True)
+subprocess.call(cmd, shell=True)
