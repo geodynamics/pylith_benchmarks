@@ -25,7 +25,7 @@ surface 39 37 77 scheme pave
 # Loop to create meshes for scaling benchmark.
 #{dx0=1500.0*m}
 #{iloop=0}
-#{Loop(8)}
+#{Loop(6)}
   #{if(iloop==0)}
     #{dx=1520.0*m}
   #{else}
@@ -38,8 +38,6 @@ surface 39 37 77 scheme pave
   #{if(iloop==3)} {meshout="hex8_np008.exo"}  {endif}
   #{if(iloop==4)} {meshout="hex8_np016.exo"}  {endif}
   #{if(iloop==5)} {meshout="hex8_np032.exo"}  {endif}
-  #{if(iloop==6)} {meshout="hex8_np064.exo"}  {endif}
-  #{if(iloop==7)} {meshout="hex8_np128.exo"}  {endif}
 
   delete mesh volume all propagate
   
@@ -54,6 +52,7 @@ surface 39 37 77 scheme pave
 
 
 # End of file
+
 
 
 
