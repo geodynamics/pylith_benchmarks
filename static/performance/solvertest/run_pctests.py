@@ -8,7 +8,7 @@ import sys
 import subprocess
 
 if len(sys.argv) != 2:
-    raise ValueError("usage: run_scaling.py SIM")
+    raise ValueError("usage: run_pctests.py PCTYPE")
 sim = sys.argv[1]
 
 if not sim in ["all", 
