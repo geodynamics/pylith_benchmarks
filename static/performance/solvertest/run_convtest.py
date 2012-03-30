@@ -16,7 +16,7 @@ for d in ["output", "logs"]:
 
 # ----------------------------------------------------------------------
 def runPyLith(args, logFilename):
-    log = open("logs/logFilename", "w")
+    log = open("logs/" + logFilename, "w")
     subprocess.call("pylith " + args, stdout=log, stderr=log, shell=True)
     log.close()
     return
