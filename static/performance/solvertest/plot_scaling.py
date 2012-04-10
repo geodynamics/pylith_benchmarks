@@ -53,7 +53,7 @@ niters = {}
 for c in cells:
     niters[c] = numpy.zeros(len(nprocs), dtype=numpy.float32)
     for ip in xrange(len(nprocs)):
-        sys.path.append("logs")
+        sys.path.append("logs_nooutput")
         log = __import__("%s_np%03d" % (c.lower(), nprocs[ip]))
         niters[c][ip] = log.Solve.event['VecMDot'].Count[0]
         for s in stages:
