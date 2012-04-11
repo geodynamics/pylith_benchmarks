@@ -75,7 +75,7 @@ if style == "text":
 
 else:
     print "\\begin{tabular}{lcrrr}"
-    print "  PC & Cell & \multicolumn[c]{3}{Iterates} \\\\"
+    print "  Preconditioner & Cell & \multicolumn{3}{c}{Problem Size} \\\\"
     print "     &      & S1 & S2 & S4 \\\\"
     print "  \hline"
     for pc in preconditioners:

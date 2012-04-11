@@ -14,13 +14,14 @@
 import matplotlib.pyplot as pyplot
 import numpy
 import sys
+import os
 
 sys.path.append("../../../figures")
 import matplotlibext
 
 header = 0.25 
 
-nprocs = [1,2,4,8,16,32,64]
+nprocs = [1,2,4,8,16,32,64,128]
 stages = ["Solve",
           "Reform Jacobian",
           "Reform Residual",
@@ -53,8 +54,15 @@ niters = {}
 for c in cells:
     niters[c] = numpy.zeros(len(nprocs), dtype=numpy.float32)
     for ip in xrange(len(nprocs)):
-        sys.path.append("logs_nooutput")
-        log = __import__("%s_np%03d" % (c.lower(), nprocs[ip]))
+        sys.path.append("logs")
+        modname = "%s_np%03d" % (c.lower(), nprocs[ip])
+        if not os.path.exists("logs/%s.py" % modname):
+            print "Skipping stats for cell %s and %d procs. Log not found." %\
+                (c, nprocs[ip])
+            niters[c][ip] = None
+            data[c][s][ip] = None
+            continue
+        log = __import__(modname)
         niters[c][ip] = log.Solve.event['VecMDot'].Count[0]
         for s in stages:
             
@@ -86,7 +94,7 @@ for c in cells:
 ax.set_xlim((1, 128))
 #ax.set_xlabel("# Processors", fontsize=10)
 
-ax.set_ylim((0.01, 200))
+ax.set_ylim((0.01, 1000))
 ax.set_ylabel("Time (s)", fontsize=10)
 
 import matplotlib.lines as lines
