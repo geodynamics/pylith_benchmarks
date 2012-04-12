@@ -10,7 +10,7 @@
 # ----------------------------------------------------------------------
 # Set units to SI.
 # ----------------------------------------------------------------------
-# {Units('si')}
+#{Units('si')}
 #
 # ----------------------------------------------------------------------
 # Reset geometry.
@@ -36,6 +36,7 @@ undo off
 #{faultWidth=15.0*km}
 #
 #{xoffset=0.5*faultWidth*cosd(faultDipAngle)}
+
 brick x {blockWidth} y {blockHeight} z {blockWidth}
 
 # Translate block so the top is at z=0
