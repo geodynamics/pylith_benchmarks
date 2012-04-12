@@ -72,7 +72,7 @@ for c in cells:
             data[c][s][ip] = log.__getattribute__(sattr).time / nprocs[ip]
 
 figure = matplotlibext.Figure()
-figure.open(3.0, 5.25, margins=[[0.6, 0, 0.1], [0.5, 0.4, 0.05]], dpi=150)
+figure.open(3.0, 5.25, margins=[[0.5, 0, 0.1], [0.42, 0.4, 0.05]], dpi=150)
 
 ax = figure.axes(2.0+header, 1, 1.0+header, 1)
 
@@ -92,10 +92,10 @@ for c in cells:
                       dashes=styledict[s][1])
 
 ax.set_xlim((1, 128))
-#ax.set_xlabel("# Processors", fontsize=10)
+#ax.set_xlabel("# Processors")
 
 ax.set_ylim((0.01, 1000))
-ax.set_ylabel("Time (s)", fontsize=10)
+ax.set_ylabel("Time (s)")
 
 import matplotlib.lines as lines
 proxies = []
@@ -127,11 +127,11 @@ for c in cells:
     ax.hold(True)
 
 ax.set_xlim((1, 128))
-ax.set_xlabel("# Processors", fontsize=10)
+ax.set_xlabel("# Processors")
 
 ax.set_ylim((0, 150))
-ax.set_ylabel("# Iterations", fontsize=10)
+ax.set_ylabel("# Iterations")
 
 
 pyplot.show()
-pyplot.savefig('scaling.pdf')
+pyplot.savefig('solvertest_scaling')
