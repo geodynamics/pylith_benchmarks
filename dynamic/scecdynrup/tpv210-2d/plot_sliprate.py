@@ -5,7 +5,7 @@
 #
 # ----------------------------------------------------------------------
 #
-# Plot initial stress and slip profiles.
+# Plot slip rate time histories.
 #
 # PREREQUISITES: matplotlib, numpy
 
@@ -117,7 +117,7 @@ for icol in xrange(ncols):
             ax.set_ylabel("")
 
 pyplot.show()
-pyplot.savefig("%s_sliprate" % (sim))
+pyplot.savefig("%s-2d_sliprate" % (sim))
 
 
 # End of file

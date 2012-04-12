@@ -7,7 +7,7 @@
 #
 # Plot initial stress and slip profiles.
 #
-# PREREQUISITES: matplotlib, numpy
+# PREREQUISITES: matplotlib, numpy, tables.
 
 sim = "tpv13"
 cell = "tri3"
@@ -86,7 +86,7 @@ ax.set_ylim((15.0, 0.0))
 ax.set_ylabel("Dist. Down Dip (km)")
 
 pyplot.show()
-pyplot.savefig("%s_%s_%03dm_stressslip" % (sim,cell,dx))
+pyplot.savefig("%s-2d_%s_%03dm_stressslip" % (sim,cell,dx))
 
 
 # End of file
