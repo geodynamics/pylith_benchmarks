@@ -128,5 +128,5 @@ nodeset 19 name "face_ypos_nofault"
 # Export exodus file
 # ----------------------------------------------------------------------
 export mesh "hex8_refined_20km.exo" dimension 3 overwrite
-export Abaqus "hex8_refined_20km.inp"
+
 

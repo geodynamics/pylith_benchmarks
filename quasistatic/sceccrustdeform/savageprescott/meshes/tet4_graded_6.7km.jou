@@ -14,9 +14,9 @@
 # The fault is restricted to the upper (elastic) layer.
 #
 # The volume is meshed at a variable resolution, with a maximum resolution
-# of 4 km at the upper center of the mesh, and a minimum resolution of
+# of 6.7 km at the upper center of the mesh, and a minimum resolution of
 # 20 km at the outer x-edges of the mesh.
-# The final mesh contains 125760 vertices and 705181 cells.
+# The final mesh contains 97092 vertices and 547407 cells.
 # ----------------------------------------------------------------------
 # Generate geometry
 # ----------------------------------------------------------------------
@@ -25,12 +25,12 @@ playback 'geometry.jou'
 # ----------------------------------------------------------------------
 # Set intervals for curves coincident with fault
 # ----------------------------------------------------------------------
-curve 118 scheme bias fine size 4000.0 factor 1.02 start vertex 76
-curve 126 scheme bias fine size 4000.0 factor 1.02 start vertex 76
-curve 120 scheme bias fine size 4000.0 factor 1.02 start vertex 74
-curve 213 scheme bias fine size 4000.0 factor 1.02 start vertex 129
-curve 125 scheme bias fine size 4000.0 factor 1.02 start vertex 74
-curve 219 scheme bias fine size 4000.0 factor 1.02 start vertex 129
+curve 118 scheme bias fine size 6666.7 factor 1.02 start vertex 76
+curve 126 scheme bias fine size 6666.7 factor 1.02 start vertex 76
+curve 120 scheme bias fine size 6666.7 factor 1.02 start vertex 74
+curve 213 scheme bias fine size 6666.7 factor 1.02 start vertex 129
+curve 125 scheme bias fine size 6666.7 factor 1.02 start vertex 74
+curve 219 scheme bias fine size 6666.7 factor 1.02 start vertex 129
 
 # ----------------------------------------------------------------------
 # Set intervals for curves at end of fault
@@ -53,10 +53,10 @@ surface 104 size 40000.0
 # ----------------------------------------------------------------------
 # Set intervals for curves perpendicular to fault
 # ----------------------------------------------------------------------
-curve 113 scheme bias fine size 4000.0 factor 1.05 start vertex 74
-curve 115 scheme bias fine size 4000.0 factor 1.05 start vertex 76
-curve 147 scheme bias fine size 4000.0 factor 1.05 start vertex 74
-curve 149 scheme bias fine size 4000.0 factor 1.05 start vertex 76
+curve 113 scheme bias fine size 6666.7 factor 1.05 start vertex 74
+curve 115 scheme bias fine size 6666.7 factor 1.05 start vertex 76
+curve 147 scheme bias fine size 6666.7 factor 1.05 start vertex 74
+curve 149 scheme bias fine size 6666.7 factor 1.05 start vertex 76
 #curve 34 scheme bias fine size 52000.0 factor 1.05 start vertex 12
 #curve 64 scheme bias fine size 52000.0 factor 1.05 start vertex 45
 #curve 42 scheme bias fine size 52000.0 factor 1.05 start vertex 12
@@ -77,9 +77,9 @@ surface 43 sizing function type bias start curve 221 223 finish curve 95
 # ----------------------------------------------------------------------
 # Set intervals in vertical direction
 # ----------------------------------------------------------------------
-curve 215 size 4000.0
-curve 217 size 4000.0
-curve 176 scheme bias fine size 4000.0 factor 1.02 start vertex 74
+curve 215 size 6666.7
+curve 217 size 6666.7
+curve 176 scheme bias fine size 6666.7 factor 1.02 start vertex 74
 curve 75 scheme bias fine size 10000.0 factor 1.02 start vertex 46
 curve 77 scheme bias fine size 10000.0 factor 1.02 start vertex 45
 
@@ -208,7 +208,5 @@ nodeset 18 name "face_ypos_nofault"
 # ----------------------------------------------------------------------
 # Export exodus file
 # ----------------------------------------------------------------------
-export mesh "tet4_graded_4km.exo" dimension 3 overwrite
-export Abaqus "tet4_graded_4km.inp"
-
+export mesh "tet4_graded_6.7km.exo" dimension 3 overwrite
 
