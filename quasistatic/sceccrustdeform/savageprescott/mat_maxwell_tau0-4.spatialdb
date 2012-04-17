@@ -3,8 +3,8 @@
 // This spatial database specifies the distribution of material
 // properties. In this case, the material properties are uniform.
 // The properties here correspond to lambda = mu = 30 GPa, and a viscosity
-// that provides a relaxation time (2 * vis/mu) of 200 years. This
-// corresponds to a value of tau0 (recurrence_time/relaxation_time) of 1.
+// that provides a relaxation time (2 * vis/mu) of 50 years. This
+// corresponds to a value of tau0 (recurrence_time/relaxation_time) of 4.
 //
 #SPATIAL.ascii 1
 SimpleDB {
@@ -27,4 +27,4 @@ SimpleDB {
 // (5) vs (m/s)
 // (6) vp (m/s)
 // (7) viscosity (Pa*s)
-0.0  0.0  0.0   2700.0  3333.333333333333  5773.502691896258 9.46728e19
+0.0  0.0  0.0   2700.0  3333.333333333333  5773.502691896258 2.36682e+19
