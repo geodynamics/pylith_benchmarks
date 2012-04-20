@@ -1,0 +1,83 @@
+# ----------------------------------------------------------------------
+# Create blocks for materials
+# ----------------------------------------------------------------------
+block 1 volume 1 2 5 6
+block 1 name "elastic"
+block 2 volume 3 4 7 8
+block 2 name "viscoelastic"
+
+# ----------------------------------------------------------------------
+# Create fault nodeset
+# ----------------------------------------------------------------------
+group "fault" add node in fault_surface
+group "fault" add node in fault_surface@A
+group "fault" add node in fault_surface@D
+group "fault" add node in fault_surface@E
+group "fault" add node in fault_surface@B
+group "fault" add node in fault_surface@C
+group "fault" remove node with z_coord < {-4.0*lockingDepth-0.01*km}
+nodeset 10 fault
+nodeset 10 name "fault"
+
+# ----------------------------------------------------------------------
+# Create nodeset for +x face
+# ----------------------------------------------------------------------
+group "face_xpos" add node in surface 11 14 26 27
+nodeset 11 face_xpos
+nodeset 11 name "face_xpos"
+
+# ----------------------------------------------------------------------
+# Create nodeset for -x face
+# ----------------------------------------------------------------------
+group "face_xneg" add node in surface 19 20 32 34
+nodeset 12 face_xneg
+nodeset 12 name "face_xneg"
+
+# ----------------------------------------------------------------------
+# Create nodeset for +y face
+# ----------------------------------------------------------------------
+group "face_ypos" add node in surface 1 4 6 7
+nodeset 13 face_ypos
+nodeset 13 name "face_ypos"
+
+# ----------------------------------------------------------------------
+# Create nodeset for -y face
+# ----------------------------------------------------------------------
+group "face_yneg" add node in surface 2 3 5 8
+nodeset 14 face_yneg
+nodeset 14 name "face_yneg"
+
+# ----------------------------------------------------------------------
+# Create nodeset for -z face
+# ----------------------------------------------------------------------
+group "face_zneg" add node in surface 24 29 31 33
+nodeset 15 face_zneg
+nodeset 15 name "face_zneg"
+
+# ----------------------------------------------------------------------
+# Create nodeset for +z face
+# ----------------------------------------------------------------------
+group "face_zpos" add node in surface 10 15 17 22
+nodeset 17 face_zpos
+nodeset 17 name "face_zpos"
+
+# ----------------------------------------------------------------------
+# Create nodeset for -y face without fault or x-boundaries
+# ----------------------------------------------------------------------
+group "face_yneg_nofault" add node in face_yneg
+group "face_yneg_nofault" remove node in fault
+group "face_yneg_nofault" remove node in face_xpos
+group "face_yneg_nofault" remove node in face_xneg
+nodeset 18 face_yneg_nofault
+nodeset 18 name "face_yneg_nofault"
+
+# ----------------------------------------------------------------------
+# Create nodeset for +y face without fault or x-boundaries
+# ----------------------------------------------------------------------
+group "face_ypos_nofault" add node in face_ypos
+group "face_ypos_nofault" remove node in fault
+group "face_ypos_nofault" remove node in face_xpos
+group "face_ypos_nofault" remove node in face_xneg
+nodeset 19 face_ypos_nofault
+nodeset 19 name "face_ypos_nofault"
+

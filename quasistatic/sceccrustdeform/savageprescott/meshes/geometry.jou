@@ -1,61 +1,87 @@
-# Description:
-# This journal creates defines the geometry for a mesh with dimensions of
-# 2000 km (x), 1000 km (y), and 400 km (z).  The volume is divided into 2
-# horizontal layers:
-# a top layer from 0 to 40 km, marking the surface elastic layer;
-# a bottom layer from 40 to 400 km, which approximates the viscoelastic
-# half-space.
-# The fault plane is also cut horizontally at 20 km depth, representing
-# the division between the upper locked section and the lower
-# creeping section.
-# The volume is cut vertically by the fault surface, which lies along the
-# x-axis, and by a symmetry plane, which lies along the y-axis.
-# The fault is restricted to the upper two (elastic) layers.
+# -*- Python -*- (syntax highlighting)
 #
+# Description:
+#
+# This journal creates defines the geometry for a mesh with dimensions
+# of 2000 km (x), 1000 km (y), and 400 km (z).  The volume is divided
+# into 2 horizontal layers:
+#   (1) a top layer from 0 to 40 km, marking the surface elastic
+#   layer;
+#   (2) a bottom layer from 40 to 400 km, which approximates the
+# viscoelastic half-space.
+#
+# The fault plane is also cut horizontally at 20 km depth,
+# representing the division between the upper locked section and the
+# lower creeping section.  The volume is cut vertically by the fault
+# surface, which lies along the x-axis, and by a symmetry plane, which
+# lies along the y-axis.  The fault is restricted to the upper two
+# (elastic) layers.
+#
+# ----------------------------------------------------------------------
+# Set units to SI.
+# ----------------------------------------------------------------------
+#{Units('si')}
+#
+# ----------------------------------------------------------------------
+# Reset geometry.
+# ----------------------------------------------------------------------
+reset
+
+# Make sure undo is off to prevent errors in stitching volumes.
+undo off
+
 # ----------------------------------------------------------------------
 # Create outer block
 # ----------------------------------------------------------------------
-
 # Block is 2000 km x 1000 km x 400 km
 # -1000 km <= x <= 1000 km
 # -500 km <= y <= 500 km
 # -400 km <= z <= 0 km
-reset
-brick x 2000000 y 1000000 z 400000
+#
+#{blockWidth=1000.0*km}
+#{blockLength=2000.0*km}
+#{blockHeight=400.0*km}
+#{faultWidth=40.0*km}
+#{lockingDepth=20.0*km}
+
+brick x {blockLength} y {blockWidth} z {blockHeight}
 
 # Translate block so the top is at z=0
-volume 1 move x 0 y 0 z -200000
+volume 1 move x {-xoffset} y 0 z {-0.5*blockHeight}
 
 # ----------------------------------------------------------------------
 # Create interface surfaces
 # ----------------------------------------------------------------------
 create planar surface with plane xplane offset 0
-surface 7 name "fault_surface"
-create planar surface with plane zplane offset -40000
-surface 8 name "material_interface"
+#{sid=Id("surface")}
+surface {sid} name "fault_surface"
+
+create planar surface with plane zplane offset {-faultWidth}
+#{sid=Id("surface")}
+surface {sid} name "material_interface"
+
 create planar surface with plane yplane offset 0
-surface 9 name "symmetry_plane"
-create planar surface with plane zplane offset -20000
-surface 10 name "locking_transition"
+#{sid=Id("surface")}
+surface {sid} name "symmetry_plane"
+
+create planar surface with plane zplane offset {-lockingDepth}
+#{sid=Id("surface")}
+surface {sid} name "locking_transition"
 
 # ----------------------------------------------------------------------
 # Cut volume with interfaces.
 # ----------------------------------------------------------------------
-compress all
-webcut volume all with plane fault_surface
-webcut volume all with plane material_interface
-webcut volume all with plane symmetry_plane
+# Cut fault with locking transition (not needed in volume)
+webcut volume 1 with plane fault_surface
+webcut volume 1 6 with plane material_interface
+webcut volume 1 6 7 8 with plane symmetry_plane
 webcut volume 2 with plane locking_transition
-webcut volume 16 with plane locking_transition
-
-# ----------------------------------------------------------------------
-# Remove surface bodies.
-# ----------------------------------------------------------------------
-delete body 3 4 5 7 8 9 11 12 14 17 18 20 21 23
+delete body 5
 
 # ----------------------------------------------------------------------
 # Imprint all volumes, merging surfaces.
 # ----------------------------------------------------------------------
-imprint all with volume all
+imprint all
 merge all
-delete volume 2 16 25 26
+delete body 2 3 4 13
+compress all
