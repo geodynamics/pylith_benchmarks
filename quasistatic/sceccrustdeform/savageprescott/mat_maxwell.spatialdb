@@ -1,4 +1,4 @@
-// -*- C++ -*- (tell Emacs to use C++ mode for syntax highlighting)
+// -*- C++ -*- (syntax highlighting)
 //
 // This spatial database specifies the distribution of material
 // properties. In this case, the material properties are uniform.

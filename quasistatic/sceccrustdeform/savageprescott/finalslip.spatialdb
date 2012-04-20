@@ -1,4 +1,4 @@
-// -*- C++ -*- (tell Emacs to use C++ mode for syntax highlighting)
+// -*- C++ -*- (syntax highlighting)
 //
 // This spatial database specifies the distribution of slip on the
 // fault surface. We apply 4.0 m of left-lateral slip, corresponding to

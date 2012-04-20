@@ -1,22 +1,13 @@
 This directory contains the files necessary to run a simulation of the
-Savage and Prescott [1978] solution for a strike-slip fault in an elastic
+Savage and Prescott (1978) solution for a strike-slip fault in an elastic
 layer overlying a viscoelastic half-space. In this model, coseismic slip
 occurs at regular recurrence intervals on the upper locked part of the
 fault, while constant-velocity creep occurs on the lower part of the fault.
+
 This directory contains the files necessary to run the problem using
 PyLith, as well as a utils directory that contains Python scripts and
 .cfg files to compute the analytical solution, and to generate velocity
 results for the PyLith solutions.
-
-To run the PyLith simulation, you must first unzip the desired mesh file(s).
-Go to the meshes directory, and unzip the desired mesh(es). The geometry
-of each mesh is described in the corresponding Cubit journal file (.jou
-files). To run the simulation, go to the parameters directory and run one
-of the shell scripts, or just run PyLith directly using the appropriate
-.cfg files on the command line (see the README in the parameters directory).
-Note that the problem will take quite a while to run. Once the problem has
-finished running, there will be a number of .vtk files in a subdirectory of
-the results directory, which may be viewed with a package such as ParaView.
 
 There are several scripts in the utils directory to aid the process of
 comparing analytical and numerical results. Look at the README in the utils
@@ -28,15 +19,10 @@ asthenospheric flow at the beginning of computations, while the numerical
 solution requires several earthquake cycles to reach this state. For direct
 comparison, you can either reference all results to the displacement field
 immediately following an earthquake, or you can look at velocity results.
-There are scripts in the utils directory to do the referencing as well as
-scripts to compute velocity results. See the README in the utils directory
-for details.
 
 The most accurate comparison between analytical and numerical results is to
 compare the displacements referenced to the displacements at a particular
 time (e.g., the first time step following an earthquake). This is because
 the analytical velocity results are computed exactly, while for the PyLith
 results we approximate velocities by differencing displacements over a time
-step. There is a script in the figures directory to create plots comparing
-the analytical and numerical displacement results. See the README in that
-directory for details.
+step. 
