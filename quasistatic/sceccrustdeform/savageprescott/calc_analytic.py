@@ -101,13 +101,13 @@ class AnalyticalSoln(Application):
     outputVel = pyre.inventory.bool("output_vel", default=True)
     outputVel.meta['tip'] = "Output velocity file?"
 
-    dispfilename = pyre.inventory.str("disp_filename", 
-                                      default="output/analytic_disp.txt")
-    dispfilename.meta['tip'] = "Filename for displacement output."
+    dispFilename = pyre.inventory.str("disp_filename", 
+                                      default="analytical/analytic_disp.txt")
+    dispFilename.meta['tip'] = "Filename for displacement output."
 
-    velfilename = pyre.inventory.str("vel_filename",
-                                        default="output/analytic_vel.txt")
-    velfilename.meta['tip'] = "Filename for velocity output."
+    velFilename = pyre.inventory.str("vel_filename",
+                                        default="analytical/analytic_vel.txt")
+    velFilename.meta['tip'] = "Filename for velocity output."
 
   # PUBLIC METHODS /////////////////////////////////////////////////////
 
@@ -148,11 +148,11 @@ class AnalyticalSoln(Application):
 
     self.outputDisp = self.inventory.outputDisp
     self.outputVel = self.inventory.outputVel
-    self.dispfilename = self.inventory.dispfilename
-    self.velfilename = self.inventory.velfilename
+    self.dispFilename = self.inventory.dispFilename
+    self.velFilename = self.inventory.velFilename
 
-    self.deltaT = self.recurrenceTime/self.numberSteps
-    self.tauFac = 0.5*self.shearModulus/self.viscosity
+    self.deltaT = self.recurrenceTime / self.numberSteps
+    self.tauFac = 0.5 * self.shearModulus / self.viscosity
     self.tau0 = self.recurrenceTime * self.tauFac
 
     return
@@ -163,6 +163,8 @@ class AnalyticalSoln(Application):
     Create array of points for output along with series terms
     for each point.
     """
+    print "Generating points and point coefficients:"
+    
     self.points = numpy.zeros(self.numberPoints, dtype=numpy.float64)
     self.pointCoeff = numpy.zeros((self.numberPoints, self.numberTerms),
                                   dtype=numpy.float64)
@@ -188,6 +190,8 @@ class AnalyticalSoln(Application):
     """
     Compute transient solution.
     """
+    print "Generating solution:"
+    
     solutionU2 = numpy.zeros((self.numberCycles,
                               self.numberSteps + 1,
                               self.numberPoints),
@@ -212,6 +216,7 @@ class AnalyticalSoln(Application):
 
 
     for cycle in range(self.numberCycles):
+      print "  Working on cycle # %d:" % cycle
       time = cycle * self.numberSteps * deltaT
       tau = time * tauFac
       if cycle > 0:
@@ -293,7 +298,7 @@ class AnalyticalSoln(Application):
     Computes viscoelastic solution for times greater than the recurrence time.
     """
     tau0 = self.tau0
-    velocity = self.velocity
+    velocity = self.velocity.value
     recurrenceTime = self.recurrenceTime.value
 
     solutionU = numpy.zeros(self.numberPoints, dtype=numpy.float64)
@@ -334,10 +339,12 @@ class AnalyticalSoln(Application):
     """
     
     if solutionType == "displacement":
-      filename = self.dispfilename
+      print "Writing displacements:"
+      filename = self.dispFilename
       solution = self.solutionUTot
     else:
-      filename = self.velfilename
+      print "Writing velocities:"
+      filename = self.velFilename
       solution = self.solutionVTot
 
     from pyre.units.time import year
@@ -346,10 +353,10 @@ class AnalyticalSoln(Application):
     f.write("dt = %f*year\n" % (self.deltaT.value/year.value,))
     f.write("dx = %s\n" % self.deltaX)
     f.write("ncycles = %d\n" % self.numberCycles)
-    f.write("nsteps = %d\n" % (self.numberSteps+1,))
+    f.write("nsteps = %d\n" % (self.numberSteps + 1,))
     f.write("npoints = %d\n" % self.numberPoints)
     data = solution.reshape( (self.numberCycles,
-                              (self.numberSteps+1)*self.numberPoints) )
+                              (self.numberSteps + 1) * self.numberPoints) )
     numpy.savetxt(f, data, fmt="%14.6e")
     f.close()
 

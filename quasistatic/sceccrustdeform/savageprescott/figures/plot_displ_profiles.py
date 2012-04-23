@@ -10,49 +10,91 @@
 # ======================================================================
 #
 
-cycles = [2,9]
+analyticalFile = "../analytical/savpres_displ.csv"
+numericalFiles = ["../output/sp_hex8/sp_hex8-groundsurf.h5",
+                  "../output/sp_tet4/sp_tet4-groundsurf.h5"]
+# The indices for analytical solution need changing for time step size of 10.
+anlRefCol = 370
+anlOutputCols = [372, 380, 390, 400, 408]
+# End change.
+numRefStep = 180
+numOutputSteps = [181, 185, 190, 195, 199]
+numSteps = 5
+numPlots = 2
+anlHeaderLines = 5
+
 style = "lightbg"
-fileSuffix = ".eps"
 plotSize = "poster"
-numericalFileRoot = "../results/spbm_hex8_graded_20km/spbm_hex8_graded_c"
-analyticalFileRoot = "../utils/savpres_displ_c"
-outputFileRoot = "spbm_hex8_graded_c"
-coseismicDispl = 400.0
-elasticThick = 40.0
+outputFiles = ["spbm_hex8.eps", "spbm_tet4.eps"]
+coseismicDispl = 4.0
+elasticThick = 4.0e4
 
 # ======================================================================
 import numpy
 import pylab
+import tables
 from Figure import Figure
 
 # ----------------------------------------------------------------------
 class ProfileSet(object):
   """
-  Set of profiles.
+  Get profiles for analytical solution.
   """
 
-  def __init__(self, filename):
-    self.data = numpy.loadtxt(filename, comments="#")
-    ncols = self.data.shape[1]
-    self.data[:,1:ncols+1] /= coseismicDispl # Coseismic displacement
-    self.data[:,0] /= elasticThick # Thickness of elastic layer
+  def __init__(self, filename, solnType):
+    if (solnType == "analytical"):
+      # Analytical solution stuff is completely broken for the new analytical
+      # output.  I was just starting to fix it.
+      f = open(filename, 'r')
+      for line in range(anlHeaderLines):
+        
+      soln = numpy.loadtxt(filename, comments="#", dtype=numpy.float64)
+      self.xCoord = soln[:,0]/elasticThick
+      numPoints = self.xCoord.shape[0]
+      refDispl = soln[:,anlRefCol]
+      self.data = (soln[:,anlOutputCols] - refDispl)/coseismicDispl
+    else:
+      # Open file and get coordinates
+      h5 = tables.openFile(filename, "r")
+      coords = h5.root.geometry.vertices[:]
+
+      # Get coordinate indices for y == 0.0 and x >= 0.0
+      yProf = coords[:,1] == 0.0
+      posVals = coords[:,0] >= 0.0
+      posProf = numpy.logical_and(yProf, posVals)
+      posProfInds = numpy.nonzero(posProf)
+
+      # Get solution, and then remove profile indices that give negative displ.
+      soln = h5.root.vertex_fields.displacement[:]
+      solnTest = soln[numRefStep, posProfInds, 1]
+      negInd = numpy.nonzero(solnTest < 0.0)[1][0]
+      profileInds = numpy.delete(posProfInds, negInd)
+
+      # Get test profile coordinates and then sort key.
+      profCoords = coords[profileInds, 0]
+      coordSort = numpy.argsort(profCoords)
+      profInds = profileInds[coordSort]
+
+      # Get coordinates and solution.
+      self.xCoord = coords[profInds, 0]/elasticThick
+      numPoints = self.xCoord.shape[0]
+      refDispl = soln[numRefStep, profInds, 1]
+      refDisplReshape = numpy.column_stack((refDispl, refDispl, refDispl,
+                                            refDispl, refDispl))
+      solnSteps = soln[numOutputSteps, :, 1]
+      self.data = (solnSteps[:, profInds].transpose() - refDisplReshape)/coseismicDispl
+      
     return
 
 
   def plot(self, linestyle, linewidth):
     data = self.data
-    ncols = data.shape[1]
-    if ncols == 42:
-      indicesTime = [2, 10, 20, 30, 38]
-    elif ncols == 21:
-      indicesTime = [1, 5, 10, 15, 19]
+    xCoord = self.xCoord
 
     colorOrder = ('orange', 'blue', 'red', 'green', 'purple')
-    i = 0
-    for index in indicesTime:
-      h = pylab.plot(data[:,0], data[:,1+index], linestyle, linewidth=linewidth,
-                     color=colorOrder[i])
-      i += 1
+    for step in range(numSteps):
+      h = pylab.plot(xCoord, data[:,step], linestyle, linewidth=linewidth,
+                     color=colorOrder[step])
     return h
 
 
@@ -62,7 +104,7 @@ class Profiles(Figure):
   Figure with displacement time histories for a site.
   """
 
-  def __init__(self, cycle):
+  def __init__(self, plotNum):
     if plotSize == "poster":
       fontsize = 14
     elif plotSize == "presentation":
@@ -72,7 +114,8 @@ class Profiles(Figure):
     else:
       raise ValueError("Unknown plotSize '%s'." % plotSize)
     Figure.__init__(self, color=style, fontsize=fontsize)
-    self.cycle = cycle
+    self.plotNum = plotNum
+    
     return
 
 
@@ -87,12 +130,11 @@ class Profiles(Figure):
 
     # Plot profiles
     self.axes(1, 1, 1, 1)
-    analyticFile = analyticalFileRoot + repr(self.cycle) + ".txt"
-    analytic = ProfileSet(analyticFile)
+    analytic = ProfileSet(analyticalFile, "analytical")
     ah = analytic.plot(linestyle="-", linewidth=1)
     pylab.hold(True)
-    simulationFile = numericalFileRoot + repr(self.cycle) + ".txt"
-    simulation = ProfileSet(simulationFile)
+    simulationFile = numericalFiles[self.plotNum]
+    simulation = ProfileSet(simulationFile, "numerical")
     sh = simulation.plot(linestyle="--", linewidth=1)
     pylab.hold(False)
 
@@ -110,7 +152,7 @@ class Profiles(Figure):
 
   def save(self):
     pylab.figure(self.handle.number)
-    outputFile = outputFileRoot + repr(self.cycle) + fileSuffix
+    outputFile = outputFiles[self.plotNum]
     pylab.savefig(outputFile)
     return
 
@@ -133,12 +175,12 @@ class Profiles(Figure):
 # ----------------------------------------------------------------------
 if __name__ == "__main__":
 
-  # import pdb
-  # pdb.set_trace()
+  import pdb
+  pdb.set_trace()
 
   figures = []
-  for cycle in cycles:
-    figure = Profiles(cycle)
+  for plotNum in range(numPlots):
+    figure = Profiles(plotNum)
     figure.plot()
     figures.append(figure)
 
