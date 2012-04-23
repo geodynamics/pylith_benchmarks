@@ -333,7 +333,7 @@ class AnalyticalSoln(Application):
     Write solution a text file.
     """
     
-    if solutionType == "dispacement":
+    if solutionType == "displacement":
       filename = self.dispfilename
       solution = self.solutionUTot
     else:
@@ -349,7 +349,7 @@ class AnalyticalSoln(Application):
     f.write("nsteps = %d\n" % (self.numberSteps+1,))
     f.write("npoints = %d\n" % self.numberPoints)
     data = solution.reshape( (self.numberCycles,
-                              (self.numberSteps*1)*self.numberPoints) )
+                              (self.numberSteps+1)*self.numberPoints) )
     numpy.savetxt(f, data, fmt="%14.6e")
     f.close()
 
