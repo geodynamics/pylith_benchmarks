@@ -9,7 +9,7 @@
 #
 
 cell = "hex8"
-scaleFactor = 4.0 * 4.0 / 40.0
+scaleFactor = 0.5
 tindex = 38
 pngfile = "savageprescott_soln.png"
 
