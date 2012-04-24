@@ -17,7 +17,7 @@ fontsize = 8
 from pyre.units.time import year
 from pyre.units.length import km,m
 tcycle = 200.0*year
-elastThick = 20.0*km
+elastThick = 40.0*km
 eqslip = 4.0*m
 
 # ======================================================================
@@ -29,6 +29,9 @@ import os
 
 sys.path.append("../../../figures")
 import matplotlibext
+
+# import pdb
+# pdb.set_trace()
 
 header = 0.45
 
@@ -100,7 +103,13 @@ class PyLithOutput(object):
     dist = vertices[indices,0].squeeze()
     disp = disp[:,indices,1].squeeze()
     
-    indices = numpy.argsort(dist)
+    # Remove value on negative side of fault and sort distances.
+    numSteps = disp.shape[0]
+    dispTest = disp[numSteps -1,:]
+    negInd = numpy.nonzero(dispTest < 0.0)[0][0]
+    distPos = numpy.delete(dist, negInd)
+    indices = numpy.argsort(distPos)
+    
     self.dist = dist[indices] / elastThick.value # Normalize by elastic thickness
     self.disp = disp[:,indices] / eqslip.value # Normalize by eqslip
     self.time = time
