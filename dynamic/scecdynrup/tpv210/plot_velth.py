@@ -10,6 +10,7 @@
 # PREREQUISITES: matplotlib, numpy
 
 sim = "tpv13"
+showAB = True
 
 # ----------------------------------------------------------------------
 import tables
@@ -28,6 +29,8 @@ lineStyle = [("red", (2.0, 1.0)),
              ("orange", (6.0, 1.0, 1.5, 1.0)),
              ("black", (None, None)),
              ]
+
+labelsAB = 'abcd'
 
 # ----------------------------------------------------------------------
 def getval(v):
@@ -110,6 +113,11 @@ for irow in xrange(nrows):
             if icol > 0:
                 ax.set_yticklabels([])
                 ax.set_ylabel("")
+
+            if showAB:
+                ilabel = irow*ncols + icol
+                ax.text(0.15, 2.4, "(%s)" % labelsAB[ilabel],
+                        fontweight='bold')
 
         isim += 1
     

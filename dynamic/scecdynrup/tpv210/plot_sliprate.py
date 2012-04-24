@@ -10,6 +10,7 @@
 # PREREQUISITES: matplotlib, numpy
 
 sim = "tpv13"
+showAB = True
 
 # ----------------------------------------------------------------------
 import tables
@@ -28,6 +29,8 @@ lineStyle = [("red", (2.0, 1.0)),
              ("orange", (6.0, 1.0, 1.5, 1.0)),
              ("black", (None, None)),
              ]
+
+labelsAB = 'abcdef'
 
 # ----------------------------------------------------------------------
 def getval(v):
@@ -66,7 +69,7 @@ for irow in xrange(nrows):
     
         isim = 0
         for (label, simdir) in simdirs:
-            filename = "%s/faultst+%03ddp%03d.dat" % \
+            filename = "%s/faultst%+04ddp%03d.dat" % \
                 (simdir, int(locs[iloc][0]*10), int(locs[iloc][1]*10))
             data = numpy.loadtxt(filename, comments="#", usecols=(0,5),
                                  converters={0: getval,
@@ -106,6 +109,11 @@ for irow in xrange(nrows):
         if icol > 0:
             ax.set_yticklabels([])
             ax.set_ylabel("")
+
+        if showAB:
+            ilabel = irow*ncols + icol
+            ax.text(0.15, 14.5, "(%s)" % labelsAB[ilabel],
+                    fontweight='bold')
     
         iloc += 1
 

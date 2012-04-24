@@ -11,6 +11,7 @@
 
 sim = "tpv13"
 griddata = False
+showAB = True
 
 # ----------------------------------------------------------------------
 import tables
@@ -28,6 +29,8 @@ lineStyle = [("red", 'dashed'),
              ("orange", 'dotted'), 
              ("black", 'solid'),
              ]
+
+labelsAB = 'ab'
 
 # ----------------------------------------------------------------------
 def getval(v):
@@ -119,6 +122,11 @@ for icol in xrange(ncols):
             ax.set_title("")
             ax.set_yticklabels([])
             ax.set_ylabel("")
+
+        if showAB:
+            ilabel = icol
+            ax.text(-15, -1, "(%s)" % labelsAB[ilabel],
+                     fontweight='bold')
 
 pyplot.show()
 pyplot.savefig("%s_ruptime" % (sim))
