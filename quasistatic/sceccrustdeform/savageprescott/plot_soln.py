@@ -9,7 +9,7 @@
 #
 
 cell = "hex8"
-scaleFactor = 5.0/40.0
+scaleFactor = 4.0 * 4.0 / 40.0
 tindex = 38
 pngfile = "savageprescott_soln.png"
 
@@ -65,12 +65,14 @@ class PlotSoln(Mayavi):
       self.colorBg = dkslate
       self.colorSurfTrace = red
       self.colorCities = ltyellow
+      self.lut = "hot"
+      self.lutReverse = True
     else:
       self.colorFg = (0,0,0)
       self.colorBg = (1,1,1)
       self.colorSurfTrace = (0,0,1)
-      self.lut = "hot"
-      self.lutReverse = True
+      self.lut = "blue-red"
+      self.lutReverse = False
 
     #self.windowSize = (1400+16, 675+120)
     self.windowSize = (900+16, 434+120)
@@ -113,6 +115,8 @@ class PlotSoln(Mayavi):
     wire.actor.mapper.scalar_visibility = False
 
     colorbar = script.engine.current_object.module_manager.scalar_lut_manager
+    colorbar.lut_mode = self.lut
+    colorbar.reverse_lut = self.lutReverse
     colorbar.scalar_bar.orientation = "horizontal"
     colorbar.scalar_bar.label_format = "%3.1f"
     colorbar.scalar_bar.label_text_property.shadow = True
@@ -120,9 +124,9 @@ class PlotSoln(Mayavi):
     colorbar.scalar_bar.title_text_property.italic = False
     colorbar.scalar_bar.title_text_property.shadow = True
     colorbar.show_scalar_bar = True
-    colorbar.data_range = (0.0, 18.0)
-    colorbar.number_of_labels = 7
-    colorbar.data_name = "Displacement (m)"
+    colorbar.data_range = (0.0, 5.0)
+    colorbar.number_of_labels = 6
+    colorbar.data_name = "Displacement / Coesismic Slip"
     scalar_bar = colorbar.scalar_bar_widget.representation
     scalar_bar.position2 = (0.4, 0.15)
     scalar_bar.position = (0.25, 0.02)
@@ -163,11 +167,14 @@ class PlotSoln(Mayavi):
     filename = "output/%s.h5" % cell
     h5 = tables.openFile(filename, 'r')
 
+    elastThick = 40.0e+3
+    eqslip = 4.0
+
     cells = h5.root.topology.cells[:]
     (ncells, ncorners) = cells.shape
-    vertices = h5.root.geometry.vertices[:] / (1e+3 * 40.0)
+    vertices = h5.root.geometry.vertices[:] / elastThick
     (nvertices, spaceDim) = vertices.shape
-    disp = h5.root.vertex_fields.displacement[tindex,:,:]
+    disp = h5.root.vertex_fields.displacement[tindex,:,:] / eqslip
     h5.close()
     
     if cell == "tet4":
