@@ -10,6 +10,7 @@
 # PREREQUISITES: matplotlib, numpy
 
 sim = "tpv13"
+showAB = True
 
 # ----------------------------------------------------------------------
 import tables
@@ -45,6 +46,8 @@ locs = [0, 3.0, 7.5, 12.0]
 
 nrows = len(locs)
 ncols = 2
+labelsAB = 'abcdefgh'
+
 
 for icol in xrange(ncols):
 
@@ -99,9 +102,9 @@ for icol in xrange(ncols):
         ax.set_xlabel("Time (s)")
         ax.set_ylim((0, 16.0))
         ax.set_ylabel("Slip Rate (m/s)")
-        ax.set_title("%3.1f km Down Dip" % locs[irow],
-                     horizontalalignment="right",
-                     fontweight='bold')
+        if icol == 0:
+            ax.text(0, 17, "%3.1f km Down Dip" % locs[irow],
+                    fontweight='bold')
 
         if irow == 0:
             ax.legend(loc="lower right",
@@ -115,6 +118,12 @@ for icol in xrange(ncols):
             ax.set_title("")
             ax.set_yticklabels([])
             ax.set_ylabel("")
+
+        if showAB:
+            ilabel = icol*nrows + irow
+            ax.text(0.2, 14, "(%s)" % labelsAB[ilabel],
+                    fontweight='bold')
+            
 
 pyplot.show()
 pyplot.savefig("%s-2d_sliprate" % (sim))

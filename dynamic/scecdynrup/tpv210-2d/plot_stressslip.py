@@ -12,6 +12,7 @@
 sim = "tpv13"
 cell = "tri3"
 dx = 100
+showAB = True
 
 infoFilename = "output/%s_%s_%03dm-fault_info.h5" % (sim,cell,dx)
 dataFilename = "output/%s_%s_%03dm-fault.h5" % (sim,cell,dx)
@@ -43,7 +44,7 @@ dipDist = -vertices[:,1]/sin(60.0*pi/180.0)/1.0e+3
 order = numpy.argsort(dipDist)
 
 figure = matplotlibext.Figure()
-figure.open(3.0, 5.25, margins=[[0.45, 0, 0.15], [0.35, 0.55, 0.1]], dpi=150)
+figure.open(3.0, 5.25, margins=[[0.45, 0, 0.15], [0.35, 0.55, 0.2]], dpi=150)
 
 ax = figure.axes(2.0, 1, 1.0, 1)
 ax.plot(traction[order,0], dipDist[order], 
@@ -74,6 +75,9 @@ ax.legend(('$T_\mathit{shear}$',
            '$T_\mathit{failure}$',
            '$T_\mathit{sliding}$',
            ), loc="upper left")
+if showAB:
+    ax.text(-150, -0.5, "(a)", fontweight='bold')
+             
 
 ax = figure.axes(2.0, 1, 2.0, 1)
 itime = slip.shape[0]-1
@@ -84,6 +88,8 @@ ax.plot(slip[itime,order,0], dipDist[order],
 ax.set_xlabel("Slip (m)")
 ax.set_ylim((15.0, 0.0))
 ax.set_ylabel("Dist. Down Dip (km)")
+if showAB:
+    ax.text(0, -0.5, "(b)", fontweight='bold')
 
 pyplot.show()
 pyplot.savefig("%s-2d_%s_%03dm_stressslip" % (sim,cell,dx))
