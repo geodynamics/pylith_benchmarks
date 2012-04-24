@@ -102,11 +102,11 @@ class AnalyticalSoln(Application):
     outputVel.meta['tip'] = "Output velocity file?"
 
     dispFilename = pyre.inventory.str("disp_filename", 
-                                      default="analytical/analytic_disp.txt")
+                                      default="output/analytic_disp.txt")
     dispFilename.meta['tip'] = "Filename for displacement output."
 
     velFilename = pyre.inventory.str("vel_filename",
-                                        default="analytical/analytic_vel.txt")
+                                        default="output/analytic_vel.txt")
     velFilename.meta['tip'] = "Filename for velocity output."
 
   # PUBLIC METHODS /////////////////////////////////////////////////////
