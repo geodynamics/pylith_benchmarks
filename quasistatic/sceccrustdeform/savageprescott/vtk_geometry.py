@@ -5,12 +5,10 @@
 #                           Brad T. Aagaard
 #                        U.S. Geological Survey
 #
-# {LicenseText}
-#
 # ======================================================================
 #
 
-from enthought.tvtk.api import tvtk
+from tvtk.api import tvtk
 import numpy
 
 # ----------------------------------------------------------------------

@@ -41,9 +41,9 @@ cells = ["Hex8",
 #symdict = {'Hex8': 's',
 #           'Tet4': '^',
 #           }
-lineStyle = [("red", (2.0, 1.0)),
-             ("blue", (4.0, 1.0)),
-             ("purple", (6.0, 1.0)),
+lineStyle = [("blue", (6.0, 2.0)),
+             ("red", (3.0, 2.0)),
+             ("purple", (2.0, 1.0)),
              ("green", (3.0, 1.0, 1.5, 1.0)),
              ("orange", (6.0, 1.0, 1.5, 1.0)),
              ("black", (None, None)),
@@ -103,13 +103,7 @@ class PyLithOutput(object):
     dist = vertices[indices,0].squeeze()
     disp = disp[:,indices,1].squeeze()
     
-    # Remove value on negative side of fault and sort distances.
-    numSteps = disp.shape[0]
-    dispTest = disp[numSteps -1,:]
-    negInd = numpy.nonzero(dispTest < 0.0)[0][0]
-    distPos = numpy.delete(dist, negInd)
-    indices = numpy.argsort(distPos)
-    
+    indices = numpy.argsort(dist)
     self.dist = dist[indices] / elastThick.value # Normalize by elastic thickness
     self.disp = disp[:,indices] / eqslip.value # Normalize by eqslip
     self.time = time

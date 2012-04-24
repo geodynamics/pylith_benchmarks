@@ -5,28 +5,26 @@
 #                           Brad T. Aagaard
 #                        U.S. Geological Survey
 #
-# {LicenseText}
-#
 # ======================================================================
 #
 
-shape = "hex8"
+cell = "hex8"
 scaleFactor = 5.0/40.0
-t = 1900
+tindex = 38
 pngfile = "savageprescott_soln.png"
 
 style = {'colors': "lightbg",
          }
 
-from enthought.mayavi.app import Mayavi
+from mayavi.plugins.app import Mayavi
+from mayavi.sources.vtk_data_source import VTKDataSource
+from mayavi.filters.warp_vector import WarpVector
+from mayavi.filters.extract_vector_norm import ExtractVectorNorm
+from mayavi.modules.surface import Surface
+from mayavi.modules.outline import Outline
+from mayavi.modules.axes import Axes
+from mayavi.modules.surface import Surface
 import vtk_geometry
-from enthought.mayavi.sources.vtk_data_source import VTKDataSource
-from enthought.mayavi.filters.warp_vector import WarpVector
-from enthought.mayavi.filters.extract_vector_norm import ExtractVectorNorm
-from enthought.mayavi.modules.surface import Surface
-from enthought.mayavi.modules.outline import Outline
-from enthought.mayavi.modules.axes import Axes
-from enthought.mayavi.modules.surface import Surface
 
 class PlotSoln(Mayavi):
 
@@ -74,7 +72,8 @@ class PlotSoln(Mayavi):
       self.lut = "hot"
       self.lutReverse = True
 
-    self.windowSize = (1600+16, 675+120)
+    #self.windowSize = (1400+16, 675+120)
+    self.windowSize = (900+16, 434+120)
     self.aaframes = 4
 
     return
@@ -114,8 +113,8 @@ class PlotSoln(Mayavi):
     wire.actor.mapper.scalar_visibility = False
 
     colorbar = script.engine.current_object.module_manager.scalar_lut_manager
+    colorbar.scalar_bar.orientation = "horizontal"
     colorbar.scalar_bar.label_format = "%3.1f"
-    colorbar.scalar_bar.label_text_property.font_size = 18
     colorbar.scalar_bar.label_text_property.shadow = True
     colorbar.scalar_bar.label_text_property.italic = False
     colorbar.scalar_bar.title_text_property.italic = False
@@ -123,10 +122,10 @@ class PlotSoln(Mayavi):
     colorbar.show_scalar_bar = True
     colorbar.data_range = (0.0, 18.0)
     colorbar.number_of_labels = 7
-    w,h = colorbar.scalar_bar.position2
-    colorbar.scalar_bar.position2 = (0.4, 0.11)
-    colorbar.scalar_bar.position = (0.25, 0.02)
-    colorbar.data_name = "Displacement [m]"
+    colorbar.data_name = "Displacement (m)"
+    scalar_bar = colorbar.scalar_bar_widget.representation
+    scalar_bar.position2 = (0.4, 0.15)
+    scalar_bar.position = (0.25, 0.02)
 
     return
     
@@ -157,30 +156,30 @@ class PlotSoln(Mayavi):
 
 
   def _readData(self):
-    from enthought.tvtk.api import tvtk
+    from tvtk.api import tvtk
     import tables
     import numpy
 
-    filename = "../results/spbm_%s_graded3_20km/spbm_%s_graded3_20km_t%04d.h5" % (shape, shape, t)
+    filename = "output/%s.h5" % cell
     h5 = tables.openFile(filename, 'r')
 
     cells = h5.root.topology.cells[:]
     (ncells, ncorners) = cells.shape
     vertices = h5.root.geometry.vertices[:] / (1e+3 * 40.0)
     (nvertices, spaceDim) = vertices.shape
-    disp = h5.root.solution.snapshot0.displacements[:]
+    disp = h5.root.vertex_fields.displacement[tindex,:,:]
     h5.close()
     
-    if shape == "tet4":
+    if cell == "tet4":
         assert(spaceDim == 3)
         assert(ncorners == 4)
         cellType = tvtk.Tetra().cell_type
-    elif shape == "hex8":
+    elif cell == "hex8":
         assert(spaceDim == 3)
         assert(ncorners == 8)
         cellType = tvtk.Hexahedron().cell_type
     else:
-        raise ValueError("Unknown shape '%s'." % shape)
+        raise ValueError("Unknown cell '%s'." % cell)
 
     data = tvtk.UnstructuredGrid()
     data.points = vertices
@@ -197,4 +196,3 @@ if __name__ == "__main__":
 
 
 # End of file
-
