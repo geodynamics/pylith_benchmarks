@@ -34,7 +34,7 @@ playback 'createbc.jou'
 # ----------------------------------------------------------------------
 # Export exodus file
 # ----------------------------------------------------------------------
-export mesh "hex8_refined_20km.exo" dimension 3 overwrite
+export mesh "hex8_6.7km.exo" dimension 3 overwrite
 
 
 

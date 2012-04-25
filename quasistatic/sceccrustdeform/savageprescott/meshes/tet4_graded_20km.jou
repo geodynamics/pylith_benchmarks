@@ -42,7 +42,7 @@ playback 'createbc.jou'
 # ----------------------------------------------------------------------
 # Export exodus file
 # ----------------------------------------------------------------------
-export mesh "tet4_graded_20km.exo" dimension 3 overwrite
+export mesh "tet4_20km.exo" dimension 3 overwrite
 
 
 
