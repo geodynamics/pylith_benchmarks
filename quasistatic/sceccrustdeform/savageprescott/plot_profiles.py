@@ -180,16 +180,19 @@ for irow in xrange(nrows):
 
 
   if irow == 0 and icol == ncols-1:
+    labels = ["Analytic"]
     proxies = []
     proxies.append(lines.Line2D((0,0),(1,1), color='fg'))
     isim = 0
-    for c in cells:
-      proxies.append(lines.Line2D((0,0),(1,1), 
-                                  color=lineStyle[isim][0],
-                                  dashes=lineStyle[isim][1]))
-      isim += 1
+    for r in res:
+      for c in cells:
+        labels.append("%s %s" % (c, r))
+        proxies.append(lines.Line2D((0,0),(1,1), 
+                                    color=lineStyle[isim][0],
+                                    dashes=lineStyle[isim][1]))
+        isim += 1
 
-    ax.legend(proxies, ["Analytic"] + cells,
+    ax.legend(proxies, labels,
               loc="lower right",
               bbox_to_anchor=(1,1.2), 
               borderaxespad=0)
