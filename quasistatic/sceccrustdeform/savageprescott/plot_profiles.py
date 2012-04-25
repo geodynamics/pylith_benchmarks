@@ -38,14 +38,17 @@ header = 0.45
 cells = ["Hex8",
          "Tet4",
          ]
+res = ["20km",
+       #"6.7km",
+       ]
 #symdict = {'Hex8': 's',
 #           'Tet4': '^',
 #           }
 lineStyle = [("blue", (6.0, 2.0)),
              ("red", (3.0, 2.0)),
+             ("green", (6.0, 1.0, 1.5, 1.0)),
+             ("orange", (3.0, 1.0, 1.5, 1.0)),
              ("purple", (2.0, 1.0)),
-             ("green", (3.0, 1.0, 1.5, 1.0)),
-             ("orange", (6.0, 1.0, 1.5, 1.0)),
              ("black", (None, None)),
              ]
 
@@ -90,8 +93,8 @@ class AnalyticSoln(object):
 # ----------------------------------------------------------------------
 class PyLithOutput(object):
 
-  def __init__(self, cell):
-    filename = "output/%s-groundsurf.h5" % cell.lower()
+  def __init__(self, cell, dx):
+    filename = "output/%s_%s-groundsurf.h5" % (cell.lower(), dx)
     import tables
     h5 = tables.openFile(filename, "r")
     time = h5.root.time[:]
@@ -130,8 +133,9 @@ ax = figure.axes(2.0+header, 1, 1.0+header, 1)
 
 analytic = AnalyticSoln("output/analytic_disp.txt")
 sims = {}
-for c in cells:
-  sims[c] = PyLithOutput(c)
+for r in res:
+  for c in cells:
+    sims[c][r] = PyLithOutput(c, r)
 
 cycles = [2,9]
 snaptime = numpy.array([0.05, 0.25, 0.50, 0.75, 0.95])*tcycle.value/year.value
@@ -151,12 +155,13 @@ for irow in xrange(nrows):
     ax.hold(True)
 
     isim = 0
-    for c in cells:
-      coord, soln = sims[c].getProfile(cycles[icycle], t)
-      ax.plot(coord, soln, 
-              color=lineStyle[isim][0],
-              dashes=lineStyle[isim][1])
-      isim += 1
+    for r in res:
+      for c in cells:
+        coord, soln = sims[c][r].getProfile(cycles[icycle], t)
+        ax.plot(coord, soln, 
+                color=lineStyle[isim][0],
+                dashes=lineStyle[isim][1])
+        isim += 1
 
   pyplot.text(9.9, 0.03, "t=0.05", horizontalalignment="right")
   pyplot.text(9.9, 0.13, "t=0.25", horizontalalignment="right")
