@@ -30,8 +30,8 @@ import os
 sys.path.append("../../../figures")
 import matplotlibext
 
-# import pdb
-# pdb.set_trace()
+import pdb
+pdb.set_trace()
 
 header = 0.45
 
@@ -39,7 +39,7 @@ cells = ["Hex8",
          "Tet4",
          ]
 res = ["20km",
-       #"6.7km",
+       "6.7km",
        ]
 #symdict = {'Hex8': 's',
 #           'Tet4': '^',
@@ -106,7 +106,13 @@ class PyLithOutput(object):
     dist = vertices[indices,0].squeeze()
     disp = disp[:,indices,1].squeeze()
     
-    indices = numpy.argsort(dist)
+    # Remove value on negative side of fault and sort distances.
+    numSteps = disp.shape[0]
+    dispTest = disp[numSteps -1,:]
+    negInd = numpy.nonzero(dispTest < 0.0)[0][0]
+    distPos = numpy.delete(dist, negInd)
+    indices = numpy.argsort(distPos)
+
     self.dist = dist[indices] / elastThick.value # Normalize by elastic thickness
     self.disp = disp[:,indices] / eqslip.value # Normalize by eqslip
     self.time = time
@@ -132,7 +138,9 @@ figure.open(3.0, 4.0, margins=[[0.45, 0, 0.2], [0.4, 0.3, 0.12]], dpi=150)
 ax = figure.axes(2.0+header, 1, 1.0+header, 1)
 
 analytic = AnalyticSoln("output/analytic_disp.txt")
-sims = {}
+import collections
+
+sims = collections.defaultdict(dict)
 for r in res:
   for c in cells:
     sims[c][r] = PyLithOutput(c, r)

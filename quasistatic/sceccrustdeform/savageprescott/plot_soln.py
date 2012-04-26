@@ -9,6 +9,7 @@
 #
 
 cell = "hex8"
+resolution = "6.7km"
 scaleFactor = 0.5
 tindex = 38
 pngfile = "savageprescott_soln.png"
@@ -164,7 +165,7 @@ class PlotSoln(Mayavi):
     import tables
     import numpy
 
-    filename = "output/%s.h5" % cell
+    filename = "output/%s_%s.h5" % (cell, resolution)
     h5 = tables.openFile(filename, 'r')
 
     elastThick = 40.0e+3
@@ -187,6 +188,9 @@ class PlotSoln(Mayavi):
         cellType = tvtk.Hexahedron().cell_type
     else:
         raise ValueError("Unknown cell '%s'." % cell)
+    
+    if (resolution != "6.7km" or resolution != "20km"):
+        raise ValueError("Unavailable resolution '%s'." % resolution)
 
     data = tvtk.UnstructuredGrid()
     data.points = vertices
