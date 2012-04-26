@@ -19,6 +19,7 @@ from pyre.units.length import km,m
 tcycle = 200.0*year
 elastThick = 40.0*km
 eqslip = 4.0*m
+xEpsilon = 1.0*km
 
 # ======================================================================
 import matplotlib.pyplot as pyplot
@@ -30,10 +31,10 @@ import os
 sys.path.append("../../../figures")
 import matplotlibext
 
-import pdb
-pdb.set_trace()
+#import pdb
+#pdb.set_trace()
 
-header = 0.45
+header = 0.51
 
 cells = ["Hex8",
          "Tet4",
@@ -41,9 +42,6 @@ cells = ["Hex8",
 res = ["20km",
        "6.7km",
        ]
-#symdict = {'Hex8': 's',
-#           'Tet4': '^',
-#           }
 lineStyle = [("blue", (6.0, 2.0)),
              ("red", (3.0, 2.0)),
              ("green", (6.0, 1.0, 1.5, 1.0)),
@@ -77,6 +75,7 @@ class AnalyticSoln(object):
     from pyre.units.time import year
 
     self.dist = numpy.linspace(0.0, dx.value*(npoints-1), npoints)
+    self.dist[0] = xEpsilon.value
     self.dist /= elastThick.value # Normalize by elastic thickness
     self.data = data
     self.time = numpy.linspace(0.0, dt.value/year.value*(nsteps-1), nsteps)
@@ -113,6 +112,7 @@ class PyLithOutput(object):
     distPos = numpy.delete(dist, negInd)
     indices = numpy.argsort(distPos)
 
+    dist[dist == 0.0] = xEpsilon.value # Semilog can't handle zero
     self.dist = dist[indices] / elastThick.value # Normalize by elastic thickness
     self.disp = disp[:,indices] / eqslip.value # Normalize by eqslip
     self.time = time
@@ -132,10 +132,8 @@ class PyLithOutput(object):
 
 # ----------------------------------------------------------------------
 figure = matplotlibext.Figure(color=style,fontsize=fontsize)
-figure.open(3.0, 4.0, margins=[[0.45, 0, 0.2], [0.4, 0.3, 0.12]], dpi=150)
+figure.open(3.0, 5.0, margins=[[0.45, 0.3, 0.2], [0.4, 0.3, 0.12]], dpi=150)
 
-
-ax = figure.axes(2.0+header, 1, 1.0+header, 1)
 
 analytic = AnalyticSoln("output/analytic_disp.txt")
 import collections
@@ -154,6 +152,7 @@ icol = 0
 
 for irow in xrange(nrows):
   icycle = irow
+
   ax = figure.axes(nrows+header, ncols, irow+1+header, icol+1)
 
   for t in snaptime:
@@ -166,25 +165,32 @@ for irow in xrange(nrows):
     for r in res:
       for c in cells:
         coord, soln = sims[c][r].getProfile(cycles[icycle], t)
-        ax.plot(coord, soln, 
+        ax.semilogx(coord, soln, 
                 color=lineStyle[isim][0],
                 dashes=lineStyle[isim][1])
         isim += 1
 
-  pyplot.text(9.9, 0.03, "t=0.05", horizontalalignment="right")
-  pyplot.text(9.9, 0.13, "t=0.25", horizontalalignment="right")
-  pyplot.text(9.9, 0.255, "t=0.50", horizontalalignment="right")
-  pyplot.text(9.9, 0.37, "t=0.75", horizontalalignment="right")
-  pyplot.text(9.9, 0.46, "t=0.95", horizontalalignment="right")
+  if irow == 1:
+    xt = 8.5
+    pyplot.text(xt, 0.04, "t=0.05", horizontalalignment="right")
+    pyplot.text(xt, 0.14, "t=0.25", horizontalalignment="right")
+    pyplot.text(xt, 0.27, "t=0.50", horizontalalignment="right")
+    pyplot.text(xt, 0.38, "t=0.75", horizontalalignment="right")
+    pyplot.text(xt, 0.46, "t=0.95", horizontalalignment="right")
 
-  ax.set_xlim(0, 10)
+  ax.set_xlim(0.1, 10)
   ax.set_ylim(0, 0.5)
+    
   ax.set_title("Earthquake Cycle %d" % (cycles[icycle]+1,))
   if irow == nrows-1:
     ax.set_xlabel("Dist. from Fault / Elastic thickness")
   else:
     ax.set_xticklabels([])
-  ax.set_ylabel("Disp. / Coseismic Disp. ")
+
+  if icol == 0:
+    ax.set_ylabel("Disp. / Coseismic Disp. ")
+  else:
+    ax.set_yticklabels([])
 
 
   if irow == 0 and icol == ncols-1:
@@ -202,7 +208,7 @@ for irow in xrange(nrows):
 
     ax.legend(proxies, labels,
               loc="lower right",
-              bbox_to_anchor=(1,1.2), 
+              bbox_to_anchor=(1,1.15), 
               borderaxespad=0)
 
 
