@@ -189,7 +189,7 @@ class PlotSoln(Mayavi):
     else:
         raise ValueError("Unknown cell '%s'." % cell)
     
-    if (resolution != "6.7km" or resolution != "20km"):
+    if (resolution != "6.7km" and resolution != "20km"):
         raise ValueError("Unavailable resolution '%s'." % resolution)
 
     data = tvtk.UnstructuredGrid()
