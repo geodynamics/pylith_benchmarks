@@ -129,7 +129,7 @@ for c in cells:
 ax.set_xlim((1, 128))
 ax.set_xlabel("# Processors")
 
-ax.set_ylim((0, 150))
+#ax.set_ylim((0, 150))
 ax.set_ylabel("# Iterations")
 
 
