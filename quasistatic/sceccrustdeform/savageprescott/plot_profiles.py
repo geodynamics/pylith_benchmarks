@@ -143,7 +143,7 @@ for r in res:
   for c in cells:
     sims[c][r] = PyLithOutput(c, r)
 
-cycles = [2,9]
+cycles = [1,9]
 snaptime = numpy.array([0.05, 0.25, 0.50, 0.75, 0.95])*tcycle.value/year.value
 
 nrows = 2
