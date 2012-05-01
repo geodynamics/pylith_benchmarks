@@ -10,9 +10,9 @@
 # ----------------------------------------------------------------------
 #
 
-sim = "tpv15_alt"
+sim = "tpv15"
 cell = "tri3"
-dx = 50
+dx = 200
 dt = 0.05
 
 inputRoot = "output/%s_%s_%03dm_gradient" % (sim, cell,dx)

@@ -10,11 +10,11 @@
 # ======================================================================
 #
 
-sim = "tpv15_tri3_050m_gradient"
-tBegin = 2.0
-tEnd = 4.01
-dt = 0.1
-exaggeration = 0.05
+sim = "tpv14_tri3_100m_gradient"
+tBegin = 0.0
+tEnd = 6.01
+dt = 0.05
+exaggeration = 0.5
 
 # ======================================================================
 from enthought.mayavi.plugins.app import Mayavi
@@ -135,8 +135,8 @@ class PlotScene(Mayavi):
     self.colorSurfTrace = (1,1,0)
     self.lutReverse = False
 
-    self.windowSize = (960, 960)
-    self.aaframes = 0
+    self.windowSize = (960, 540)
+    self.aa_frames = 0
 
     return
   
@@ -220,11 +220,11 @@ class PlotScene(Mayavi):
     clipRange = numpy.array( [200, 5000] )
     ptFrom = ptTo + numpy.array( [0.0, 0.0, dist])      
 
-    camera.view_up = (0,1,0)
+    camera.view_up = (-1,0,0)
     camera.focal_point = ptTo
     camera.position = ptFrom
     camera.clipping_range = clipRange
-    camera.parallel_scale = 0.5
+    camera.parallel_scale = 2.5
     camera.parallel_projection = True
 
     return

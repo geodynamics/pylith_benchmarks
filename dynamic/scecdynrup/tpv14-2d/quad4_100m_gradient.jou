@@ -19,6 +19,10 @@ playback 'geometry.jou'
 surface all scheme pave
 playback 'gradient.jou'
 
+# Reset biases to get even number of points in loop required by paving scheme
+curve 27 scheme bias fine size {dxA} factor {0.997*bias_factor} start vertex 13
+
+
 # ----------------------------------------------------------------------
 # Generate the mesh
 # ----------------------------------------------------------------------
@@ -39,5 +43,6 @@ playback 'createbc.jou'
 # Export exodus file
 # ----------------------------------------------------------------------
 export mesh "quad4_100m_gradient.exo" dimension 2 overwrite
+
 
 
