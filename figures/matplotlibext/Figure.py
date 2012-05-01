@@ -16,7 +16,6 @@ class Figure:
 
   def __init__(self,
                color="lightbg",
-               style="hardcopy",
                fontsize=8):
     """
     Constructor.
