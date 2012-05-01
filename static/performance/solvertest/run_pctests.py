@@ -77,23 +77,14 @@ if sim == "all" or sim == "schur":
   runPyLith("schur_diag.cfg", "schur_diag")
 
   # Schur complement, lower
-  #
-  # STATUS: BUG, hangs at very beginning of solve for tet4 
-  #              hangs at iteration 8 for hex8
   print "schur, lower"
   runPyLith("schur_lower.cfg", "schur_lower")
 
   # Schur complement, upper
-  #
-  # STATUS: BUG, hangs at very beginning of solve for tet4 
-  #              works for hex8
   print "schur, upper"
   runPyLith("schur_upper.cfg", "schur_upper")
 
   # Schur complement, full
-  #
-  # STATUS: BUG, hangs at very beginning of solve for tet4 
-  #              works for hex8
   print "schur, full"
   runPyLith("schur_full.cfg", "schur_full")
 
