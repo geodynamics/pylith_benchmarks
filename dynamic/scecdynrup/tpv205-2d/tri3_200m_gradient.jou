@@ -22,8 +22,6 @@ mesh surface all
 # ----------------------------------------------------------------------
 # Smooth mesh to improve quality
 # ----------------------------------------------------------------------
-surface all smooth scheme laplacian
-smooth surface all
 surface all smooth scheme condition number beta 1.3 cpu 10
 smooth surface all
 
@@ -36,3 +34,6 @@ playback 'createbc.jou'
 # Export exodus file
 # ----------------------------------------------------------------------
 export mesh "tri3_200m_gradient.exo" dimension 2 overwrite
+
+
+# End of file

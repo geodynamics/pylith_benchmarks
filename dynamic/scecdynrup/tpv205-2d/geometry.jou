@@ -27,10 +27,6 @@ undo off
 # -24.0 km <= x <= 24.0 km
 # -32.0 km <= y <= 32.0 km
 #
-#{Units('si')}
-#
-reset
-
 #{blockWidth=48*km}
 #{blockLength=64*km}
 #{blockHeight=32*km}
