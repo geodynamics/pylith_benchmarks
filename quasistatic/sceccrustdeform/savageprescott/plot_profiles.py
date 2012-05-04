@@ -10,9 +10,8 @@
 # PREREQUISITES: matplotlib, numpy, tables
 
 style = "lightbg"
-fileSuffix = "pdf"
-plotSize = "paper"
 fontsize = 8
+showAB = True
 
 from pyre.units.time import year
 from pyre.units.length import km,m
@@ -192,6 +191,12 @@ for irow in xrange(nrows):
   else:
     ax.set_yticklabels([])
 
+  if showAB:
+    if irow == 0:
+      labelAB = "(a)"
+    elif irow == 1:
+      labelAB = "(b)"
+    ax.text(0.11, 0.45, labelAB, fontweight='bold')
 
   if irow == 0 and icol == ncols-1:
     labels = ["Analytic"]
