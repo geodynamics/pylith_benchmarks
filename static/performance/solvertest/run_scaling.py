@@ -27,7 +27,7 @@ for d in ["output", "logs"]:
 job = "%s_np%03d" % (cell, nprocs)
 
 pbsfile = os.environ['HOME'] + "/.pyre/pylithapp/pylithapp_pbs.cfg"
-pcfiles = "fieldsplit_mult.cfg custompc.cfg"
+pcfiles = "fieldsplit_mult.cfg custompc.cfg --petsc.pc_mg_log"
 args = pbsfile + " nooutput.cfg --job.name=%s --job.stdout=logs/%s.log" % (job, job)
 
 if nprocs < 8:
