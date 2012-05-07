@@ -54,6 +54,16 @@ niters = {}
 for c in cells:
     niters[c] = numpy.zeros(len(nprocs), dtype=numpy.float32)
     for ip in xrange(len(nprocs)):
+        # Get number of iterations from ASCII log
+        logname = "logs/%s_np%03d.log" % (c.lower(), nprocs[ip])
+        with open(filename, "r") as fin:
+            for line in fin:
+                refields = re.search("Linear solve converged due to \w+ iterations ([0-9]+)", line)
+                if refields:
+                    niters[c][ip] = refields.group(1)
+                    break
+
+        # Get timing info from Python log
         sys.path.append("logs")
         modname = "%s_np%03d" % (c.lower(), nprocs[ip])
         if not os.path.exists("logs/%s.py" % modname):
@@ -62,6 +72,7 @@ for c in cells:
             niters[c][ip] = None
             data[c][s][ip] = None
             continue
+
         log = __import__(modname)
         niters[c][ip] = log.Solve.event['VecMDot'].Count[0]
         for s in stages:

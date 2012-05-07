@@ -49,20 +49,14 @@ if sim == "all" or sim == "asm":
 if sim == "all" or sim == "fieldsplit":
 
   # field split, additive
-  #
-  # STATUS: OK
   print  "field split, additive"
   runPyLith("fieldsplit_add.cfg", "fieldsplit_add")
 
   # field split, multiplicative
-  #
-  # STATUS: OK
   print "field split, multiplicative"
   runPyLith("fieldsplit_mult.cfg", "fieldsplit_mult")
 
   # field split, multiplicative w/custom fault preconditioner
-  #
-  # STATUS: OK
   print "field split, multiplicative w/custom pc"
   runPyLith("fieldsplit_mult.cfg custompc.cfg", "fieldsplit_mult_custompc")
 
@@ -73,8 +67,8 @@ if sim == "all" or sim == "schur":
   #
   # STATUS: BUG, hangs at very beginning of solve for tet4 
   #              true residual does not decrease for hex8
-  print "schur, diag"
-  runPyLith("schur_diag.cfg", "schur_diag")
+  #print "schur, diag"
+  #runPyLith("schur_diag.cfg", "schur_diag")
 
   # Schur complement, lower
   print "schur, lower"

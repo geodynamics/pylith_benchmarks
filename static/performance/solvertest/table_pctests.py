@@ -12,6 +12,7 @@
 import os
 import sys
 import numpy
+import re
 
 
 style = "latex"
@@ -27,6 +28,9 @@ if not style in ["text",
 
 
 preconditioners = [('asm', 'ASM'),
+                   ('schur_full', 'Schur (full)'),
+                   ('schur_lower', 'Schur (lower)'),
+                   ('schur_upper', 'Schur (upper)'),
                    ('fieldsplit_add', 'FieldSplit (add)'),
                    ('fieldsplit_mult', 'FieldSplit (mult)'),
                    ('fieldsplit_mult_custompc', 'FieldSplit (mult,custom)'),
@@ -51,11 +55,14 @@ for pc in preconditioners:
     for c in cells:
         ip = 0
         for p in problems:
-            sys.path.append("logs")
-            log = __import__("%s_%s_%s" % (c.lower(), pc[0], p[0]))
-            niters[pc[0]][c][ip] = log.Solve.event['VecMDot'].Count[0]
+            filename = "logs/%s_%s_%s.log" % (c.lower(), pc[0], p[0])
+            with open(filename, "r") as fin:
+                for line in fin:
+                    refields = re.search("Linear solve converged due to \w+ iterations ([0-9]+)", line)
+                    if refields:
+                        niters[pc[0]][c][ip] = refields.group(1)
+                        break
             ip += 1
-
 
 if style == "text":
     print "PC"+" "*24 + "Cell"+" "*2 + " "*6+"Iterates"
