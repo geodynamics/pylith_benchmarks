@@ -16,7 +16,7 @@ inputRoot = "output/%s_%s_%03dm-fault" % (sim,cell,dx)
 outdir = "scecfiles/%s_%s_%03dm/" % (sim,cell,dx)
 
 # ----------------------------------------------------------------------
-import tables
+import h5py
 import numpy
 import time
 
@@ -24,11 +24,11 @@ import time
 threshold = 0.001 # threshold for detecting slip has started
 maxTime = 1.0e+10 # Large value for default rupture time
 
-h5 = tables.openFile("%s.h5" % inputRoot, 'r')
-vertices = h5.root.geometry.vertices[:]
-slip = h5.root.vertex_fields.slip[:]
-slipRate = h5.root.vertex_fields.slip_rate[:]
-timeStamps =  h5.root.time[:].ravel()
+h5 = h5py.File("%s.h5" % inputRoot, 'r', driver="sec2")
+vertices = h5['geometry/vertices'][:]
+slip = h5['vertex_fields/slip'][:]
+slipRate = h5['vertex_fields/slip_rate'][:]
+timeStamps =  h5['time'][:].ravel()
 dt = timeStamps[1] - timeStamps[0]
 
 h5.close()
