@@ -17,7 +17,7 @@ inputRoot = "output/%s_%03dm_%s" % (cell,dx,"gradient")
 outdir = "scecfiles/%s_%03dm_%s/" % (cell,dx,"gradient")
 
 # ----------------------------------------------------------------------
-import tables
+import h5py
 import numpy
 import time
 
@@ -28,8 +28,8 @@ targets = numpy.array([[3000.0, -12000.0, 0.0],
 
 tolerance = 1.0e-6
 
-h5 = tables.openFile("%s.h5" % inputRoot, 'r')
-vertices = h5.root.geometry.vertices[:]
+h5 = h5py.File("%s.h5" % inputRoot, 'r', driver="sec2")
+vertices = h5['geometry/vertices'][:]
 ntargets = targets.shape[0]
 indices = []
 for target in targets:
@@ -42,9 +42,9 @@ print "Indices: ", indices
 print "Coordinates of selected points:\n",vertices[indices,:]
 
 # Get datasets
-disp = h5.root.vertex_fields.displacement[:]
-vel = h5.root.vertex_fields.velocity[:]
-timeStamps =  h5.root.time[:].ravel()
+disp = h5['vertex_fields/displacement'][:]
+vel = h5['vertex_fields/velocity'][:]
+timeStamps =  h5['time'][:].ravel()
 nsteps = timeStamps.shape[0]
 dt = timeStamps[1] - timeStamps[0]
 
