@@ -19,7 +19,7 @@ inputRoot = "output/%s_%s_%03dm_gradient" % (sim, cell,dx)
 outputRoot = "scecfiles/%s_%s_%03dm_gradient" % (sim, cell,dx)
 
 # ----------------------------------------------------------------------
-import tables
+import h5py
 import numpy
 import time
 
@@ -38,8 +38,8 @@ targets = numpy.array([[-3000.0, -2000.0],
 targets[:,1] += 2000.0
 
 
-h5 = tables.openFile("%s.h5" % (inputRoot), 'r')
-vertices = h5.root.geometry.vertices[:]
+h5 = h5py.File("%s.h5" % (inputRoot), 'r', driver="sec2")
+vertices = h5['geometry/vertices'][:]
 ntargets = targets.shape[0]
 indices = []
 tolerance = 1.0e-6
@@ -53,20 +53,16 @@ print "Indices: ", indices
 print "Coordinates of selected points:\n",vertices[indices,:]
 
 # Get datasets
-disp = h5.root.vertex_fields.displacement[:]
-vel = h5.root.vertex_fields.velocity[:]
+disp = h5['vertex_fields/displacement'][:]
+vel = h5['vertex_fields/velocity'][:]
+timeStamps =  h5['time'][:]
 
-# BEGIN TEMPORARY
-#timeStamps =  h5.root.vertex_fields.time (not yet available)
-ntimesteps = disp.shape[0]
-timeStamps = numpy.linspace(0, dt*ntimesteps, ntimesteps, endpoint=True)
-# END TEMPORARY
+h5.close()
+
 
 disp = disp[:,indices,:]
 vel = vel[:,indices,:]
 zero = numpy.zeros( (ntimesteps, 1), dtype=numpy.float64)
-
-h5.close()
 
 # Write data
 headerA = \

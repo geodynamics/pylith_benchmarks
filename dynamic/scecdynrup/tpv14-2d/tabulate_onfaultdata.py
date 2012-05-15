@@ -19,7 +19,7 @@ inputRoot = "output/%s_%s_%03dm_gradient" % (sim, cell,dx)
 outputRoot = "scecfiles/%s_%s_%03dm_gradient" % (sim, cell,dx)
 
 # ----------------------------------------------------------------------
-import tables
+import h5py
 import numpy
 import time
 
@@ -27,8 +27,8 @@ import time
 def extract(fault, targets):
     tolerance = 1.0e-6
 
-    h5 = tables.openFile("%s-%s.h5" % (inputRoot, fault), 'r')
-    vertices = h5.root.geometry.vertices[:]
+    h5 = h5py.File("%s-%s.h5" % (inputRoot, fault), 'r', driver="sec2")
+    vertices = h5['geometry/vertices'][:]
     ntargets = targets.shape[0]
     indices = []
     for target in targets:
@@ -41,21 +41,17 @@ def extract(fault, targets):
     print "Coordinates of selected points:\n",vertices[indices,:]
 
     # Get datasets
-    slip = h5.root.vertex_fields.slip[:]
-    slip_rate = h5.root.vertex_fields.slip_rate[:]
-    traction = h5.root.vertex_fields.traction[:]
+    slip = h5['vertex_fields/slip'][:]
+    slip_rate = h5['vertex_fields/slip_rate'][:]
+    traction = h5['vertex_fields/traction'][:]
 
-    # BEGIN TEMPORARY
-    #timeStamps =  h5.root.vertex_fields.time (not yet available)
-    ntimesteps = slip.shape[0]
-    timeStamps = numpy.linspace(dt, dt*ntimesteps, ntimesteps-1, endpoint=True)
-    # END TEMPORARY
+    timeStamps =  h5['time'][:]
+
+    h5.close()
 
     slip = slip[1:,indices,:]
     slip_rate = slip_rate[1:,indices,:]
     traction = traction[1:,indices,:]
-
-    h5.close()
 
     headerA = \
         "# problem = %s-2D\n" % sim.upper() + \
