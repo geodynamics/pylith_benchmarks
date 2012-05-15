@@ -15,7 +15,7 @@ inputRoot = "output/%s_%3dm-fault" % (cell,dx)
 outdir = "scecfiles/%s_%3dm/" % (cell,dx)
 
 # ----------------------------------------------------------------------
-import tables
+import h5py
 import numpy
 import time
 
@@ -57,8 +57,8 @@ elif dx == 100:
 
 tolerance = 1.0e-6
 
-h5 = tables.openFile("%s.h5" % inputRoot, 'r')
-vertices = h5.root.geometry.vertices[:]
+h5 = h5py.File("%s.h5" % inputRoot, 'r')
+vertices = h5['geometry/vertices'][:]
 ntargets = targets.shape[0]
 indices = []
 for target in targets:
@@ -73,10 +73,10 @@ print "Coordinates of selected points:\n",vertices[indices,:]
 
 
 # Get datasets
-slip = h5.root.vertex_fields.slip[:]
-slip_rate = h5.root.vertex_fields.slip_rate[:]
-traction = h5.root.vertex_fields.traction[:]
-timeStamps =  h5.root.time[:].ravel()
+slip = h5['vertex_fields/slip'][:]
+slip_rate = h5['vertex_fields/slip_rate'][:]
+traction = h5['vertex_fields/traction'][:]
+timeStamps =  h5['time'][:].ravel()
 nsteps = timeStamps.shape[0]
 dt = timeStamps[1] - timeStamps[0]
 
