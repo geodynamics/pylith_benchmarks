@@ -43,7 +43,7 @@ if not "reduced" in pc:
 else:
     bcfiles = " bc_reduced.cfg nooutput.cfg "
 
-args = pbsfile + " --job.name=%s --job.stdout=logs/%s.log" % (job, job)
+args = pbsfile + " --job.name=%s --job.stdout=logs/%s.log --job.stdout=logs/%s.err" % (job, job, job)
 
 if nprocs < 8:
     ppn = nprocs
