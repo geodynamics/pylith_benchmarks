@@ -7,6 +7,10 @@
 #
 # ======================================================================
 #
+#
+# Plot solution over domain.
+#
+# PREREQUISITES: Myavi2, numpy, h5py
 
 cell = "hex8"
 resolution = "6.7km"
@@ -162,20 +166,20 @@ class PlotSoln(Mayavi):
 
   def _readData(self):
     from tvtk.api import tvtk
-    import tables
+    import h5py
     import numpy
 
     filename = "output/%s_%s.h5" % (cell, resolution)
-    h5 = tables.openFile(filename, 'r')
+    h5 = h5py.File(filename, 'r', driver="sec2")
 
     elastThick = 40.0e+3
     eqslip = 4.0
 
-    cells = h5.root.topology.cells[:]
+    cells = h5['topology/cells'][:]
     (ncells, ncorners) = cells.shape
-    vertices = h5.root.geometry.vertices[:] / elastThick
+    vertices = h5['geometry/vertices'][:] / elastThick
     (nvertices, spaceDim) = vertices.shape
-    disp = h5.root.vertex_fields.displacement[tindex,:,:] / eqslip
+    disp = h5['vertex_fields/displacement'][tindex,:,:] / eqslip
     h5.close()
     
     if cell == "tet4":

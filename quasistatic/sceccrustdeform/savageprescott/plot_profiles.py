@@ -7,7 +7,7 @@
 #
 # Plot slip profiles over cycles.
 #
-# PREREQUISITES: matplotlib, numpy, tables
+# PREREQUISITES: matplotlib, numpy, h5py
 
 style = "lightbg"
 fontsize = 8
@@ -93,11 +93,11 @@ class PyLithOutput(object):
 
   def __init__(self, cell, dx):
     filename = "output/%s_%s-groundsurf.h5" % (cell.lower(), dx)
-    import tables
-    h5 = tables.openFile(filename, "r")
-    time = h5.root.time[:]
-    vertices = h5.root.geometry.vertices[:]
-    disp = h5.root.vertex_fields.displacement[:]
+    import h5py
+    h5 = h5py.File(filename, "r", driver="sec2")
+    time = h5['time'][:]
+    vertices = h5['geometry/vertices'][:]
+    disp = h5['vertex_fields/displacement'][:]
     h5.close()
     indices = numpy.bitwise_and(numpy.fabs(vertices[:,1]) < 1.0,
                                 vertices[:,0] >= 0.0)
