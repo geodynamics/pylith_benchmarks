@@ -21,7 +21,7 @@ sys.path.append("../../../figures")
 import matplotlibext
 
 header = 0.35
-logsDir = "logs_asm"
+logsDir = "logs"
 
 nprocs = [1,2,4,8,16,32,64,128]
 stages = ["Solve",
@@ -105,7 +105,7 @@ for c in cells:
                   linewidth=1,
                   dashes=styledict[s][1])
         ax.hold(True)
-        if s == 'Solve' and False:
+        if s == 'Solve':
             ax.loglog(nprocs, data[c][s]/(niters[c]/niters[c][0]), 
                       marker=symdict[c], 
                       color='gray',
@@ -151,7 +151,7 @@ irow += 1
 ax = figure.axes(nrows+header, ncols, irow+1+header, icol+1)
 
 for c in cells:
-    ax.semilogx(nprocs, niters[c], 
+    ax.loglog(nprocs, niters[c], 
                 marker=symdict[c], 
                 color='red', 
                 linewidth=1)
@@ -160,7 +160,7 @@ for c in cells:
 ax.set_xlim((1, 128))
 ax.set_xlabel("# Processors")
 
-#ax.set_ylim((0, 100))
+ax.set_ylim((1, 100))
 if icol == 0:
     ax.set_ylabel("# Iterations")
 else:

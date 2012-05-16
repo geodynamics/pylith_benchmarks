@@ -27,8 +27,7 @@ def runPyLith(args, pcname):
     for cell in ["tet4","hex8"]:
         for nprocs in [1,2,4]:
             job = "%s_%s_np%03d" % (cell, pcname, nprocs)
-            jargs = args + " %s.cfg %s_np%03d.cfg --nodes=%d" % \
-                (cell, cell, nprocs, 1)
+            jargs = args + " bc_full.cfg faults.cfg %s.cfg %s_faults.cfg %s_np%03d.cfg --nodes=%d" % (cell, cell, cell, nprocs, 1)
             jargs += " --petsc.log_summary_python=logs/%s.py" % job
             logFilename = "logs/" + job + ".log"
             log = open(logFilename, "w")
@@ -43,44 +42,42 @@ if sim == "all" or sim == "asm":
   #
   # STATUS: OK
   print "ASM preconditioner"
-  runPyLith("asm.cfg", "asm")
+  runPyLith("pc_asm.cfg", "asm")
 
 # ----------------------------------------------------------------------
 if sim == "all" or sim == "fieldsplit":
 
   # field split, additive
   print  "field split, additive"
-  runPyLith("fieldsplit_add.cfg", "fieldsplit_add")
+  runPyLith("pc_fieldsplit_add.cfg", "fieldsplit_add")
 
   # field split, multiplicative
   print "field split, multiplicative"
-  runPyLith("fieldsplit_mult.cfg", "fieldsplit_mult")
+  runPyLith("pc_fieldsplit_mult.cfg", "fieldsplit_mult")
 
   # field split, multiplicative w/custom fault preconditioner
   print "field split, multiplicative w/custom pc"
-  runPyLith("fieldsplit_mult.cfg custompc.cfg", "fieldsplit_mult_custompc")
+  runPyLith("pc_fieldsplit_mult.cfg pc_custom.cfg", "fieldsplit_mult_custom")
 
 # ----------------------------------------------------------------------
 if sim == "all" or sim == "schur":
 
-  # Schur complement, diagonal
-  #
-  # STATUS: BUG, hangs at very beginning of solve for tet4 
-  #              true residual does not decrease for hex8
-  #print "schur, diag"
-  #runPyLith("schur_diag.cfg", "schur_diag")
-
-  # Schur complement, lower
-  print "schur, lower"
-  runPyLith("schur_lower.cfg", "schur_lower")
+  # Schur complement, full
+  print "schur, full"
+  runPyLith("pc_schur_full.cfg", "schur_full")
 
   # Schur complement, upper
   print "schur, upper"
-  runPyLith("schur_upper.cfg", "schur_upper")
+  runPyLith("pc_schur_upper.cfg", "schur_upper")
 
-  # Schur complement, full
+
+  # Schur complement, full w/custom fault preconditioner
   print "schur, full"
-  runPyLith("schur_full.cfg", "schur_full")
+  runPyLith("pc_schur_full_custom.cfg", "schur_full_custom")
+
+  # Schur complement, upper w/custom fault preconditioner
+  print "schur, upper"
+  runPyLith("pc_schur_upper_custom.cfg", "pc_schur_upper_custom")
 
 
 # End of file
