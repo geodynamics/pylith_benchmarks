@@ -82,5 +82,17 @@ group "fault_xneg" remove node in face_xneg
 nodeset 102 group fault_xneg
 nodeset 102 name "fault_xneg"
 
+# ----------------------------------------------------------------------
+# Create nodesets for bottom corners
+# ----------------------------------------------------------------------
+group "vertices_xneg" add node in vertex 7 8
+nodeset 20 group vertices_xneg
+nodeset 20 name "vertices_xneg"
+
+group "vertices_xpos" add node in vertex 5 6
+nodeset 21 group vertices_xpos
+nodeset 21 name "vertices_xpos"
+
 
 # End of file
+

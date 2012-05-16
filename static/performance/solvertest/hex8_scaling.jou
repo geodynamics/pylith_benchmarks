@@ -23,11 +23,11 @@ surface 39 37 77 scheme pave
 
 # ----------------------------------------------------------------------
 # Loop to create meshes for scaling benchmark.
-#{dx0=1500.0*m}
+#{dx0=2000.0*m}
 #{iloop=0}
 #{Loop(6)}
   #{if(iloop==0)}
-    #{dx=1520.0*m}
+    #{dx=2033.0*m}
   #{else}
     #{dx=dx0/(2.0**iloop)**(1.0/3.0)}
   #{endif}

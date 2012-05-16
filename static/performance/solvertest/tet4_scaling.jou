@@ -20,11 +20,11 @@ volume all scheme tetmesh
 
 # ----------------------------------------------------------------------
 # Loop to create meshes for scaling benchmark.
-#{dx0=1.163*1500.0*m}
+#{dx0=1.163*2000.0*m}
 #{iloop=0}
 #{Loop(6)}
   #{if(iloop==0)}
-    #{dx=1.163*1500.0*m}
+    #{dx=1.163*2000.0*m}
   #{else}
     #{dx=dx0/(2.0**iloop)**(1.0/3.0)}
   #{endif}
