@@ -18,7 +18,7 @@ if not sim in ["all",
                ]:
     raise ValueError("Unknown preconditioner (%s) requested." % sim)
 
-for d in ["output", "logs"]:
+for d in ["output", "logs_pctest"]:
   if not os.path.isdir(d):
       os.mkdir(d)
 
@@ -28,8 +28,8 @@ def runPyLith(args, pcname):
         for nprocs in [1,2,4]:
             job = "%s_%s_np%03d" % (cell, pcname, nprocs)
             jargs = args + " bc_full.cfg faults.cfg %s.cfg %s_faults.cfg %s_np%03d.cfg --nodes=%d" % (cell, cell, cell, nprocs, 1)
-            jargs += " --petsc.log_summary_python=logs/%s.py" % job
-            logFilename = "logs/" + job + ".log"
+            jargs += " --petsc.log_summary_python=logs_pctest/%s.py" % job
+            logFilename = "logs_pctest/" + job + ".log"
             log = open(logFilename, "w")
             print "  pylith "+jargs
             subprocess.call("pylith "+jargs, stdout=log, stderr=log, shell=True)
