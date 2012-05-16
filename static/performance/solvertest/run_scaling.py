@@ -56,4 +56,4 @@ cmd = "pylith " + bcfiles + pcfiles + \
     args
 
 print cmd
-#subprocess.call(cmd, shell=True)
+subprocess.call(cmd, shell=True)
