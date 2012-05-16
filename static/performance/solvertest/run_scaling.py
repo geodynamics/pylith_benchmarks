@@ -39,11 +39,11 @@ elif pc == "schur":
     pcfiles = " pc_schur_full_custom.cfg --petsc.fs_fieldsplit_0_pc_mg_log"
 
 if not "reduced" in pc:
-    bcfiles = " bc_full.cfg faults.cfg nooutput.cfg nooutput_faults.cfg"
+    bcfiles = " bc_full.cfg faults.cfg nooutput.cfg nooutput_faults.cfg %s.cfg %s_faults.cfg" % (cell, cell)
 else:
-    bcfiles = " bc_reduced.cfg nooutput.cfg "
+    bcfiles = " bc_reduced.cfg nooutput.cfg %s.cfg"
 
-args = pbsfile + " --job.name=%s --job.stdout=logs/%s.log --job.stdout=logs/%s.err" % (job, job, job)
+args = pbsfile + " --job.name=%s --job.stdout=logs/%s.log --job.stderr=logs/%s.err" % (job, job, job)
 
 if nprocs < 8:
     ppn = nprocs
@@ -51,7 +51,7 @@ else:
     ppn = 8
 
 cmd = "pylith " + bcfiles + pcfiles + \
-    " %s.cfg %s.cfg " % (cell, mesh) + \
+    " %s.cfg " % (mesh,) + \
     " --nodes=%d --scheduler.ppn=%d " % (nprocs, ppn) + \
     args
 
