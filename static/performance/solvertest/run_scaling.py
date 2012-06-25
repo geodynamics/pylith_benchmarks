@@ -9,16 +9,19 @@ import os
 import sys
 import subprocess
 
-if len(sys.argv) != 4:
-    raise ValueError("usage: run_scaling.py PC CELL NPROCS")
+if len(sys.argv) != 5:
+    raise ValueError("usage: run_scaling.py PC CELL DOMAIN NPROCS")
 pc = sys.argv[1]
 cell = sys.argv[2]
-nprocs = int(sys.argv[3])
+domain = sys.argv[3]
+nprocs = int(sys.argv[4])
 
 if not pc in ["asm_reduced", "asm", "amg", "schur"]:
     raise ValueError("PC type (%s) must be 'asm_reduced', 'asm', 'amg', or 'schur'." % pc)
 if not cell in ["hex8", "tet4"]:
     raise ValueError("Cell type (%s) must be 'hex8' or 'tet4'." % cell)
+if not domain in ["original", "cube"]:
+    raise ValueError("Domain (%s) must be 'original' or 'cube'." % domain)
 if nprocs != 1 and (nprocs % 2) != 0:
     raise ValueError("Number of processors (%d) must be a power of 2." % nprocs)
 
@@ -27,8 +30,12 @@ for d in ["output", "logs"]:
   if not os.path.isdir(d):
       os.mkdir(d)
 
-job = "%s_%s_np%03d" % (cell, pc, nprocs)
-mesh = "%s_np%03d" % (cell, nprocs)
+if domain == "cube":
+    job = "%s_%s_%s_np%03d" % (cell, domain, pc, nprocs)
+    mesh = "%s_%s_np%03d" % (cell, domain, nprocs)
+else:
+    job = "%s_%s_np%03d" % (cell, pc, nprocs)
+    mesh = "%s_np%03d" % (cell, nprocs)
 
 pbsfile = os.environ['HOME'] + "/.pyre/pylithapp/pylithapp_pbs.cfg"
 if pc == "asm_reduced" or pc =="asm":
