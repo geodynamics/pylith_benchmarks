@@ -1,0 +1,69 @@
+# -*- Python -*- (syntax highlighting)
+# ----------------------------------------------------------------------
+#
+# Brad T. Aagaard, U.S. Geological Survey
+#
+# ----------------------------------------------------------------------
+#
+# CUBIT journal file driver for creating hex8 meshes for solvertest
+# scaling benchmark.
+#
+# ----------------------------------------------------------------------
+# Generate geometry
+# ----------------------------------------------------------------------
+playback 'geometry_cube.jou'
+
+# ----------------------------------------------------------------------
+# Set scheme
+# ----------------------------------------------------------------------
+volume all scheme tetmesh
+
+# ----------------------------------------------------------------------
+# Loop to create meshes for scaling benchmark.
+#{c=1.2599210}
+#{dx0=1.163*2000.0*m*c}
+#{iloop=0}
+#{Loop(6)}
+  #{if(iloop==0)}
+    #{dx=1.163*2000.0*m*c}
+  #{else}
+    #{dx=dx0/(2.0**iloop)**(1.0/3.0)}
+  #{endif}
+
+  #{if(iloop==0)} {meshout="tet4_cube_np001.exo"}  {endif}
+  #{if(iloop==1)} {meshout="tet4_cube_np002.exo"}  {endif}
+  #{if(iloop==2)} {meshout="tet4_cube_np004.exo"}  {endif}
+  #{if(iloop==3)} {meshout="tet4_cube_np008.exo"}  {endif}
+  #{if(iloop==4)} {meshout="tet4_cube_np016.exo"}  {endif}
+  #{if(iloop==5)} {meshout="tet4_cube_np032.exo"}  {endif}
+
+  delete mesh volume all propagate
+  
+  volume all size {dx}
+  mesh volume all
+
+# ----------------------------------------------------------------------
+# Smooth mesh to improve quality
+# ----------------------------------------------------------------------
+#{condnum=2.1}
+#{loop(4)}
+cleanup volume all
+volume all smooth scheme condition number beta {condnum} cpu 10
+smooth volume all
+#{condnum=condnum-0.1}
+#{endloop}
+
+  playback 'setbc.jou'
+  export mesh {Quote(meshout)} dimension 3 overwrite
+
+  #{tt=iloop+1}
+  #{iloop=tt}
+#{endloop}
+
+
+# End of file
+
+
+
+
+

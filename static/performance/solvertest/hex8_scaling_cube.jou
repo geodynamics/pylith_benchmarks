@@ -1,0 +1,55 @@
+# -*- Python -*- (syntax highlighting)
+# ----------------------------------------------------------------------
+#
+# Brad T. Aagaard, U.S. Geological Survey
+#
+# ----------------------------------------------------------------------
+#
+# CUBIT journal file driver for creating hex8 meshes for solvertest
+# scaling benchmark.
+#
+# ----------------------------------------------------------------------
+# Generate geometry
+# ----------------------------------------------------------------------
+playback 'geometry_cube.jou'
+
+# ----------------------------------------------------------------------
+# Set scheme
+# ----------------------------------------------------------------------
+surface 23 25 41 scheme pave
+surface 33 35 57 scheme pave
+surface 27 29 67 scheme pave
+surface 39 37 77 scheme pave
+
+# ----------------------------------------------------------------------
+# Loop to create meshes for scaling benchmark.
+#{c=1.2599210}
+#{dx0=2000.0*m*c}
+#{iloop=0}
+#{Loop(6)}
+  #{if(iloop==0)}
+    #{dx=2033.0*m*c}
+  #{else}
+    #{dx=dx0/(2.0**iloop)**(1.0/3.0)}
+  #{endif}
+
+  #{if(iloop==0)} {meshout="hex8_cube_np001.exo"}  {endif}
+  #{if(iloop==1)} {meshout="hex8_cube_np002.exo"}  {endif}
+  #{if(iloop==2)} {meshout="hex8_cube_np004.exo"}  {endif}
+  #{if(iloop==3)} {meshout="hex8_cube_np008.exo"}  {endif}
+  #{if(iloop==4)} {meshout="hex8_cube_np016.exo"}  {endif}
+  #{if(iloop==5)} {meshout="hex8_cube_np032.exo"}  {endif}
+
+  delete mesh volume all propagate
+  
+  volume all size {dx}
+  mesh volume all
+  playback 'setbc.jou'
+  export mesh {Quote(meshout)} dimension 3 overwrite
+
+  #{tt=iloop+1}
+  #{iloop=tt}
+#{endloop}
+
+
+# End of file
