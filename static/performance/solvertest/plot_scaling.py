@@ -20,12 +20,11 @@ import re
 sys.path.append("../../../figures")
 import matplotlibext
 
-header = 0.35
-logsDir = "logs"
+header = 0.3
+logsDir = "logs_jun26"
 
-nprocs = [1,2,4,8,16,32,64,128]
+nprocs = [1,2,4,8,16,32,64]
 stages = ["Solve",
-          "MG Apply",
           "Reform Jacobian",
           "Reform Residual",
           ]
@@ -58,10 +57,10 @@ sys.path.append(logsDir)
 for c in cells:
     niters[c] = numpy.zeros(len(nprocs), dtype=numpy.float32)
     for ip in xrange(len(nprocs)):
-        modname = "%s_np%03d" % (c.lower(), nprocs[ip])
+        modname = "%s_cube_amg_np%03d" % (c.lower(), nprocs[ip])
         if not os.path.exists("%s/%s.py" % (logsDir, modname)):
-            print "Skipping stats for cell %s and %d procs. Log not found." %\
-                (c, nprocs[ip])
+            print "Skipping stats for cell %s and %d procs (%s). Log not found." %\
+                (c, nprocs[ip], modname)
             niters[c][ip] = None
             data[c][s][ip] = None
             continue
@@ -78,7 +77,7 @@ for c in cells:
                 data[c][s][ip] = 0
 
         # Get number of iterations from ASCII log
-        logname = "%s/%s_np%03d.log" % (logsDir, c.lower(), nprocs[ip])
+        logname = "%s/%s_cube_amg_np%03d.log" % (logsDir, c.lower(), nprocs[ip])
         with open(logname, "r") as fin:
             for line in fin:
                 refields = re.search("Linear solve converged due to \w+ iterations ([0-9]+)", line)
@@ -87,7 +86,7 @@ for c in cells:
                     break
 
 figure = matplotlibext.Figure()
-figure.open(3.0, 5.25, margins=[[0.5, 0.35, 0.1], [0.42, 0.4, 0.05]], dpi=150)
+figure.open(3.0, 5.25, margins=[[0.5, 0.35, 0.15], [0.42, 0.4, 0.05]], dpi=150)
 
 ncols = 1
 nrows = 2
@@ -105,14 +104,14 @@ for c in cells:
                   linewidth=1,
                   dashes=styledict[s][1])
         ax.hold(True)
-        if s == 'Solve':
+        if s == 'Solve' and False:
             ax.loglog(nprocs, data[c][s]/(niters[c]/niters[c][0]), 
                       marker=symdict[c], 
                       color='gray',
                       linewidth=1,
                       dashes=styledict[s][1])
 
-ax.set_xlim((1, 128))
+ax.set_xlim((1, 100))
 #ax.set_xlabel("# Processors")
 
 ax.set_ylim((0.1, 400))
@@ -157,7 +156,7 @@ for c in cells:
                 linewidth=1)
     ax.hold(True)
 
-ax.set_xlim((1, 128))
+ax.set_xlim((1, 100))
 ax.set_xlabel("# Processors")
 
 ax.set_ylim((1, 100))

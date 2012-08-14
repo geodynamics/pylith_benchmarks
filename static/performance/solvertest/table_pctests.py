@@ -7,7 +7,7 @@
 #
 # Tabulate performance of preconditioners.
 #
-# Uses subdirectory 'logs' with python log summaries.
+# Uses subdirectory 'logs_pctest' with iteration counts in .log files.
 
 import os
 import sys
@@ -17,7 +17,7 @@ import re
 
 style = "latex"
 if len(sys.argv) > 2:
-    raise ValueError("usage: table_pc.py [text | latex (default)]")
+    raise ValueError("usage: table_pctest.py [text | latex (default)]")
 if len(sys.argv) == 2:
     style = sys.argv[1]
 
@@ -29,11 +29,10 @@ if not style in ["text",
 
 preconditioners = [('asm', 'ASM'),
                    ('schur_full', 'Schur (full)'),
-                   ('schur_lower', 'Schur (lower)'),
                    ('schur_upper', 'Schur (upper)'),
                    ('fieldsplit_add', 'FieldSplit (add)'),
                    ('fieldsplit_mult', 'FieldSplit (mult)'),
-                   ('fieldsplit_mult_custompc', 'FieldSplit (mult,custom)'),
+                   ('fieldsplit_mult_custom', 'FieldSplit (mult,custom)'),
                    ]
 cells = ['Tet4',
          'Hex8']
@@ -55,7 +54,7 @@ for pc in preconditioners:
     for c in cells:
         ip = 0
         for p in problems:
-            filename = "logs/%s_%s_%s.log" % (c.lower(), pc[0], p[0])
+            filename = "logs_pctest/%s_%s_%s.log" % (c.lower(), pc[0], p[0])
             with open(filename, "r") as fin:
                 for line in fin:
                     refields = re.search("Linear solve converged due to \w+ iterations ([0-9]+)", line)
