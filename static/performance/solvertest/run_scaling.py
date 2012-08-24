@@ -1,20 +1,21 @@
 #!/usr/bin/env python
 #
-# Python script to facilitate running scaling benchmarks using cluster
-# with PBS scheduler.
+# Python script to facilitate running scaling benchmarks.
 #
-# REQUIRES: $HOME/.pyre/pylithapp/pylithapp_pbs.cfg file with PBS options.
+# Use QUEUE == None if not using batch system.
 
 import os
 import sys
 import subprocess
 
-if len(sys.argv) != 5:
-    raise ValueError("usage: run_scaling.py PC CELL DOMAIN NPROCS")
+if len(sys.argv) != 7:
+    raise ValueError("usage: run_scaling.py PC CELL DOMAIN PPN NNODES QUEUE")
 pc = sys.argv[1]
 cell = sys.argv[2]
 domain = sys.argv[3]
-nprocs = int(sys.argv[4])
+ppn = int(sys.argv[4])
+nnodes = int(sys.argv[5])
+queue = sys.argv[6]
 
 if not pc in ["asm_reduced", "asm", "amg", "schur"]:
     raise ValueError("PC type (%s) must be 'asm_reduced', 'asm', 'amg', or 'schur'." % pc)
@@ -22,13 +23,12 @@ if not cell in ["hex8", "tet4"]:
     raise ValueError("Cell type (%s) must be 'hex8' or 'tet4'." % cell)
 if not domain in ["original", "cube"]:
     raise ValueError("Domain (%s) must be 'original' or 'cube'." % domain)
-if nprocs != 1 and (nprocs % 2) != 0:
-    raise ValueError("Number of processors (%d) must be a power of 2." % nprocs)
 
-
+nprocs = ppn*nnodes
 for d in ["output", "logs"]:
   if not os.path.isdir(d):
       os.mkdir(d)
+
 
 if domain == "cube":
     job = "%s_%s_%s_np%03d" % (cell, domain, pc, nprocs)
@@ -37,7 +37,11 @@ else:
     job = "%s_%s_np%03d" % (cell, pc, nprocs)
     mesh = "%s_np%03d" % (cell, nprocs)
 
-pbsfile = os.environ['HOME'] + "/.pyre/pylithapp/pylithapp_pbs.cfg"
+if queue.lower() != "none":
+    batchfile = os.environ['HOME'] + "/.pyre/pylithapp/pylithapp_%s.cfg" % queue
+else:
+    batchfile = ""
+
 if pc == "asm_reduced" or pc =="asm":
     pcfiles = " pc_asm.cfg"
 elif pc == "amg":
@@ -50,17 +54,26 @@ if not "reduced" in pc:
 else:
     bcfiles = " bc_reduced.cfg nooutput.cfg %s.cfg"
 
-args = pbsfile + " --job.name=%s --job.stdout=logs/%s.log --job.stderr=logs/%s.err --petsc.log_summary_python=logs/%s.py" % (job, job, job, job)
+args = batchfile + " --job.name=%s --job.stdout=logs/%s.log --job.stderr=logs/%s.err --petsc.log_summary_python=logs/%s.py" % (job, job, job, job)
 
-if nprocs < 8:
-    ppn = nprocs
-else:
-    ppn = 8
+if queue.lower() == "none":
+    cmd = "pylith " + bcfiles + pcfiles + \
+        " %s.cfg " % (mesh,) + \
+        " --nodes=%d " % (ppn*nnodes) + \
+        args
 
-cmd = "pylith " + bcfiles + pcfiles + \
-    " %s.cfg " % (mesh,) + \
-    " --nodes=%d --scheduler.ppn=%d " % (nprocs, ppn) + \
-    args
+elif queue == "pbs":
+    cmd = "pylith " + bcfiles + pcfiles + \
+        " %s.cfg " % (mesh,) + \
+        " --nodes=%d --scheduler.ppn=%d " % (nprocs, ppn) + \
+        args
+
+elif queue == "lonestar":
+    cmd = "pylith " + bcfiles + pcfiles + \
+        " %s.cfg " % (mesh,) + \
+        " --nodes=%d --scheduler.pe-name=%dway --scheduler.pe-number=%s " % (nprocs, ppn, max(12, ppn)*nnodes) + \
+        args
+
 
 print cmd
-subprocess.call(cmd, shell=True)
+#subprocess.call(cmd, shell=True)
