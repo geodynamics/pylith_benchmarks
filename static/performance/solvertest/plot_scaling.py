@@ -21,9 +21,10 @@ sys.path.append("../../../figures")
 import matplotlibext
 
 header = 0.3
-logsDir = "logs_jun26"
+logsDir = "logs_lonestar"
 
-nprocs = [1,2,4,8,16,32,64]
+#nprocs = [1,2,4,8,16,32,64]
+nprocs = [1,2,4,6,12,24,48,96]
 stages = ["Solve",
           "Reform Jacobian",
           "Reform Residual",
@@ -57,7 +58,7 @@ sys.path.append(logsDir)
 for c in cells:
     niters[c] = numpy.zeros(len(nprocs), dtype=numpy.float32)
     for ip in xrange(len(nprocs)):
-        modname = "%s_cube_amg_np%03d" % (c.lower(), nprocs[ip])
+        modname = "%s_amg_np%03d" % (c.lower(), nprocs[ip])
         if not os.path.exists("%s/%s.py" % (logsDir, modname)):
             print "Skipping stats for cell %s and %d procs (%s). Log not found." %\
                 (c, nprocs[ip], modname)
@@ -77,7 +78,7 @@ for c in cells:
                 data[c][s][ip] = 0
 
         # Get number of iterations from ASCII log
-        logname = "%s/%s_cube_amg_np%03d.log" % (logsDir, c.lower(), nprocs[ip])
+        logname = "%s/%s_amg_np%03d.log" % (logsDir, c.lower(), nprocs[ip])
         with open(logname, "r") as fin:
             for line in fin:
                 refields = re.search("Linear solve converged due to \w+ iterations ([0-9]+)", line)
