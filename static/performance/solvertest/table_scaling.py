@@ -9,7 +9,7 @@
 #
 # Uses subdirectory 'logs' with python log summaries.
 
-logsDir = 'logs_jun26'
+logsDir = 'logs_lonestar'
 cells = 'hex8'
 
 # ======================================================================
@@ -35,7 +35,8 @@ sys.path.append(logsDir)
 
 # ----------------------------------------------------------------------
 def eval_memory():
-    nprocs = [1,2,4,8,16,32,64]
+    #nprocs = [1,2,4,8,16,32,64]
+    nprocs = [1,2,4,6,12,24,48,96]
     events = ["VecMDot", "VecAXPY", "VecMAXPY"]
             
     # Allocate storage for stats
@@ -48,12 +49,12 @@ def eval_memory():
     # Get stats
     ip = 0
     for p in nprocs:
-        modname = "%s_cube_amg_np%03d" % (cells.lower(), nprocs[ip])
+        modname = "%s_amg_np%03d" % (cells.lower(), nprocs[ip])
         if not os.path.exists("%s/%s.py" % (logsDir, modname)):
             print "Skipping stats for %d procs (%s). Log not found." % (p, modname)
             for e in events:
-                flops[event][ip] = None
-                imbalance[event][ip] = None
+                flops[e][ip] = None
+                imbalance[e][ip] = None
             continue
 
         # Get timing info from Python log
@@ -97,7 +98,8 @@ def eval_memory():
 
 # ----------------------------------------------------------------------
 def eval_solver():
-    nprocs = [8,16,32,64]
+    #nprocs = [8,16,32,64]
+    nprocs = [12,24,48,96]
     events = ["MatMult", "PCSetUp", "PCApply", "KSPSolve"]
 
     # Allocate storage for stats
@@ -112,13 +114,13 @@ def eval_solver():
     # Get stats
     ip = 0
     for p in nprocs:
-        modname = "%s_cube_amg_np%03d" % (cells.lower(), nprocs[ip])
+        modname = "%s_amg_np%03d" % (cells.lower(), nprocs[ip])
         if not os.path.exists("%s/%s.py" % (logsDir, modname)):
             print "Skipping stats for %d procs (%s). Log not found." % (p, modname)
             for e in events:
-                flops[event][ip] = None
-                time[event][ip] = None
-                calls[event][ip] = None
+                flops[e][ip] = None
+                time[e][ip] = None
+                calls[e][ip] = None
             continue
 
         # Get timing info from Python log

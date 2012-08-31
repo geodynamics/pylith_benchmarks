@@ -115,7 +115,7 @@ for c in cells:
 ax.set_xlim((1, 100))
 #ax.set_xlabel("# Processors")
 
-ax.set_ylim((0.1, 400))
+ax.set_ylim((0.1, 100))
 if icol == 0:
     ax.set_ylabel("Time (s)")
 else:
