@@ -16,7 +16,7 @@ volume all size {1.0*km}
 # ----------------------------------------------------------------------
 # Generate the mesh
 # ----------------------------------------------------------------------
-volume all scheme map
+volume all scheme tetmesh
 mesh volume all
 
 # ----------------------------------------------------------------------
@@ -28,6 +28,6 @@ playback 'createbc.jou'
 # Export exodus file
 # ----------------------------------------------------------------------
 set large exodus off
-export mesh "hex8.exo" dimension 3 overwrite
+export mesh "tet4.exo" dimension 3 overwrite
 
 

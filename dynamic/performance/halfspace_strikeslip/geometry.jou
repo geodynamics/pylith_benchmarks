@@ -1,22 +1,43 @@
-# Geometry for simple dynamic benchmark with a kinematic fault rupture.
-#
-# Fault is 30km long and 15km wide
-# Fault runs north-south (y direction)
-#
-# Domain is 72.0 km by 36.0 km by 36.0 km
-#   x: -18e+3 to +18e+3
-#   y: -36e+3 to +36e+3
-#   z: -36e+3 to 0
-
+# -*- Python -*- (syntax highlighting)
 # ----------------------------------------------------------------------
-# Create domain
+#
+# Brad T. Aagaard, U.S. Geological Survey
+#
 # ----------------------------------------------------------------------
-
+#
+# CUBIT journal file with geometry for solvertest benchmark.
+#
+# ----------------------------------------------------------------------
+# Set units to SI.
+# ----------------------------------------------------------------------
+#{Units('si')}
+#
+# ----------------------------------------------------------------------
+# Reset geometry.
+# ----------------------------------------------------------------------
 reset
-brick x 36.0e+3 y 72.0e+3 z 36.0e+3
+
+# ----------------------------------------------------------------------
+# Create block
+# ----------------------------------------------------------------------
+
+# Block is 36 km x 72 km x 36 km
+# -18 km <= x <= 18 km
+# -36 km <= y <= 36 km
+# -36 km <= z <= 0 km
+#
+#{blockWidth=36.0*km}
+#{blockLength=72.0*km}
+#{blockHeight=36.0*km}
+#
+#{faultLength=30.0*km}
+#{faultWidth=15.0*km}
+
+brick x {blockWidth} y {blockLength} z {blockHeight}
 
 # Translate block so the top is at z=0
-volume 1 move x 0 y 0 z -18.0e+3
+volume {Id("volume")} move x 0 y 0 z {-0.5*blockHeight}
+volume {Id("volume")} name "domain"
 
 # ----------------------------------------------------------------------
 # Create interface surfaces
@@ -24,14 +45,32 @@ volume 1 move x 0 y 0 z -18.0e+3
 
 # Create fault (yz plane) at x = 0.0
 create planar surface with plane xplane offset 0
-surface 7 name "fault_surface"
+surface {Id("surface")} name "fault_surface"
 
 # ----------------------------------------------------------------------
 # Divide volumes using interface surfaces
 # ----------------------------------------------------------------------
-webcut volume 1 with plane surface fault_surface
-volume 1 name "elastic_xpos"
-volume 3 name "elastic_xneg"
+webcut volume domain with plane surface fault_surface
+
+# ----------------------------------------------------------------------
+# Inscribe rupture boundaries on fault plane
+# ----------------------------------------------------------------------
+create vertex 0 {-0.5*faultLength} 0
+#{vAn=Id("vertex")}
+create vertex 0 {+0.5*faultLength} 0
+#{vAp=Id("vertex")}
+create vertex 0 {-0.5*faultLength} {-blockHeight}
+#{vBn=Id("vertex")}
+create vertex 0 {+0.5*faultLength} {-blockHeight}
+#{vBp=Id("vertex")}
+create vertex 0 {-0.5*faultLength} {-faultWidth}
+#{vCn=Id("vertex")}
+create vertex 0 {+0.5*faultLength} {-faultWidth}
+#{vCp=Id("vertex")}
+split surface fault_surface across location vertex {vAn} location vertex {vBn}
+split surface fault_surface across location vertex {vAp} location vertex {vBp}
+split surface fault_surface@B across location vertex {vCn} location vertex {vCp}
+delete vertex all
 
 # ----------------------------------------------------------------------
 # Imprint all volumes, merging surfaces
@@ -39,3 +78,7 @@ volume 3 name "elastic_xneg"
 imprint all with volume all
 merge all
 delete body 2
+
+
+# End of file
+
