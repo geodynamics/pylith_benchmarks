@@ -1,7 +1,4 @@
 # Mesh for simple dynamic benchmark with a kinematic fault rupture.
-#
-# Cell type: hex8
-# Cell size: 1000m.
 
 # ----------------------------------------------------------------------
 # Generage geometry
