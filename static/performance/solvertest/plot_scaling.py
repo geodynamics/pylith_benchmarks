@@ -168,4 +168,4 @@ else:
     ax.set_ylabel("")
 
 pyplot.show()
-pyplot.savefig('solvertest_scaling')
+pyplot.savefig('solvertest_scaling.eps')

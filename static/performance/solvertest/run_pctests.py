@@ -38,9 +38,6 @@ def runPyLith(args, pcname):
 
 # ----------------------------------------------------------------------
 if sim == "all" or sim == "asm":
-  # ASM
-  #
-  # STATUS: OK
   print "ASM preconditioner"
   runPyLith("pc_asm.cfg", "asm")
 

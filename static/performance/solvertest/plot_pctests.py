@@ -28,13 +28,13 @@ symdict = {'Hex8': 's',
 styledict = {'asm': ('orange', (3,1,1,1)),
              'fieldsplit_add': ('blue', (3,1.5)),
              'fieldsplit_mult': ('purple', (6,1.5)),
-             'fieldsplit_mult_custompc': ('red', (None, None)),
+             'fieldsplit_mult_custom': ('red', (None, None)),
              }
              
 preconditioners = ['asm',
                    'fieldsplit_add',
                    'fieldsplit_mult',
-                   'fieldsplit_mult_custompc',
+                   'fieldsplit_mult_custom',
                    ]
 pclabels = ['ASM',
                    'AMG_add',
@@ -63,7 +63,7 @@ for pc in preconditioners:
     for c in cells:
         ip = 0
         for p in problems:
-            sys.path.append("logs_output")
+            sys.path.append("logs_pctest")
             log = __import__("%s_%s_%s" % (c.lower(), pc, p))
             niters[pc][c][ip] = log.Solve.event['VecMDot'].Count[0]
             ip += 1
