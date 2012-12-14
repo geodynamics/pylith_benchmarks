@@ -1,0 +1,83 @@
+# -*- Python -*- (syntax highlighting)
+# ----------------------------------------------------------------------
+#
+# Brad T. Aagaard, U.S. Geological Survey
+#
+# ----------------------------------------------------------------------
+#
+# CUBIT journal file with geometry for TPV210.
+#
+# ----------------------------------------------------------------------
+# Set units to SI.
+# ----------------------------------------------------------------------
+#{Units('si')}
+#
+# ----------------------------------------------------------------------
+# Reset geometry.
+# ----------------------------------------------------------------------
+reset
+
+# ----------------------------------------------------------------------
+# Create block
+# ----------------------------------------------------------------------
+# Block is 36.0 km x 64.0 km x 32.0 km
+# -18.0 km <= x <= 18.0 km
+# -32.0 km <= y <= 32.0 km
+# -32.0 km <= z <= 0.0 km
+#
+#{blockWidth=36.0*km}
+#{blockLength=64.0*km}
+#{blockHeight=32.0*km}
+#
+#{faultLength=36.0*km}
+#{faultWidth=18.0*km}
+
+brick x {blockWidth} y {blockLength} z {blockHeight}
+
+# Translate block so the top is at z=0
+volume 1 move x 0 y 0 z {-0.5*blockHeight}
+
+# ----------------------------------------------------------------------
+# Create interface surfaces
+# ----------------------------------------------------------------------
+create planar surface with plane xplane offset 0
+#{sI=Id("surface")}
+
+# ----------------------------------------------------------------------
+# Divide volumes using interface surfaces
+# ----------------------------------------------------------------------
+webcut volume 1 with plane surface {sI}
+
+# ----------------------------------------------------------------------
+# Split fault surface
+# ----------------------------------------------------------------------
+create vertex 0 {-0.5*faultLength} 0
+#{vAn=Id("vertex")}
+create vertex 0 {+0.5*faultLength} 0
+#{vAp=Id("vertex")}
+create vertex 0 {-0.5*faultLength} {-blockHeight}
+#{vBn=Id("vertex")}
+create vertex 0 {+0.5*faultLength} {-blockHeight}
+#{vBp=Id("vertex")}
+create vertex 0 {-0.5*faultLength} {-faultWidth}
+#{vCn=Id("vertex")}
+create vertex 0 {+0.5*faultLength} {-faultWidth}
+#{vCp=Id("vertex")}
+split surface 7 across location vertex {vAn} location vertex {vBn}
+split surface 18 across location vertex {vAp} location vertex {vBp}
+split surface 21 across location vertex {vCn} location vertex {vCp}
+surface 22 name "fault_surface"
+delete vertex all
+
+# ----------------------------------------------------------------------
+# Imprint all volumes, merging surfaces
+# ----------------------------------------------------------------------
+imprint all
+merge all
+delete body 2
+
+
+
+
+
+

@@ -1,0 +1,60 @@
+# -*- Python -*- (syntax highlighting)
+# ----------------------------------------------------------------------
+#
+# Brad T. Aagaard, U.S. Geological Survey
+#
+# ----------------------------------------------------------------------
+# Create hex8 mesh at 200m resolution.
+# ----------------------------------------------------------------------
+
+# ----------------------------------------------------------------------
+# Generate geometry
+# ----------------------------------------------------------------------
+playback 'geometry.jou'
+
+# ----------------------------------------------------------------------
+# Set discretization size and scheme
+# ----------------------------------------------------------------------
+#{dx=200*m}
+volume all scheme map
+volume all size {dx*3}
+
+# ----------------------------------------------------------------------
+# Generate the mesh
+# ----------------------------------------------------------------------
+mesh volume all
+
+# ----------------------------------------------------------------------
+# Refine around fault
+# ----------------------------------------------------------------------
+#{refineWidth=6.001*km}
+#{refineLength=42.001*km}
+#{refineDepth=21.001*km}
+group "refinecells" add Hex with x_min >= {-0.5*refineWidth} and x_max <= {+0.5*refineWidth} and y_min >= {-0.5*refineLength} and y_max <= {+0.5*refineLength} and z_min >= {-refineDepth}
+refine hex in group refinecells depth 1
+delete group refinecells
+
+# ----------------------------------------------------------------------
+# Smooth to improve quality
+# ----------------------------------------------------------------------
+#{condnum=3.0}
+#{loop(5)}
+volume all smooth scheme condition number beta {condnum} cpu 10
+smooth volume all
+#{condnum=condnum-0.2}
+#{endloop}
+
+
+# ----------------------------------------------------------------------
+# Setup boundary conditions.
+# ----------------------------------------------------------------------
+playback 'createbc.jou'
+
+# ----------------------------------------------------------------------
+# Export exodus file
+# ----------------------------------------------------------------------
+export mesh "hex8_200m.exo" dimension 3 overwrite
+
+
+
+
