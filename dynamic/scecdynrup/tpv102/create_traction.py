@@ -15,7 +15,7 @@ import numpy
 from spatialdata.spatialdb.SimpleGridAscii import SimpleGridAscii
 from spatialdata.geocoords.CSCart import CSCart
 
-dTshear = 25.0e+6
+dTshear = 25.0
 T = 1.0
 R = 3.0e+3
 hypoX = 0.0
