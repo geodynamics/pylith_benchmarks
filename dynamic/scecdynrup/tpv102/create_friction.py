@@ -21,7 +21,7 @@ taperW = 3.0e+3
 dx = 100.0
 W = faultW - taperW
 
-
+# ----------------------------------------------------------------------
 def fnB(x, W, w):
     xabs = numpy.abs(x)
     mask1 = xabs <= W
@@ -30,6 +30,7 @@ def fnB(x, W, w):
     v = 1.0*mask1 + 0.5*(1.0+numpy.tanh(w/(xabs-W-w) + w/(xabs-W)))*mask2 + 0.0*mask3
     return v
 
+# ----------------------------------------------------------------------
 x = numpy.array([0.0], dtype=numpy.float64)
 y = numpy.arange(-0.5*faultL, 0.5*faultL+0.5*dx, dx, dtype=numpy.float64)
 z = numpy.arange(-faultW, 0.0+0.5*dx, dx, dtype=numpy.float64)
