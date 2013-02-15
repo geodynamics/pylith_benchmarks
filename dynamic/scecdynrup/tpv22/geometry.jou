@@ -1,0 +1,126 @@
+# -*- Python -*- (syntax highlighting)
+# ----------------------------------------------------------------------
+#
+# Brad T. Aagaard, U.S. Geological Survey
+#
+# ----------------------------------------------------------------------
+#
+# CUBIT journal file with geometry for TPV210.
+#
+# ----------------------------------------------------------------------
+# Set units to SI.
+# ----------------------------------------------------------------------
+#{Units('si')}
+#
+# ----------------------------------------------------------------------
+# Reset geometry.
+# ----------------------------------------------------------------------
+reset
+
+# ----------------------------------------------------------------------
+# Create block
+# ----------------------------------------------------------------------
+# Block is 36.0 km x 72.0 km x 32.0 km
+# -18.0 km <= x <= 18.0 km
+# -36.0 km <= y <= 36.0 km
+# -32.0 km <= z <= 0.0 km
+#
+#{blockWidth=36.0*km}
+#{blockLength=72.0*km}
+#{blockHeight=32.0*km}
+#
+#{faultLength=30.0*km}
+#{faultWidth=20.0*km}
+#{faultOffset=10*km}
+#{faultStepover=1.0*km}
+
+brick x {blockWidth} y {blockLength} z {blockHeight}
+
+# Translate block so the top is at z=0
+volume 1 move x 0 y 0 z {-0.5*blockHeight}
+
+# ----------------------------------------------------------------------
+# Create interface surfaces
+# ----------------------------------------------------------------------
+create planar surface with plane xplane offset 0
+#{sA=Id("surface")}
+
+create planar surface with plane xplane offset {-1.0*km}
+#{sBC=Id("surface")}
+
+create planar surface with plane xplane offset {+1.0*km}
+#{sBE=Id("surface")}
+
+# ----------------------------------------------------------------------
+# Divide volumes using interface surfaces
+# ----------------------------------------------------------------------
+webcut volume 1 with plane surface {sA}
+webcut volume 5 with plane surface {sBC}
+webcut volume 1 with plane surface {sBE}
+
+# ----------------------------------------------------------------------
+# Split fault surfaces
+# ----------------------------------------------------------------------
+# main fault
+create vertex 0 {-0.5*faultLength-faultOffset} 0
+#{vAn=Id("vertex")}
+create vertex 0 {+0.5*faultLength-faultOffset} 0
+#{vAp=Id("vertex")}
+create vertex 0 {-0.5*faultLength-faultOffset} {-blockHeight}
+#{vBn=Id("vertex")}
+create vertex 0 {+0.5*faultLength-faultOffset} {-blockHeight}
+#{vBp=Id("vertex")}
+create vertex 0 {-0.5*faultLength-faultOffset} {-faultWidth}
+#{vCn=Id("vertex")}
+create vertex 0 {+0.5*faultLength-faultOffset} {-faultWidth}
+#{vCp=Id("vertex")}
+split surface 10 across location vertex {vAn} location vertex {vBn}
+split surface 41 across location vertex {vAp} location vertex {vBp}
+split surface 42 across location vertex {vCn} location vertex {vCp}
+surface 45 name "fault_surface_main"
+delete vertex all
+
+# compression fault
+create vertex {-faultStepover} {-0.5*faultLength+faultOffset} 0
+#{vAn=Id("vertex")}
+create vertex {-faultStepover} {+0.5*faultLength+faultOffset} 0
+#{vAp=Id("vertex")}
+create vertex {-faultStepover} {-0.5*faultLength+faultOffset} {-blockHeight}
+#{vBn=Id("vertex")}
+create vertex {-faultStepover} {+0.5*faultLength+faultOffset} {-blockHeight}
+#{vBp=Id("vertex")}
+create vertex {-faultStepover} {-0.5*faultLength+faultOffset} {-faultWidth}
+#{vCn=Id("vertex")}
+create vertex {-faultStepover} {+0.5*faultLength+faultOffset} {-faultWidth}
+#{vCp=Id("vertex")}
+split surface 25 across location vertex {vAn} location vertex {vBn}
+split surface 47 across location vertex {vAp} location vertex {vBp}
+split surface 48 across location vertex {vCn} location vertex {vCp}
+surface 51 name "fault_surface_comp"
+delete vertex all
+
+# extension fault
+create vertex {+faultStepover} {-0.5*faultLength+faultOffset} 0
+#{vAn=Id("vertex")}
+create vertex {+faultStepover} {+0.5*faultLength+faultOffset} 0
+#{vAp=Id("vertex")}
+create vertex {+faultStepover} {-0.5*faultLength+faultOffset} {-blockHeight}
+#{vBn=Id("vertex")}
+create vertex {+faultStepover} {+0.5*faultLength+faultOffset} {-blockHeight}
+#{vBp=Id("vertex")}
+create vertex {+faultStepover} {-0.5*faultLength+faultOffset} {-faultWidth}
+#{vCn=Id("vertex")}
+create vertex {+faultStepover} {+0.5*faultLength+faultOffset} {-faultWidth}
+#{vCp=Id("vertex")}
+split surface 30 across location vertex {vAn} location vertex {vBn}
+split surface 53 across location vertex {vAp} location vertex {vBp}
+split surface 54 across location vertex {vCn} location vertex {vCp}
+surface 57 name "fault_surface_ext"
+delete vertex all
+
+# ----------------------------------------------------------------------
+# Imprint all volumes, merging surfaces
+# ----------------------------------------------------------------------
+imprint all
+merge all
+delete body 2 3 4

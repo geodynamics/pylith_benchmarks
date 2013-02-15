@@ -1,0 +1,109 @@
+# ----------------------------------------------------------------------
+# Set vertex spacing with increasing spacing away from fault
+# ----------------------------------------------------------------------
+#{bias_factor=1.02}
+
+# Function for computing discretization size at end of curve with bias
+#{fun_dx='dxStart*bias_factor**ceil( ln(1-curveL/dxStart*(1-bias_factor))/ln(bias_factor))'}
+
+# ----------------------------------------------------------------------
+# Compute sizes at curve endpoints
+# ----------------------------------------------------------------------
+# dxA - size at vertex 9 13 17 12 16 20
+#{dxStart=dx}{curveL=Length(75)}{execute("dxA="//fun_dx)}
+
+# dxB - size at vertex 51 64 75 53 66 77
+#{dxStart=dx}{curveL=Length(85)}{execute("dxB="//fun_dx)}
+
+# dxC - size at vertex 10 14 18 11 15 19
+#{dxStart=dxB}{curveL=Length(74)}{execute("dxC="//fun_dx)}
+
+# dxD - size at vertex 1 2 3 4
+#{dxStart=dxA}{curveL=Length(64)}{execute("dxD="//fun_dx)}
+
+# dxE - size at vertex 5 6 7 8
+#{dxStart=dxC}{curveL=Length(62)}{execute("dxE="//fun_dx)}
+
+# ----------------------------------------------------------------------
+# Reset sizes
+# ----------------------------------------------------------------------
+curve all scheme default
+surface all sizing function none
+surface fault_surface_main fault_surface_comp fault_surface_ext size {dx}
+#surface 9 16 sizing function type bias start curve 41 factor {bias_factor}
+#surface 19 sizing function type bias start curve 45 factor {bias_factor}
+#surface 20 sizing function type bias start curve 44 factor {bias_factor}
+#surface 23 sizing function type bias start curve 43 factor {bias_factor}
+
+# Set bias on curves extending from faults
+
+# Fault to Vertex A
+curve 75 scheme bias fine size {dx} coarse size {dxA} start vertex 52
+curve 111 scheme bias fine size {dx} coarse size {dxA} start vertex 78
+curve  97 scheme bias fine size {dx} coarse size {dxA} start vertex 65
+curve 89 scheme bias fine size {dx} coarse size {dxA} start vertex 63
+curve 105 scheme bias fine size {dx} coarse size {dxA} start vertex 76
+curve 81 scheme bias fine size {dx} coarse size {dxA} start vertex 54
+
+# Fault to Vertex B
+curve 85 scheme bias fine size {dx} coarse size {dxB} start vertex 56
+curve 84 scheme bias fine size {dx} coarse size {dxB} start vertex 55
+curve 115 scheme bias fine size {dx} coarse size {dxB} start vertex 80
+curve 99 scheme bias fine size {dx} coarse size {dxB} start vertex 67
+curve 114 scheme bias fine size {dx} coarse size {dxB} start vertex 79
+curve 100 scheme bias fine size {dx} coarse size {dxB} start vertex 68
+
+# Vertex B to Vertex B
+curve 79 size {dxB}
+curve 109 size {dxB}
+curve 95 size {dxB}
+
+# Vertex A to C
+curve 13 scheme bias fine size {dxA} coarse size {dxC} start vertex 9
+curve 17 scheme bias fine size {dxA} coarse size {dxC} start vertex 13
+curve 21 scheme bias fine size {dxA} coarse size {dxC} start vertex 17
+curve 15 scheme bias fine size {dxA} coarse size {dxC} start vertex 12
+curve 19 scheme bias fine size {dxA} coarse size {dxC} start vertex 16
+curve 23 scheme bias fine size {dxA} coarse size {dxC} start vertex 20
+
+# Vertex B to C
+curve 74 scheme bias fine size {dxB} coarse size {dxC} start vertex 51
+curve 104 scheme bias fine size {dxB} coarse size {dxC} start vertex 75
+curve 90 scheme bias fine size {dxB} coarse size {dxC} start vertex 64
+curve 82 scheme bias fine size {dxB} coarse size {dxC} start vertex 53
+curve 112 scheme bias fine size {dxB} coarse size {dxC} start vertex 77
+curve 96 scheme bias fine size {dxB} coarse size {dxC} start vertex 66
+
+# Vertex C to C
+curve 70 size {dxC}
+curve 45 size {dxC}
+curve 47 size {dxC}
+curve 72 size {dxC}
+
+# Vertex A to D
+curve 64 scheme bias fine size {dxA} coarse size {dxD} start vertex 17
+curve 54 scheme bias fine size {dxA} coarse size {dxD} start vertex 13
+curve 63 scheme bias fine size {dxA} coarse size {dxD} start vertex 20
+curve 53 scheme bias fine size {dxA} coarse size {dxD} start vertex 16
+
+# Vertex C to E
+curve 62 scheme bias fine size {dxC} coarse size {dxE} start vertex 18
+curve 56 scheme bias fine size {dxC} coarse size {dxE} start vertex 14
+curve 61 scheme bias fine size {dxC} coarse size {dxE} start vertex 19
+curve 55 scheme bias fine size {dxC} coarse size {dxE} start vertex 15
+
+# Vertex D to D
+curve 1 size {dxD}
+curve 3 size {dxD}
+
+# Vertex D to E
+curve 10 scheme bias fine size {dxD} coarse size {dxE} start vertex 1
+curve 12 scheme bias fine size {dxD} coarse size {dxE} start vertex 2
+curve 9 scheme bias fine size {dxD} coarse size {dxE} start vertex 4
+curve 11 scheme bias fine size {dxD} coarse size {dxE} start vertex 3
+
+# Vertex E to E
+curve 5 size {dxE}
+curve 7 size {dxE}
+
+# End of file

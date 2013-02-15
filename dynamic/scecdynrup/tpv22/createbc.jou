@@ -1,0 +1,74 @@
+# ----------------------------------------------------------------------
+# Create blocks for materials
+# ----------------------------------------------------------------------
+block 1 volume 1 5 6 7
+block 1 name "elastic"
+
+# ----------------------------------------------------------------------
+# Create nodeset for faults
+# ----------------------------------------------------------------------
+group "fault_main" add node in fault_surface_main
+nodeset 20 group fault_main
+nodeset 20 name "fault_main"
+
+group "fault_comp" add node in fault_surface_comp
+nodeset 21 group fault_comp
+nodeset 21 name "fault_comp"
+
+group "fault_ext" add node in fault_surface_ext
+nodeset 22 group fault_ext
+nodeset 22 name "fault_ext"
+
+# ----------------------------------------------------------------------
+# Create nodeset for +x face
+# ----------------------------------------------------------------------
+group "face_xpos" add node in surface 6
+nodeset 10 group face_xpos
+nodeset 10 name "face_xpos"
+
+# ----------------------------------------------------------------------
+# Create nodeset for -x face
+# ----------------------------------------------------------------------
+group "face_xneg" add node in surface 4
+nodeset 11 group face_xneg
+nodeset 11 name "face_xneg"
+
+# ----------------------------------------------------------------------
+# Create nodeset for +y face
+# ----------------------------------------------------------------------
+group "face_ypos" add node in surface 27
+group "face_ypos" add node in surface 32
+group "face_ypos" add node in surface 39
+group "face_ypos" add node in surface 23
+nodeset 12 group face_ypos
+nodeset 12 name "face_ypos"
+
+# ----------------------------------------------------------------------
+# Create nodeset for -y face
+# ----------------------------------------------------------------------
+group "face_yneg" add node in surface 29
+group "face_yneg" add node in surface 34
+group "face_yneg" add node in surface 21
+group "face_yneg" add node in surface 36
+nodeset 13 group face_yneg
+nodeset 13 name "face_yneg"
+
+# ----------------------------------------------------------------------
+# Create nodeset for -z face
+# ----------------------------------------------------------------------
+group "face_zneg" add node in surface 28
+group "face_zneg" add node in surface 31
+group "face_zneg" add node in surface 22
+group "face_zneg" add node in surface 38
+nodeset 15 group face_zneg
+nodeset 15 name "face_zneg"
+
+# ----------------------------------------------------------------------
+# Create nodeset for +z face
+# ----------------------------------------------------------------------
+group "face_zpos" add node in surface 26
+group "face_zpos" add node in surface 33
+group "face_zpos" add node in surface 24
+group "face_zpos" add node in surface 37
+nodeset 16 group face_zpos
+nodeset 16 name "face_zpos"
