@@ -111,7 +111,7 @@ d0 = 0.30*numpy.ones( (nptsy*nptsz), dtype=numpy.float64)
 weakTime = 1.0e+9*numpy.ones( (nptsy*nptsz), dtype=numpy.float64)
 
 mask = points[:,2] > -5000.0
-cohesion = mask*0.0014*(-50000-points[:,2]) + ~mask*0.0
+cohesion = mask*0.0014*(+5.0e+3+points[:,2]) + ~mask*0.0
 
 writer = SimpleIOAscii()
 writer.inventory.filename = "empty"
