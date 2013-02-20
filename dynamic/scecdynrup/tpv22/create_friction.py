@@ -46,11 +46,11 @@ coefDyn = 0.373*numpy.ones( (nptsy*nptsz), dtype=numpy.float64)
 d0 = 0.30*numpy.ones( (nptsy*nptsz), dtype=numpy.float64)
 
 mask = points[:,2] > -5000.0
-cohesion = mask*0.0014*(-50000-points[:,2]) + ~mask*0.0
+cohesion = mask*0.0014*(+5.0e+3+points[:,2]) + ~mask*0.0
 
 rcrit = 3000.0
 mask = r <= rcrit
-weakTime = mask*(r/(0.7*vs) + 0.081*rcrit/(0.7*vs)*(1.0/(1.0-(r/rcrit)**2-1))) + ~mask*1.0e+9
+weakTime = mask*(r/(0.7*vs) + 0.081*rcrit/(0.7*vs)*(1.0/(1.0-(r/rcrit)**2)-1)) + ~mask*1.0e+9
 
 cs = CSCart()
 cs._configure()
