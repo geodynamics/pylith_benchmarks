@@ -32,7 +32,8 @@ reset
 #{faultLength=30.0*km}
 #{faultWidth=20.0*km}
 #{faultOffset=10*km}
-#{faultStepover=1.0*km}
+#{faultStepoverExt=1.6*km}
+#{faultStepoverComp=-1.0*km}
 
 brick x {blockWidth} y {blockLength} z {blockHeight}
 
@@ -45,10 +46,10 @@ volume 1 move x 0 y 0 z {-0.5*blockHeight}
 create planar surface with plane xplane offset 0
 #{sA=Id("surface")}
 
-create planar surface with plane xplane offset {-1.0*km}
+create planar surface with plane xplane offset {faultStepoverComp}
 #{sBC=Id("surface")}
 
-create planar surface with plane xplane offset {+1.0*km}
+create planar surface with plane xplane offset {faultStepoverExt}
 #{sBE=Id("surface")}
 
 # ----------------------------------------------------------------------
@@ -81,17 +82,17 @@ surface 45 name "fault_surface_main"
 delete vertex all
 
 # compression fault
-create vertex {-faultStepover} {-0.5*faultLength+faultOffset} 0
+create vertex {faultStepoverComp} {-0.5*faultLength+faultOffset} 0
 #{vAn=Id("vertex")}
-create vertex {-faultStepover} {+0.5*faultLength+faultOffset} 0
+create vertex {faultStepoverComp} {+0.5*faultLength+faultOffset} 0
 #{vAp=Id("vertex")}
-create vertex {-faultStepover} {-0.5*faultLength+faultOffset} {-blockHeight}
+create vertex {faultStepoverComp} {-0.5*faultLength+faultOffset} {-blockHeight}
 #{vBn=Id("vertex")}
-create vertex {-faultStepover} {+0.5*faultLength+faultOffset} {-blockHeight}
+create vertex {faultStepoverComp} {+0.5*faultLength+faultOffset} {-blockHeight}
 #{vBp=Id("vertex")}
-create vertex {-faultStepover} {-0.5*faultLength+faultOffset} {-faultWidth}
+create vertex {faultStepoverComp} {-0.5*faultLength+faultOffset} {-faultWidth}
 #{vCn=Id("vertex")}
-create vertex {-faultStepover} {+0.5*faultLength+faultOffset} {-faultWidth}
+create vertex {faultStepoverComp} {+0.5*faultLength+faultOffset} {-faultWidth}
 #{vCp=Id("vertex")}
 split surface 25 across location vertex {vAn} location vertex {vBn}
 split surface 47 across location vertex {vAp} location vertex {vBp}
@@ -100,17 +101,17 @@ surface 51 name "fault_surface_comp"
 delete vertex all
 
 # extension fault
-create vertex {+faultStepover} {-0.5*faultLength+faultOffset} 0
+create vertex {faultStepoverExt} {-0.5*faultLength+faultOffset} 0
 #{vAn=Id("vertex")}
-create vertex {+faultStepover} {+0.5*faultLength+faultOffset} 0
+create vertex {faultStepoverExt} {+0.5*faultLength+faultOffset} 0
 #{vAp=Id("vertex")}
-create vertex {+faultStepover} {-0.5*faultLength+faultOffset} {-blockHeight}
+create vertex {faultStepoverExt} {-0.5*faultLength+faultOffset} {-blockHeight}
 #{vBn=Id("vertex")}
-create vertex {+faultStepover} {+0.5*faultLength+faultOffset} {-blockHeight}
+create vertex {faultStepoverExt} {+0.5*faultLength+faultOffset} {-blockHeight}
 #{vBp=Id("vertex")}
-create vertex {+faultStepover} {-0.5*faultLength+faultOffset} {-faultWidth}
+create vertex {faultStepoverExt} {-0.5*faultLength+faultOffset} {-faultWidth}
 #{vCn=Id("vertex")}
-create vertex {+faultStepover} {+0.5*faultLength+faultOffset} {-faultWidth}
+create vertex {faultStepoverExt} {+0.5*faultLength+faultOffset} {-faultWidth}
 #{vCp=Id("vertex")}
 split surface 30 across location vertex {vAn} location vertex {vBn}
 split surface 53 across location vertex {vAp} location vertex {vBp}
@@ -124,3 +125,4 @@ delete vertex all
 imprint all
 merge all
 delete body 2 3 4
+
