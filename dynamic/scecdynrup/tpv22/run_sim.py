@@ -36,7 +36,7 @@ if queue.lower() != "none":
 else:
     batchfile = ""
 
-cfgfiles = " %s.cfg %s %s.cfg" % (tpv, cell, job)
+cfgfiles = " %s.cfg %s.cfg %s.cfg" % (tpv, cell, job)
 
 args = batchfile + " --job.name=%s --job.stdout=logs/%s.log --job.stderr=logs/%s.err " % (job, job, job)
 
