@@ -11,7 +11,7 @@
 # Create spatial variation of friction parameters for TPV22-23 on the
 # faults.
 
-hypoy = -5.0e+3
+hypoy = -10.0e+3
 hypoz = -10.0e+3
 vs = 3464.0
 
@@ -44,6 +44,7 @@ r = ( (points[:,1]-hypoy)**2 +
 coefStatic = 0.548*numpy.ones( (nptsy*nptsz), dtype=numpy.float64)
 coefDyn = 0.373*numpy.ones( (nptsy*nptsz), dtype=numpy.float64)
 d0 = 0.30*numpy.ones( (nptsy*nptsz), dtype=numpy.float64)
+t0 = 0.50*numpy.ones( (nptsy*nptsz), dtype=numpy.float64)
 
 mask = points[:,2] > -5000.0
 cohesion = mask*0.0014*(+5.0e+3+points[:,2]) + ~mask*0.0
@@ -76,9 +77,12 @@ dataOut = {'points': points,
                       {'name': 'cohesion', 
                        'units': 'Pa',
                        'data': cohesion},
-                      {'name': 'weakening-time', 
+                      {'name': 'time-weakening-time', 
                        'units': 's',
                        'data': weakTime},
+                      {'name': 'time-weakening-parameter', 
+                       'units': 's',
+                       'data': t0},
                       ],
            }
 writer.write(dataOut)
@@ -109,6 +113,7 @@ coefStatic = 0.548*numpy.ones( (nptsy*nptsz), dtype=numpy.float64)
 coefDyn = 0.373*numpy.ones( (nptsy*nptsz), dtype=numpy.float64)
 d0 = 0.30*numpy.ones( (nptsy*nptsz), dtype=numpy.float64)
 weakTime = 1.0e+9*numpy.ones( (nptsy*nptsz), dtype=numpy.float64)
+t0 = 0.50*numpy.ones( (nptsy*nptsz), dtype=numpy.float64)
 
 mask = points[:,2] > -5000.0
 cohesion = mask*0.0014*(+5.0e+3+points[:,2]) + ~mask*0.0
@@ -133,9 +138,12 @@ dataOut = {'points': points,
                       {'name': 'cohesion', 
                        'units': 'Pa',
                        'data': cohesion},
-                      {'name': 'weakening-time', 
+                      {'name': 'time-weakening-time', 
                        'units': 's',
                        'data': weakTime},
+                      {'name': 'time-weakening-parameter', 
+                       'units': 's',
+                       'data': t0},
                       ],
            }
 writer.write(dataOut)
