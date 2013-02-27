@@ -84,7 +84,7 @@ def extract(fault):
     filename = "%s_ruptime_%s.dat" % (outputRoot, fault)
     fout = open(filename, "w")
     fout.write(headerA)
-    data = numpy.transpose((distStrike, distDip, ruptime))
+    data = numpy.transpose((distStrike, distDip, rupTime))
     numpy.savetxt(fout, data, fmt='%14.6e')
     fout.close()
 
