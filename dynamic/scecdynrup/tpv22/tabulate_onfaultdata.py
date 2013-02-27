@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------
 #
 
-sim = "tpv22"
+sim = "tpv23"
 cell = "tet4"
 dx = 200
 
@@ -24,7 +24,7 @@ import time
 def extract(fault, targets):
     tolerance = 1.0e-6
     
-    h5 = h5py.File("%s.h5" % inputRoot, 'r', driver="sec2")
+    h5 = h5py.File("%s-%s.h5" % (inputRoot, fault), 'r', driver="sec2")
     vertices = h5['geometry/vertices'][:]
     ntargets = targets.shape[0]
     indices = []
@@ -82,7 +82,6 @@ def extract(fault, targets):
     strike = vertices[:,1] / lengthScale
     dip = -vertices[:,2] / lengthScale
 
-    zero = numpy.zeros( (ntimesteps-1, 1), dtype=numpy.float64)
     for iloc in xrange(ntargets):
         pt = locName % (round(10*strike[iloc]), 
                         round(10*dip[iloc]))
@@ -90,7 +89,7 @@ def extract(fault, targets):
         fout = open(filename, 'w');
         fout.write(headerA)
         fout.write("# time_step = %14.6E\n" % dt)
-        fout.write("# num_timesteps = %8d\n" % (ntimesteps-1))
+        fout.write("# num_timesteps = %8d\n" % (nsteps))
         fout.write(locHeader % (strike[iloc], dip[iloc]))
         fout.write(headerB)
         data = numpy.transpose((timeStamps, 
