@@ -92,6 +92,6 @@ def extract(fault):
 extract("fault_main")
 
 # BRANCH FAULT ---------------------------------------------------------
-#extract("fault_stepover")
+extract("fault_stepover")
 
 # End of file
