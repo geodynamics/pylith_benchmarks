@@ -79,15 +79,12 @@ def extract(fault):
         "#\n"
 
     distDip = -vertices[:,2]
-    if fault == "fault_main":
-        distStrike = vertices[:,1]
-    elif fault == "fault_stepover":
-        distStrike = vertices[:,1]
+    distStrike = vertices[:,1]
 
     filename = "%s_ruptime_%s.dat" % (outputRoot, fault)
     fout = open(filename, "w")
     fout.write(headerA)
-    data = numpy.transpose((strike, dip, ruptime))
+    data = numpy.transpose((distStrike, distDip, ruptime))
     numpy.savetxt(fout, data, fmt='%14.6e')
     fout.close()
 
