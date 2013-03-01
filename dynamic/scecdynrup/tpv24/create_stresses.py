@@ -11,7 +11,7 @@
 # Create spatial variation of initial stresses and fault tractions for
 # TPV24-25.
 
-sim = "tpv25"
+sim = "tpv24"
 
 # ----------------------------------------------------------------------
 # Parameters from benchmark description
@@ -36,7 +36,7 @@ import numpy
 from spatialdata.spatialdb.SimpleIOAscii import SimpleIOAscii
 from spatialdata.geocoords.CSCart import CSCart
 
-z = numpy.array([0.0, -15.0e+3, -50e+3], dtype=numpy.float64)
+z = numpy.array([0.0, -50.0, -15.0e+3], dtype=numpy.float64)
 points = numpy.zeros( (z.shape[0], 3), dtype=numpy.float64)
 points[:,2] = z
 
@@ -45,10 +45,11 @@ cs._configure()
 cs.initialize()
 
 
-mask1 = z >= -15.0e+3
+mask1 = z >= -15.6e+3
 
 Pf = -densityW*gacc*z
 Szz = density*gacc*z
+Szz[z > -1.0] = (density-densityW)*gacc*-10.0
 
 Syy = mask1*(b22*(Szz+Pf)-0*Pf) + ~mask1*Szz
 Sxx = mask1*(b33*(Szz+Pf)-0*Pf) + ~mask1*Szz
