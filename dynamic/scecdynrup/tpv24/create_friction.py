@@ -53,6 +53,12 @@ rcrit = 4000.0
 mask = r <= rcrit
 weakTime = mask*(r/(0.7*vs) + 0.081*rcrit/(0.7*vs)*(1.0/(1.0-(r/rcrit)**2)-1)) + ~mask*1.0e+9
 
+# Fault edges
+mask = z < -14.999e+3
+coefStatic[mask] = 1.0e+6
+mask = numpy.abs(y) < 13.999e+3
+coefStatic[mask] = 1.0e+6
+
 cs = CSCart()
 cs._configure()
 cs.initialize()
@@ -100,7 +106,7 @@ points = numpy.zeros( (nptsx*nptsz, 3), dtype=numpy.float64)
 for i in xrange(nptsz):
     istart = i
     istop = i+nptsx*nptsz
-    points[istart:istop:nptsz,1] = x
+    points[istart:istop:nptsz,0] = x
 for i in xrange(nptsx):
     istart = i*nptsz
     istop = (i+1)*nptsz
@@ -112,6 +118,14 @@ d0 = 0.30*numpy.ones( (nptsx*nptsz), dtype=numpy.float64)
 
 mask = points[:,2] > -4000.0
 cohesion = mask*(0.30+0.000675*(+4.0e+3+points[:,2])) + ~mask*0.30
+
+# Fault edges
+mask = z < -14.999e+3
+coefStatic[mask] = 1.0e+6
+mask = numpy.abs(x) > 5.999e+3
+coefStatic[mask] = 1.0e+6
+mask = numpy.abs(x) < 99.0
+coefStatic[mask] = 1.0e+6
 
 writer = SimpleIOAscii()
 writer.inventory.filename = "empty"
