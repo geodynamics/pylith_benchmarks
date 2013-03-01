@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------
 #
 
-sim = "tpv22"
+sim = "tpv24"
 cell = "tet4"
 dx = 200
 
@@ -29,14 +29,14 @@ def extract(fault, targets):
     ntargets = targets.shape[0]
     indices = []
     for target in targets:
-        dist = ( (vertices[:,1]-target[1])**2 + 
+        dist = ( (vertices[:,0]-target[0])**2 + 
+                 (vertices[:,1]-target[1])**2 + 
                  (vertices[:,2]-target[2])**2 )**0.5
         indices.append(numpy.argmin(dist))
     vertices = vertices[indices,:]
 
     print "Indices: ", indices
     print "Coordinates of selected points:\n",vertices
-
 
     # Get datasets
     slip = h5['vertex_fields/slip'][:]
@@ -58,7 +58,7 @@ def extract(fault, targets):
         "# author = Brad Aagaard\n" + \
         "# date = %s\n" % (time.asctime()) + \
         "# code = PyLith\n" + \
-        "# code_version = 1.9.1a (scecdynrup branch)\n" + \
+        "# code_version = 1.9.0a (scecdynrup branch)\n" + \
         "# element_size = %s\n" % dx
     headerB = \
         "# Time series in 7 columns of E14.6:\n" + \
@@ -112,35 +112,34 @@ def extract(fault, targets):
 # MAIN FAULT
 
 # Target coordinates are relative to faults intersection.
-targets = numpy.array([[0.0, -10.0e+3,   0.0   ],
-                       [0.0, -10.0e+3,  -5.0e+3],
-                       [0.0, -10.0e+3, -10.0e+3],
-                       [0.0, -10.0e+3, -15.0e+3],
-                       [0.0,  -5.0e+3, -10.0e+3],
-                       [0.0,   0.0,    -10.0e+3],
-                       [0.0,   0.0,      0.0   ],
+targets = numpy.array([[0.0, -8.0e+3,   0.0   ],
+                       [0.0, -8.0e+3,  -5.0e+3],
+                       [0.0, -8.0e+3, -10.0e+3],
+                       [0.0, -2.0e+3,   0.0   ],
+                       [0.0, -2.0e+3,  -10.0e+3],
+                       [0.0, +2.0e+3,  -10.0e+3],
+                       [0.0, +9.0e+3,   0.0   ],
+                       [0.0, +9.0e+3,  -10.0e+3],
                        ])
+# Account for offset of origin from branch point
+targets[:,1] += 2.0e+3
 
 extract("fault_main", targets)
 
 # ----------------------------------------------------------------------
-# STEPOVER FAULT
+# BRANCH FAULT
 
 # Target coordinates are relative to faults intersection.
-targets = numpy.array([[0.0,   0.0,      0.0],
-                       [0.0,   0.0,    -10.0e+3],
-                       [0.0,  +4.0e+3,  -5.0e+3],
-                       [0.0,  +5.0e+3,   0.0   ],
-                       [0.0,  +5.0e+3,  -5.0e+3],
-                       [0.0,  +5.0e+3, -10.0e+3],
-                       [0.0,  +5.0e+3, -15.0e+3],
-                       [0.0,  +6.5e+3, -10.0e+3],
-                       [0.0, +10.0e+3, -10.0e+3],
-                       [0.0, +20.0e+3,   0.0   ],
-                       [0.0, +20.0e+3, -10.0e+3],
+targets = numpy.array([[0.5e+3,   0.0,    -10.0e+3],
+                       [1.0e+3,   0.0,    -10.0e+3],
+                       [1.0e+3,   0.0,     -5.0e+3],
+                       [1.0e+3,   0.0,      0.0   ],
+                       [4.5e+3,   0.0,    -10.0e+3],
+                       [4.5e+3,   0.0,      0.0e+3],
                        ])
+targets[:,1] = 2.0e+3 + targets[:,0]/numpy.tan(30.0*numpy.pi/180.0)
 
-extract("fault_stepover", targets)
+extract("fault_branch", targets)
 
 
 # End of file
