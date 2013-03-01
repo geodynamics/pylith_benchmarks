@@ -46,7 +46,7 @@ if queue.lower() == "none":
         args
 
 elif queue == "pbs":
-    cmd = "pylith " + cfgfiles + \
+    cmd = "pylith " + cfgfiles + "mem12gb.cfg" + \
         " --nodes=%d --scheduler.ppn=%d " % (nprocs, ppn) + \
         args
 
