@@ -54,9 +54,9 @@ mask = r <= rcrit
 weakTime = mask*(r/(0.7*vs) + 0.081*rcrit/(0.7*vs)*(1.0/(1.0-(r/rcrit)**2)-1)) + ~mask*1.0e+9
 
 # Fault edges
-mask = z < -14.999e+3
+mask = points[:,2] < -14.999e+3
 coefStatic[mask] = 1.0e+6
-mask = numpy.abs(y) < 13.999e+3
+mask = numpy.abs(points[:,1]) > 13.999e+3
 coefStatic[mask] = 1.0e+6
 
 cs = CSCart()
@@ -120,11 +120,11 @@ mask = points[:,2] > -4000.0
 cohesion = mask*(0.30+0.000675*(+4.0e+3+points[:,2])) + ~mask*0.30
 
 # Fault edges
-mask = z < -14.999e+3
+mask = points[:,2] < -14.999e+3
 coefStatic[mask] = 1.0e+6
-mask = numpy.abs(x) > 5.999e+3
+mask = numpy.abs(points[:,0]) > 5.999e+3
 coefStatic[mask] = 1.0e+6
-mask = numpy.abs(x) < 99.0
+mask = numpy.abs(points[:,0]) < 99.0
 coefStatic[mask] = 1.0e+6
 
 writer = SimpleIOAscii()
