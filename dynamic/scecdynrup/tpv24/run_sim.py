@@ -25,7 +25,7 @@ if not res in ["200m", "100m"]:
     raise ValueError("Resolution (%s) must be '200c' or '100m'." % res)
 
 nprocs = ppn*nnodes
-for d in ["output"]:
+for d in ["output", "logs"]:
   if not os.path.isdir(d):
       os.mkdir(d)
 
