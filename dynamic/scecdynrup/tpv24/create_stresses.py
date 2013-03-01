@@ -11,7 +11,7 @@
 # Create spatial variation of initial stresses and fault tractions for
 # TPV24-25.
 
-sim = "tpv24"
+sim = "tpv25"
 
 # ----------------------------------------------------------------------
 # Parameters from benchmark description
