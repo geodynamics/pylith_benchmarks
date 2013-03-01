@@ -8,12 +8,12 @@
 # ----------------------------------------------------------------------
 #
 
-sim = "tpv23"
+sim = "tpv22"
 cell = "tet4"
 dx = 200
 
 inputRoot = "output/%s_%s_%03dm" % (sim, cell,dx)
-outputRoot = "scecfiles/%s_%s_%03dm" % (sim, cell,dx)
+outputRoot = "scecfiles/%s_%s_%03dm/" % (sim, cell,dx)
 
 # ----------------------------------------------------------------------
 import h5py
@@ -85,7 +85,7 @@ def extract(fault, targets):
     for iloc in xrange(ntargets):
         pt = locName % (round(10*strike[iloc]), 
                         round(10*dip[iloc]))
-        filename = "%s-%s-%s.dat" % (outputRoot, fault, pt)
+        filename = "%s/%s-%s.dat" % (outputRoot, fault, pt)
         fout = open(filename, 'w');
         fout.write(headerA)
         fout.write("# time_step = %14.6E\n" % dt)

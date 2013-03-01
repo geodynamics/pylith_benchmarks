@@ -8,7 +8,7 @@
 # ----------------------------------------------------------------------
 #
 
-sim = "tpv22"
+sim = "tpv23"
 cell = "tet4"
 dx = 200
 
@@ -91,7 +91,7 @@ for iloc in xrange(ntargets):
     pt = locName % (round(10*body[iloc]), 
                     round(10*strike[iloc]),
                     round(10*dip))
-    filename = "%sbody%s.dat" % (outputRoot, pt)
+    filename = "%s/body%s.dat" % (outputRoot, pt)
     fout = open(filename, 'w')
     fout.write(headerA)
     fout.write("# time_step = %14.6E\n" % dt)

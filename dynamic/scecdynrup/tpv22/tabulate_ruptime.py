@@ -8,12 +8,12 @@
 # ----------------------------------------------------------------------
 #
 
-sim = "tpv22"
+sim = "tpv23"
 cell = "tet4"
 dx = 200
 
 inputRoot = "output/%s_%s_%03dm" % (sim, cell, dx)
-outputRoot = "scecfiles/%s_%s_%03dm" % (sim, cell, dx)
+outputRoot = "scecfiles/%s_%s_%03dm/" % (sim, cell, dx)
 
 # ----------------------------------------------------------------------
 import h5py
@@ -79,7 +79,7 @@ def extract(fault):
     distDip = -vertices[:,2]
     distStrike = vertices[:,1]
 
-    filename = "%s_ruptime_%s.dat" % (outputRoot, fault)
+    filename = "%s/ruptime_%s.dat" % (outputRoot, fault)
     fout = open(filename, "w")
     fout.write(headerA)
     data = numpy.transpose((distStrike, distDip, rupTime))
