@@ -14,6 +14,7 @@ sim = sys.argv[1]
 if not sim in ["all", 
                "asm", 
                "fieldsplit",
+               "fieldsplit_gamg",
                "schur",
                ]:
     raise ValueError("Unknown preconditioner (%s) requested." % sim)
@@ -55,6 +56,13 @@ if sim == "all" or sim == "fieldsplit":
   # field split, multiplicative w/custom fault preconditioner
   print "field split, multiplicative w/custom pc"
   runPyLith("pc_fieldsplit_mult.cfg pc_custom.cfg", "fieldsplit_mult_custom")
+
+# ----------------------------------------------------------------------
+if sim == "all" or sim == "fieldsplit_gamg":
+
+  # field split, multiplicative w/custom fault preconditioner
+  print "field split, gamg, multiplicative w/custom pc"
+  runPyLith("pc_fieldsplit_mult_gamg.cfg pc_custom.cfg", "fieldsplit_mult_gamg_custom")
 
 # ----------------------------------------------------------------------
 if sim == "all" or sim == "schur":

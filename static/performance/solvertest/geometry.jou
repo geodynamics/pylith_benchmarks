@@ -21,14 +21,14 @@ reset
 # Create block
 # ----------------------------------------------------------------------
 
-# Block is 72 km x 72 km x 36 km
+# Block is 72 km x 72 km x 72 km
 # -36 km <= x <= 36 km
 # -36 km <= y <= 36 km
-# -36 km <= z <= 0 km
+# -72 km <= z <= 0 km
 #
 #{blockWidth=72.0*km}
 #{blockLength=72.0*km}
-#{blockHeight=36.0*km}
+#{blockHeight=72.0*km}
 
 brick x {blockWidth} y {blockLength} z {blockHeight}
 
@@ -89,3 +89,4 @@ imprint all with volume all
 merge all
 
 # End of file
+
