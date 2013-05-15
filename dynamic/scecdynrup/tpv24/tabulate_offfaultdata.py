@@ -10,7 +10,7 @@
 
 sim = "tpv25"
 cell = "tet4"
-dx = 200
+dx = 100
 
 inputRoot = "output/%s_%s_%03dm-groundsurf" % (sim,cell,dx)
 outputRoot = "scecfiles/%s_%s_%03dm/" % (sim,cell,dx)
