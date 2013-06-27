@@ -88,9 +88,12 @@ for c in cells:
 
 figure = matplotlibext.Figure()
 figure.open(3.0, 5.25, margins=[[0.5, 0.35, 0.15], [0.42, 0.4, 0.05]], dpi=150)
+#figure.open(6.0, 3.25, margins=[[0.55, 0.7, 0.15], [0.42, 0.4, 0.05]], dpi=150)
 
 ncols = 1
 nrows = 2
+#ncols = 2
+#nrows = 1
 
 icol = 0
 irow = 0
@@ -148,6 +151,7 @@ if icol == 0:
     ax.add_artist(l1)
 
 irow += 1
+#icol += 1
 ax = figure.axes(nrows+header, ncols, irow+1+header, icol+1)
 
 for c in cells:
@@ -161,11 +165,11 @@ ax.set_xlim((1, 100))
 ax.set_xlabel("# Processors")
 
 ax.set_ylim((1, 100))
-if icol == 0:
+if icol == ncols-1:
     ax.set_ylabel("# Iterations")
 else:
     ax.set_yticklabels([])
     ax.set_ylabel("")
 
 pyplot.show()
-pyplot.savefig('solvertest_scaling.eps')
+pyplot.savefig('solvertest_scaling.pdf')
