@@ -1,0 +1,17 @@
+Steps to run TPV102
+
+1. Generate the mesh at 200m resolution using CUBIT.
+  cubit -nographic -nogui -batch hex8_200m.jou
+  cubit -nographic -nogui -batch tet4_200m.jou
+
+2. Create the output directory.
+  mkdir output
+
+3. Uncompress the spatial database files.
+  gunzip *.gz
+
+4. Run the simulations.
+  pylith hex8.cfg hex8_200m.cfg
+  pylith hex8.cfg hex8_100m.cfg
+  pylith tet4.cfg tet4_200m.cfg
+  pylith tet4.cfg tet4_100m.cfg
