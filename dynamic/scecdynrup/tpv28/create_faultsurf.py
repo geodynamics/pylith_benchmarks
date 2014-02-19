@@ -16,7 +16,7 @@ bumpRadius = 3.0e+3
 bumpAmplitude = 6.0e+2
 bumpY = 10.5e+3
 bumpZ = -7.5e+3
-bumpDx = 1.0e+3
+bumpDx = 5.0e+2
 
 # ======================================================================
 import os
@@ -34,8 +34,8 @@ def bump(yz):
     mask1 = r1 <= 3.0e+3
     mask2 = r2 <= 3.0e+3
     npts = yz.shape[0]
-    x = mask1*-0.5*bumpAmplitude*(1.0+numpy.cos(numpy.pi*r1/3.0e+3)) + \
-        mask2*-0.8*bumpAmplitude*(1.0+numpy.cos(numpy.pi*r2/3.0e+3))
+    x = mask1*+0.5*bumpAmplitude*(1.0+numpy.cos(numpy.pi*r1/3.0e+3)) + \
+        mask2*+0.5*bumpAmplitude*(1.0+numpy.cos(numpy.pi*r2/3.0e+3))
     return x
 
 
@@ -56,7 +56,27 @@ numZ = z.shape[0]
 
 yz = numpy.zeros((numY*numZ, 2), dtype=numpy.float64)
 
-#write_exodus_file(filenameEXO, cells, vertices)
+for iY in xrange(numY):
+    yz[iY*numZ:(iY+1)*numZ,1] = z
+    yz[iY*numZ:(iY+1)*numZ,0] = y[iY]
+
+x = bump(yz)
+vertices = numpy.zeros((numY*numZ,3), dtype=numpy.float64)
+vertices[:,0] = x
+vertices[:,1] = yz[:,0]
+vertices[:,2] = yz[:,1]
+
+cells = numpy.zeros(((numY-1)*(numZ-1),4), dtype=numpy.int32)
+
+for iY in xrange(numY-1):
+    for iZ in xrange(numZ-1):
+        v0 = iY*numZ+iZ
+        v1 = v0+1
+        v2 = v1+numZ
+        v3 = v0+numZ
+        cells[iY*(numZ-1)+iZ,:] = [v0,v1,v2,v3]
+
+write_exodus_file(filenameEXO, cells, vertices)
 
 
 # End of file
