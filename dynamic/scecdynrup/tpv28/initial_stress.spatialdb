@@ -1,0 +1,15 @@
+// -*- C++ -*-
+#SPATIAL.ascii 1
+SimpleDB {
+  num-values = 6
+  value-names =  stress-xx stress-yy stress-zz stress-xy stress-yz stress-xz
+  value-units =  MPa  MPa  MPa  MPa  MPa  MPa
+  num-locs = 1
+  data-dim = 0
+  space-dim = 3
+  cs-data = cartesian {
+    to-meters = 1.0e+3
+    space-dim = 3
+  }
+}
+0.0  0.0  0.0    -60.0  -60.0  0.0    -29.38  0.0  0.0
