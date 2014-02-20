@@ -1,0 +1,24 @@
+# ----------------------------------------------------------------------
+# Set vertex spacing with increasing spacing away from fault
+# ----------------------------------------------------------------------
+#{bias_factor=1.02}
+
+# ----------------------------------------------------------------------
+# Set sizes
+# ----------------------------------------------------------------------
+curve all scheme default
+surface all sizing function none
+curve all sizing function none
+surface fault_surface size {dx}
+
+surface 27 sizing function type bias start curve 57 46 59 factor {bias_factor}
+surface 9 14 sizing function type bias start curve 60 factor {bias_factor}
+surface 12 15 sizing function type bias start curve 20 factor {bias_factor}
+surface 10 17 sizing function type bias start curve 18 factor {bias_factor}
+surface 11 16 sizing function type bias start curve 17 factor {bias_factor}
+
+# End of file
+
+
+
+

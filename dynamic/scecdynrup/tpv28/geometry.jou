@@ -1,0 +1,74 @@
+# -*- Python -*- (syntax highlighting)
+# ----------------------------------------------------------------------
+#
+# Brad T. Aagaard, U.S. Geological Survey
+#
+# ----------------------------------------------------------------------
+#
+# CUBIT journal file with geometry for TPV210.
+#
+# ----------------------------------------------------------------------
+# Set units to SI.
+# ----------------------------------------------------------------------
+#{Units('si')}
+#
+# ----------------------------------------------------------------------
+# Reset geometry.
+# ----------------------------------------------------------------------
+reset
+
+# ----------------------------------------------------------------------
+# Create block
+# ----------------------------------------------------------------------
+# Block is 36.0 km x 64.0 km x 32.0 km
+# -18.0 km <= x <= 18.0 km
+# -32.0 km <= y <= 32.0 km
+# -32.0 km <= z <= 0.0 km
+#
+#{blockWidth=36.0*km}
+#{blockLength=64.0*km}
+#{blockHeight=32.0*km}
+#
+#{faultLength=36.0*km}
+#{faultWidth=15.0*km}
+#{buffer=1.5*km}
+
+brick x {blockWidth} y {blockLength} z {blockHeight}
+
+# Translate block so the top is at z=0
+volume 1 move x 0 y 0 z {-0.5*blockHeight}
+volume {Id("volume")} name "domain"
+
+# ----------------------------------------------------------------------
+# Create interface surfaces
+# ----------------------------------------------------------------------
+import acis "fault.sat"
+#{vFault=Id("body")}
+
+# ----------------------------------------------------------------------
+# Divide volumes using interface surfaces
+# ----------------------------------------------------------------------
+webcut volume domain tool volume {vFault}
+
+# ----------------------------------------------------------------------
+# Split fault surface
+# ----------------------------------------------------------------------
+brick x {3.0*km} y {faultLength} z {faultWidth+2*buffer}
+{vChopper=Id("volume")}
+volume {vChopper} move x 0 y 0 z {-0.5*faultWidth+buffer}
+chop volume {vFault} with volume {vChopper} keep
+delete volume {vChopper}
+
+# ----------------------------------------------------------------------
+# Imprint all volumes, merging surfaces
+# ----------------------------------------------------------------------
+imprint all
+merge all
+delete body {vFault} 5 6
+surface 26 name "fault_surface"
+
+
+
+
+
+

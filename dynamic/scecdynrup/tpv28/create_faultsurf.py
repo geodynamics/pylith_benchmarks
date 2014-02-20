@@ -9,7 +9,7 @@ filenameEXO = "fault.exo"
 # Geometry of simulation domain
 domainLength = 64.0e+3
 domainHeight = 32.0e+3
-buffer = 2.0e+3 # Extend fault plane beyond domain
+buffer = 1.5e+3 # Extend fault plane beyond domain
 
 # Geometry of bump
 bumpRadius = 3.0e+3
@@ -26,7 +26,7 @@ from cubit_io import write_exodus_file
 from netCDF4 import Dataset
 
 # ----------------------------------------------------------------------
-def bump(yz):
+def bump(y, z):
     y = yz[:,0]
     z = yz[:,1]
     r1 = ((y+bumpY)**2 + (z-bumpZ)**2)**0.5
@@ -40,17 +40,27 @@ def bump(yz):
 
 
 # ----------------------------------------------------------------------
-yA = numpy.linspace(-0.5*domainLength-buffer, -bumpY-bumpRadius, 2)
-yB = numpy.arange(-bumpY-bumpRadius+bumpDx, -bumpY+bumpRadius, bumpDx)
-yC = numpy.linspace(-bumpY+bumpRadius, +bumpY-bumpRadius, 2)
-yD = numpy.arange(+bumpY-bumpRadius+bumpDx, +bumpY+bumpRadius, bumpDx)
-yE = numpy.linspace(+bumpY+bumpRadius, +0.5*domainLength+buffer, 2)
+y0 = -0.5*domainLength-buffer; y1 = -bumpY-bumpRadius; ny = int(1+(y1-y0)/(8.0*bumpDx))
+yA = numpy.linspace(y0, y1, ny)
+y0 = y1 + bumpDx; y1 = -bumpY+bumpRadius
+yB = numpy.arange(y0, y1, bumpDx)
+
+y0 = y1+bumpDx; y1 = +bumpY-bumpRadius; ny = int(1+(y1-y0)/(8.0*bumpDx))
+yC = numpy.linspace(y0, y1, ny)
+y0 = y1 + bumpDx; y1 = +bumpY+bumpRadius
+yD = numpy.arange(y0, y1, bumpDx)
+
+y0 = y1+bumpDx; y1 = +0.5*domainLength+buffer; ny = int(1+(y1-y0)/(8.0*bumpDx))
+yE = numpy.linspace(y0, y1, ny)
 y = numpy.hstack((yA, yB, yC, yD, yE))
 numY = y.shape[0]
 
-zA = numpy.linspace(-domainHeight-buffer, bumpZ-bumpRadius, 2)
-zB = numpy.arange(bumpZ-bumpRadius+bumpDx, bumpZ+bumpRadius, bumpDx)
-zC = numpy.linspace(bumpZ+bumpRadius, 0.0, 2)
+z0 = -domainHeight-buffer; z1 = bumpZ-bumpRadius; nz = (1+(z1-z0)/(8.0*bumpDx))
+zA = numpy.linspace(z0, z1, nz)
+zB = numpy.arange(z1+bumpDx, bumpZ+bumpRadius, bumpDx)
+
+z0 = bumpZ+bumpRadius+bumpDx; z1 = +buffer; nz = int(1+(z1-z0)/(8.0*bumpDx))
+zC = numpy.linspace(z0, z1, nz)
 z = numpy.hstack((zA, zB, zC))
 numZ = z.shape[0]
 
@@ -60,7 +70,7 @@ for iY in xrange(numY):
     yz[iY*numZ:(iY+1)*numZ,1] = z
     yz[iY*numZ:(iY+1)*numZ,0] = y[iY]
 
-x = bump(yz)
+x = bump(yz[:,0],yz[:,1])
 vertices = numpy.zeros((numY*numZ,3), dtype=numpy.float64)
 vertices[:,0] = x
 vertices[:,1] = yz[:,0]
