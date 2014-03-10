@@ -43,8 +43,6 @@ from netCDF4 import Dataset
 
 # ----------------------------------------------------------------------
 def bump(y, z):
-    y = yz[:,0]
-    z = yz[:,1]
     r1 = ((y+bumpY)**2 + (z-bumpZ)**2)**0.5
     r2 = ((y-bumpY)**2 + (z-bumpZ)**2)**0.5
     mask1 = r1 <= 3.0e+3

@@ -32,13 +32,13 @@ coordz = exodus.variables['coordz'][:]
 nodesetNames = exodus.variables['ns_names']
 for i in range(nodesetNames.shape[0]):
     if netCDF4.chartostring(nodesetNames[i,:]) == "fault":
-        indices = exodus.variables['node_ns%d' % i][:]
+        indices = exodus.variables['node_ns%d' % (i+1)][:]-1
+        break
 
 faulty = coordy[indices]
 faultz = coordz[indices]
 faultx = bump(faulty, faultz)
-coordx[indices] = faultx
-exodus.variables['coordx'][:] = coordx
+exodus.variables['coordx'][indices] = faultx
 
 exodus.close()
 
