@@ -41,14 +41,14 @@ for d in ["output", "logs"]:
   if not os.path.isdir(d):
       os.mkdir(d)
 
-job = "%s_%s_%s" % (tpv, cell, res)
+job = "%s_%s" % (cell, res)
 
 if queue.lower() != "none":
     batchfile = os.environ['HOME'] + "/.pyre/pylithapp/pylithapp_%s.cfg" % queue
 else:
     batchfile = ""
 
-cfgfiles = " %s.cfg %s.cfg %s.cfg" % (tpv, cell, job)
+cfgfiles = " %s.cfg %s.cfg" % (cell, job)
 
 args = batchfile + " --job.name=%s --job.stdout=logs/%s.log --job.stderr=logs/%s.err " % (job, job, job)
 
@@ -68,6 +68,8 @@ elif queue == "lonestar":
         " --nodes=%d --scheduler.pe-name=%dway --scheduler.pe-number=%s " % (nprocs, ppn, max(12, ppn)*nnodes) + \
         args
 
+else:
+    raise ValueError("Unknown queue '%s'." % queue)
 
 print cmd
 #subprocess.call(cmd, shell=True)
