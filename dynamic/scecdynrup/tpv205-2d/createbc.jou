@@ -8,8 +8,13 @@ block 1 name "elastic"
 # Create nodeset for fault
 # ----------------------------------------------------------------------
 group "fault" add node in fault_surface
-nodeset 10 group fault
-nodeset 10 name "fault"
+nodeset 20 group fault
+nodeset 20 name "fault"
+
+group "fault_edge" add node in vertex 15
+group "fault_edge" add node in vertex 16
+nodeset 21 group fault_edge
+nodeset 21 name "fault_edge"
 
 # ----------------------------------------------------------------------
 # Create nodeset for +x face
@@ -40,3 +45,4 @@ group "face_yneg" add node in curve 19
 group "face_yneg" add node in curve 20
 nodeset 14 group face_yneg
 nodeset 14 name "face_yneg"
+
