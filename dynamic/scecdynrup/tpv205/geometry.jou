@@ -20,14 +20,14 @@ reset
 # ----------------------------------------------------------------------
 # Create block
 # ----------------------------------------------------------------------
-# Block is 36.0 km x 64.0 km x 32.0 km
+# Block is 36.0 km x 66.0 km x 33.0 km
 # -18.0 km <= x <= 18.0 km
-# -32.0 km <= y <= 32.0 km
-# -32.0 km <= z <= 0.0 km
+# -33.0 km <= y <= 33.0 km
+# -33.0 km <= z <= 0.0 km
 #
 #{blockWidth=36.0*km}
-#{blockLength=64.0*km}
-#{blockHeight=32.0*km}
+#{blockLength=66.0*km}
+#{blockHeight=33.0*km}
 #
 #{faultLength=30.0*km}
 #{faultWidth=15.0*km}
@@ -69,6 +69,7 @@ split surface 21 across location vertex {vCn} location vertex {vCp}
 surface 22 name "fault_surface"
 delete vertex all
 
+#{ifdef(chopfault)}
 # asperities (to ensure exact alignment with mesh)
 brick x {3.0*km} y {3.0*km} z {3.0*km}
 {idChopper=Id("volume")}
@@ -79,13 +80,19 @@ chop volume 2 with volume {idChopper} keep
 volume {idChopper} move x 0 y {-15.0*km} z 0
 chop volume 2 with volume {idChopper} keep
 delete volume {idChopper}
+#{endif}
 
 # ----------------------------------------------------------------------
 # Imprint all volumes, merging surfaces
 # ----------------------------------------------------------------------
 imprint all
 merge all
-delete body 2 5 6 7 8 9 10
+delete body 2
+#{ifdef(chopfault)}
+delete body 5 6 7 8 9 10
+#{endif}
+
+
 
 
 
