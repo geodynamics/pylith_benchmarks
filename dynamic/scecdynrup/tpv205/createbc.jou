@@ -15,6 +15,15 @@ nodeset 20 group fault
 nodeset 20 name "fault"
 
 # ----------------------------------------------------------------------
+# Create nodeset for fault
+# ----------------------------------------------------------------------
+group "fault_edge" add node in curve 43
+group "fault_edge" add node in curve 44
+group "fault_edge" add node in curve 45
+nodeset 21 group fault_edge
+nodeset 21 name "fault_edge"
+
+# ----------------------------------------------------------------------
 # Create nodeset for +x face
 # ----------------------------------------------------------------------
 group "face_xpos" add node in surface 6
@@ -70,5 +79,6 @@ group "face_zpos_subset" remove node with x_coord > +10.001e+3
 group "face_zpos_subset" remove node with x_coord < -10.001e+3
 nodeset 17 group face_zpos_subset
 nodeset 17 name "face zpos_subset"
+
 
 
