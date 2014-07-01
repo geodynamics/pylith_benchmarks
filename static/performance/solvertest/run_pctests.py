@@ -28,8 +28,8 @@ def runPyLith(args, pcname):
     for cell in ["tet4","hex8"]:
         for nprocs in [1,2,4]:
             job = "%s_%s_np%03d" % (cell, pcname, nprocs)
-            jargs = args + " bc_full.cfg faults.cfg %s.cfg %s_faults.cfg %s_np%03d.cfg --nodes=%d" % (cell, cell, cell, nprocs, 1)
-            jargs += " --petsc.log_summary_python=logs_pctest/%s.py" % job
+            jargs = args + " %s.cfg %s_np%03d.cfg --nodes=%d" % (cell, cell, nprocs, 1)
+            jargs += " --petsc.log_view=:logs_pctest/%s.py:ascii_info_detail" % job
             logFilename = "logs_pctest/" + job + ".log"
             log = open(logFilename, "w")
             print "  pylith "+jargs

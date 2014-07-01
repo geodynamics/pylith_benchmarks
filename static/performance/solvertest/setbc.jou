@@ -65,34 +65,46 @@ nodeset 100 group fault_middle
 nodeset 100 name "fault_middle"
 
 # ----------------------------------------------------------------------
+# Create nodeset for fault_middle
+# ----------------------------------------------------------------------
+group "fault_middle_edge" add node in curve 83
+group "fault_middle_edge" add node in curve 162
+group "fault_middle_edge" add node in curve 118
+nodeset 101 group fault_middle_edge
+nodeset 101 name "fault_middle_edge"
+
+# ----------------------------------------------------------------------
 # Create nodeset for fault_xpos
 # ----------------------------------------------------------------------
 group "fault_xpos" add node in surface 44
-group "fault_xpos" remove node in fault_middle
-group "fault_xpos" remove node in face_xpos
-nodeset 101 group fault_xpos
-nodeset 101 name "fault_xpos"
+nodeset 110 group fault_xpos
+nodeset 110 name "fault_xpos"
+
+# ----------------------------------------------------------------------
+# Create nodeset for fault_xpos_edge
+# ----------------------------------------------------------------------
+group "fault_xpos_edge" add node in curve 83
+group "fault_xpos_edge" add node in curve 77
+group "fault_xpos_edge" add node in curve 84
+nodeset 111 group fault_xpos_edge
+nodeset 111 name "fault_xpos_edge"
 
 # ----------------------------------------------------------------------
 # Create nodeset for fault_xneg
 # ----------------------------------------------------------------------
 group "fault_xneg" add node in surface 60
-group "fault_xneg" remove node in fault_middle
-group "fault_xneg" remove node in face_xneg
-nodeset 102 group fault_xneg
-nodeset 102 name "fault_xneg"
+nodeset 120 group fault_xneg
+nodeset 120 name "fault_xneg"
 
 # ----------------------------------------------------------------------
-# Create nodesets for bottom corners
+# Create nodeset for fault_xneg_edge
 # ----------------------------------------------------------------------
-group "vertices_xneg" add node in vertex 7 8
-nodeset 20 group vertices_xneg
-nodeset 20 name "vertices_xneg"
-
-group "vertices_xpos" add node in vertex 5 6
-nodeset 21 group vertices_xpos
-nodeset 21 name "vertices_xpos"
-
+group "fault_xneg_edge" add node in curve 118
+group "fault_xneg_edge" add node in curve 111
+group "fault_xneg_edge" add node in curve 117
+nodeset 121 group fault_xneg_edge
+nodeset 121 name "fault_xneg_edge"
 
 # End of file
+
 
