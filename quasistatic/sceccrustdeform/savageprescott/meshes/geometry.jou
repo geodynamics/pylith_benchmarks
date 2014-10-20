@@ -20,7 +20,7 @@
 # ----------------------------------------------------------------------
 # Set units to SI.
 # ----------------------------------------------------------------------
-#{Units('si')}
+${Units('si')}
 #
 # ----------------------------------------------------------------------
 # Reset geometry.
@@ -38,11 +38,11 @@ undo off
 # -500 km <= y <= 500 km
 # -400 km <= z <= 0 km
 #
-#{blockWidth=1000.0*km}
-#{blockLength=2000.0*km}
-#{blockHeight=400.0*km}
-#{faultWidth=40.0*km}
-#{lockingDepth=20.0*km}
+${blockWidth=1000.0*km}
+${blockLength=2000.0*km}
+${blockHeight=400.0*km}
+${faultWidth=40.0*km}
+${lockingDepth=20.0*km}
 
 brick x {blockLength} y {blockWidth} z {blockHeight}
 
@@ -53,35 +53,40 @@ volume 1 move x {-xoffset} y 0 z {-0.5*blockHeight}
 # Create interface surfaces
 # ----------------------------------------------------------------------
 create planar surface with plane xplane offset 0
-#{sid=Id("surface")}
+${sid=Id("surface")}
 surface {sid} name "fault_surface"
 
 create planar surface with plane zplane offset {-faultWidth}
-#{sid=Id("surface")}
+${sid=Id("surface")}
 surface {sid} name "material_interface"
 
 create planar surface with plane yplane offset 0
-#{sid=Id("surface")}
+${sid=Id("surface")}
 surface {sid} name "symmetry_plane"
-
-create planar surface with plane zplane offset {-lockingDepth}
-#{sid=Id("surface")}
-surface {sid} name "locking_transition"
 
 # ----------------------------------------------------------------------
 # Cut volume with interfaces.
 # ----------------------------------------------------------------------
 # Cut fault with locking transition (not needed in volume)
 webcut volume 1 with plane fault_surface
-webcut volume 1 6 with plane material_interface
-webcut volume 1 6 7 8 with plane symmetry_plane
-webcut volume 2 with plane locking_transition
-delete body 5
+webcut volume 1 5 with plane material_interface
+webcut volume 1 5 6 7 with plane symmetry_plane
+
+# Inscribe locking transition on fault plane
+brick x {5.0*km} y {blockWidth+10.0*km} z {2.0*lockingDepth}
+${vid=Id("volume")}
+chop volume 2 with volume {vid}
+
+# Inscribe bottom of fault on fault plane
+brick x {5.0*km} y {blockWidth+10.0*km} z {4.0*faultWidth}
+${vid=Id("volume")}
+chop volume 14 with volume {vid}
 
 # ----------------------------------------------------------------------
 # Imprint all volumes, merging surfaces.
 # ----------------------------------------------------------------------
 imprint all
 merge all
-delete body 2 3 4 13
+delete body 3 4 13 16 17
 compress all
+

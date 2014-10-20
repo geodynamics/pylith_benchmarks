@@ -8,7 +8,7 @@ playback 'geometry.jou'
 # ----------------------------------------------------------------------
 # Set discretization size to 20 km.
 # ----------------------------------------------------------------------
-#{dx=20.0*km}
+${dx=20.0*km}
 volume all size {dx}
 mesh volume all
 
@@ -21,6 +21,7 @@ playback 'createbc.jou'
 # Export exodus file
 # ----------------------------------------------------------------------
 export mesh "hex8_20km.exo" dimension 3 overwrite
+
 
 
 

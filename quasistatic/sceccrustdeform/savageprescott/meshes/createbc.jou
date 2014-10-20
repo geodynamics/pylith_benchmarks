@@ -15,21 +15,25 @@ group "fault" add node in fault_surface@D
 group "fault" add node in fault_surface@E
 group "fault" add node in fault_surface@B
 group "fault" add node in fault_surface@C
-group "fault" remove node with z_coord < {-4.0*lockingDepth-0.01*km}
-nodeset 10 fault
-nodeset 10 name "fault"
+nodeset 30 fault
+nodeset 30 name "fault"
+
+# Mark buried edges
+group "fault_edge" add node in curve 59 63
+nodeset 31 fault_edge
+nodeset 31 name "fault_edge"
 
 # ----------------------------------------------------------------------
 # Create nodeset for +x face
 # ----------------------------------------------------------------------
-group "face_xpos" add node in surface 11 14 26 27
+group "face_xpos" add node in surface 11 14 25 26
 nodeset 11 face_xpos
 nodeset 11 name "face_xpos"
 
 # ----------------------------------------------------------------------
 # Create nodeset for -x face
 # ----------------------------------------------------------------------
-group "face_xneg" add node in surface 19 20 32 34
+group "face_xneg" add node in surface 19 20 30 32
 nodeset 12 face_xneg
 nodeset 12 name "face_xneg"
 
@@ -50,7 +54,7 @@ nodeset 14 name "face_yneg"
 # ----------------------------------------------------------------------
 # Create nodeset for -z face
 # ----------------------------------------------------------------------
-group "face_zneg" add node in surface 24 29 31 33
+group "face_zneg" add node in surface 24 27 29 31
 nodeset 15 face_zneg
 nodeset 15 name "face_zneg"
 
@@ -80,4 +84,5 @@ group "face_ypos_nofault" remove node in face_xpos
 group "face_ypos_nofault" remove node in face_xneg
 nodeset 19 face_ypos_nofault
 nodeset 19 name "face_ypos_nofault"
+
 

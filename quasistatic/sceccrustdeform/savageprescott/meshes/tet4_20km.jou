@@ -9,7 +9,7 @@ playback 'geometry.jou'
 # ----------------------------------------------------------------------
 # Set discretization size and scheme
 # ----------------------------------------------------------------------
-#{dx=20.0*km}
+${dx=20.0*km}
 
 playback 'gradient.jou'
 
@@ -26,13 +26,13 @@ mesh volume all
 # ----------------------------------------------------------------------
 # Smooth mesh to improve quality
 # ----------------------------------------------------------------------
-#{condnum=2.0}
-#{loop(4)}
+${condnum=2.0}
+${loop(4)}
 cleanup volume all
 volume all smooth scheme condition number beta {condnum} cpu 10
 smooth volume all
-#{condnum=condnum-0.1}
-#{endloop}
+${condnum=condnum-0.1}
+${endloop}
 
 # ----------------------------------------------------------------------
 # Setup boundary conditions.
@@ -43,6 +43,7 @@ playback 'createbc.jou'
 # Export exodus file
 # ----------------------------------------------------------------------
 export mesh "tet4_20km.exo" dimension 3 overwrite
+
 
 
 
