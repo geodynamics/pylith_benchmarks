@@ -9,23 +9,37 @@ volume 1 move x 12000 y 12000 z -12000
 # Create interface surfaces
 # ----------------------------------------------------------------------
 create planar surface with plane xplane offset 12000
-surface 7 name "fault_surface"
+surface 7 name "fault_plane"
 create planar surface with plane zplane offset -12000
 surface 8 name "material_interface"
 
 # ----------------------------------------------------------------------
 # Divide volumes using interfaces surfaces
 # ----------------------------------------------------------------------
-webcut volume 1 with plane surface fault_surface
+webcut volume 1 with plane surface fault_plane
 webcut volume 1 with plane surface material_interface
 webcut volume 4 with plane surface material_interface
+
+# Delete unused sheet bodies.
+delete body 2 3
+
+# Name volumes.
 volume 1 name "elastic_xpos"
 volume 4 name "elastic_xneg"
 volume 5 name "visco_xpos"
 volume 6 name "visco_xneg"
 
 # ----------------------------------------------------------------------
+# Create rectangle to imprint on fault_plane
+# ----------------------------------------------------------------------
+create surface rectangle width 16000.0 height 16000.0 xplane
+surface 39 move x 12000 y 8000 z -8000
+imprint volume all with surface 39
+delete body 7
+
+# ----------------------------------------------------------------------
 # Imprint curves on volumes
 # ----------------------------------------------------------------------
-imprint all with volume all
+imprint all
 merge all
+

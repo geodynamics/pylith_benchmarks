@@ -7,13 +7,16 @@ block 2 volume visco_xpos visco_xneg
 block 2 name "viscoelastic"
 
 # ----------------------------------------------------------------------
-# Create nodeset for fault
+# Create nodesets for fault and fault edge
 # ----------------------------------------------------------------------
-group "fault" add node in fault_surface
-group "fault" add node in fault_surface@A
-group "fault" remove node with z_coord < -16.001e+3 or with y_coord > 16.001e+3
-nodeset 10 group fault
-nodeset 10 name "fault"
+group "fault" add node in surface 41 45
+group "fault_edge" add node in curve 73 83 84
+
+nodeset 20 group fault
+nodeset 20 name "fault"
+
+nodeset 21 group fault_edge
+nodeset 21 name "fault_edge"
 
 # ----------------------------------------------------------------------
 # Create nodeset for fixed BC
@@ -60,3 +63,11 @@ group "symmetry_disp" remove node in analytic_disp_zneg
 group "symmetry_disp" remove node in fault
 nodeset 15 group symmetry_disp
 nodeset 15 name "symmetry_disp"
+
+# ----------------------------------------------------------------------
+# Create nodeset for ground surface
+# ----------------------------------------------------------------------
+group "ground_surf" add node in surface 17
+group "ground_surf" add node in surface 10
+nodeset 16 group ground_surf
+nodeset 16 name "ground_surf"
