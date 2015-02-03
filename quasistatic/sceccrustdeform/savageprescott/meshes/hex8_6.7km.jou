@@ -23,7 +23,7 @@ refine hex in inner_box depth 0
 # ----------------------------------------------------------------------
 # Smooth mesh.
 # ----------------------------------------------------------------------
-volume all smooth scheme condition number beta 2.2
+volume all smooth scheme condition number beta 2.1 cpu 5
 smooth volume all
 
 # ----------------------------------------------------------------------
@@ -35,6 +35,8 @@ playback 'createbc.jou'
 # Export exodus file
 # ----------------------------------------------------------------------
 export mesh "hex8_6.7km.exo" dimension 3 overwrite
+
+
 
 
 
