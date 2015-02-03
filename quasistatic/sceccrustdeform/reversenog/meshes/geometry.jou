@@ -15,11 +15,18 @@ create vertex 20000.0 0.0 -16000.0
 create planar surface with plane vertex 10 vertex 9 vertex 11
 surface 7 name "fault_surface"
 
+# Curves with which to imprint surface.
+create vertex 20000.0 16000.0 -16000.0
+create curve vertex 11 vertex 16
+create curve vertex 10 vertex 16
+
 create planar surface with plane zplane offset -12000.0
 surface 8 name "material_interface"
 
 #create planar surface with plane xplane offset 20000.0
 #surface 9 name "fault_auxiliary"
+
+delete vertex all
 
 # ----------------------------------------------------------------------
 # Divide volumes using interfaces surfaces
@@ -27,13 +34,27 @@ surface 8 name "material_interface"
 webcut volume 1 with plane surface material_interface
 webcut volume 1 with plane surface fault_surface
 webcut volume 4 with plane surface fault_surface
+
+# Delete unused sheet bodies.
+delete body 2 3
+
+# Name volumes.
 volume 1 name "elastic_hangingwall"
 volume 5 name "elastic_footwall"
 volume 4 name "visco_hangingwall"
 volume 6 name "visco_footwall"
 
 # ----------------------------------------------------------------------
+# Imprint volumes with curves defining fault boundary.
+# ----------------------------------------------------------------------
+imprint volume all with curve 17
+imprint volume all with curve 18
+delete curve all
+
+# ----------------------------------------------------------------------
 # Imprint curves on volumes
 # ----------------------------------------------------------------------
-imprint all with volume all
+imprint all
 merge all
+
+
