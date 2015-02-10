@@ -5,13 +5,9 @@ occurs at regular recurrence intervals on the upper locked part of the
 fault, while constant-velocity creep occurs on the lower part of the fault.
 
 This directory contains the files necessary to run the problem using
-PyLith, as well as a utils directory that contains Python scripts and
-.cfg files to compute the analytical solution, and to generate velocity
-results for the PyLith solutions.
-
-There are several scripts in the utils directory to aid the process of
-comparing analytical and numerical results. Look at the README in the utils
-directory.
+PyLith, as well as Python scripts and .cfg files to compute the analytical
+solution, and to examine the PyLith solution and compare against the analytical
+solution.
 
 Note that it is not possible to directly compare the PyLith results with the
 analytical solution. This is because the analytical solution assumes steady
@@ -26,3 +22,58 @@ time (e.g., the first time step following an earthquake). This is because
 the analytical velocity results are computed exactly, while for the PyLith
 results we approximate velocities by differencing displacements over a time
 step. 
+
+Note that several additional Python packages are required to run the Python
+scripts described below (in addition to numpy and pyre, which should be included
+as part of your PyLith installation). The required packages are:
+
+matplotlib
+h5py
+mayavi
+
+Steps to run/examine the solution:
+
+1.  In the meshes subdirectory, either unzip the mesh files (*.exo.gz) or
+    create them yourself using the appropriate journal file with Cubit/Trelis.
+    There are four meshes:  two tet4 meshes and two hex8 meshes, with two
+    different resolutions.
+2.  Run the different simulations. There is a Python script to assist with
+    running the simulations using different meshes (run_sims.py). The arguments
+    to the script are CELL (hex8 or tet4), RES (6.7km or 20km), and NPROCS
+    (number of compute nodes on which to run). As an example, you could run:
+
+    ./run_sims.py hex8 20km 8 2>&1 | tee hex8_20km_np8.log
+
+    This would run the simulation for the hex8 mesh at 20 km resolution on 8
+    compute nodes. In this case (using bash) we have redirected the output to
+    a log file. It is generally desirable to produce a log file to check for
+    errors and also to evaluate performance.
+3.  Compute the analytical solution along a profile. There is a Python script
+    (calc_analytic.py) and an associated .cfg file (calc_analytic.cfg) to
+    perform this task. Since calc_analytic.py is a Pyre application, it
+    automatically reads calc_analytic.cfg. If you with to compute the analytical
+    solution using different parameters, you could either edit the existing .cfg
+    file or create a new one and include it on the command line. To run the
+    solution corresponding to the PyLith solutions, simply type:
+
+    ./calc_analytic.py
+
+    This will place files containing the analytical solution in the output
+    subdirectory.
+4.  Compare the analytical and numerical solutions along profiles. By running
+    the plot_profiles.py script you can see the analytical solution compared
+    against the various numerical solutions at different times for two different
+    earthquake cycles:  the second and the tenth. The script produces a plot of
+    both cycles where you can see the relatively poor agreement for the second
+    cycle, and the relatively good agreement for the tenth cycle, once the
+    numerical solution has 'spun up'. The script is run by typing:
+
+    ./plot_profiles.py
+
+5.  Plot the deformed mesh for a particular simulation. The plot_soln.py script
+    plots the deformed mesh with colors representing the amount of deformation.
+    The mesh, resolution, and time are all hardwired, but can be easily changed
+    by editing the information at the top of the script file. Run the script by
+    typing:
+
+    ./plot_soln.py

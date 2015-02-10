@@ -30,8 +30,8 @@ import os
 sys.path.append("../../../figures")
 import matplotlibext
 
-#import pdb
-#pdb.set_trace()
+# import pdb
+# pdb.set_trace()
 
 header = 0.51
 
@@ -109,11 +109,12 @@ class PyLithOutput(object):
     dispTest = disp[numSteps -1,:]
     negInd = numpy.nonzero(dispTest < 0.0)[0][0]
     distPos = numpy.delete(dist, negInd)
+    dispPos = numpy.delete(disp, negInd, axis=1)
     indices = numpy.argsort(distPos)
 
-    dist[dist == 0.0] = xEpsilon.value # Semilog can't handle zero
-    self.dist = dist[indices] / elastThick.value # Normalize by elastic thickness
-    self.disp = disp[:,indices] / eqslip.value # Normalize by eqslip
+    distPos[distPos == 0.0] = xEpsilon.value # Semilog can't handle zero
+    self.dist = distPos[indices] / elastThick.value # Normalize by elastic thickness
+    self.disp = dispPos[:,indices] / eqslip.value # Normalize by eqslip
     self.time = time
 
     return
