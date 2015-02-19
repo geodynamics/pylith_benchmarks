@@ -1,19 +1,36 @@
 Quasi-static strike-slip (no gravity) benchmark
 
 ======================================================================
-FILES
+MESHES
 ======================================================================
+Meshes are not included as part of the benchmarks. Instead, there are
+Cubit/Trelis journal files to create the necessary meshes. The journal
+files are in the meshes directory. They are:
+
+mesh_hex8_1000m.jou - Creates a hex8 mesh with a 1000m uniform resolution.
+mesh_hex8_0500m.jou - Creates a hex8 mesh with a 500m uniform resolution.
+mesh_hex8_0250m.jou - Creates a hex8 mesh with a 250m uniform resolution.
+
+mesh_tet4_1000m.jou - Creates a tet4 mesh with a 1000m uniform resolution.
+mesh_tet4_0500m.jou - Creates a tet4 mesh with a 500m uniform resolution.
+mesh_tet4_0250m.jou - Creates a tet4 mesh with a 250m uniform resolution.
+
+======================================================================
+PARAMETER FILES
+======================================================================
+The .cfg files and spatial database files to run the simulations are
+in the parameters directory. The .cfg files are:
 
 pylithapp.cfg - General parameters for problem
 
 timedep.cfg - Parameters for time-dependent problem
 
-strikeslip_cubit.cfg - Parameters common to CUBIT generated meshes
+strikeslip_hex8.cfg - Parameters common to hex8 meshes
 strikeslip_hex8_1000m.cfg - Parameters specific to hex8 1000m resolution sim
 strikeslip_hex8_0500m.cfg - Parameters specific to hex8 500m resolution sim
 strikeslip_hex8_0250m.cfg - Parameters specific to hex8 250m resolution sim
 
-strikeslip_lagrit.cfg - Parameters common to LaGriT generated meshes
+strikeslip_tet4.cfg - Parameters common to tet4 meshes
 strikeslip_tet4_1000m.cfg - Parameters specific to tet4 1000m resolution sim
 strikeslip_tet4_0500m.cfg - Parameters specific to tet4 500m resolution sim
 strikeslip_tet4_0250m.cfg - Parameters specific to tet4 250m resolution sim
@@ -27,27 +44,27 @@ Run the simulations from the parameters directory.
 
 hex8 @ 1000m resolution
 
-  pylith strikeslip_cubit.cfg strikeslip_hex8_1000m.cfg
+  pylith strikeslip_hex8.cfg strikeslip_hex8_1000m.cfg
 
 hex8 @ 500m resolution
 
-  pylith strikeslip_cubit.cfg strikeslip_hex8_0500m.cfg
+  pylith strikeslip_hex8.cfg strikeslip_hex8_0500m.cfg
 
 hex8 @ 250m resolution
 
-  pylith strikeslip_cubit.cfg strikeslip_hex8_0250m.cfg
+  pylith strikeslip_hex8.cfg strikeslip_hex8_0250m.cfg
 
 tet4 @ 1000m resolution
 
-  pylith strikeslip_lagrit.cfg strikeslip_tet4_1000m.cfg
+  pylith strikeslip_tet4.cfg strikeslip_tet4_1000m.cfg
 
 tet4 @ 500m resolution
 
-  pylith strikeslip_lagrit.cfg strikeslip_tet4_0500m.cfg
+  pylith strikeslip_tet4.cfg strikeslip_tet4_0500m.cfg
 
 tet4 @ 250m resolution
 
-  pylith strikeslip_lagrit.cfg strikeslip_tet4_0250m.cfg
+  pylith strikeslip_tet4.cfg strikeslip_tet4_0250m.cfg
 
 
 ======================================================================
@@ -59,27 +76,27 @@ to the end of each example listed above.
 
 hex8 @ 1000m resolution
 
-  pylith strikeslip_cubit.cfg strikeslip_hex8_1000m.cfg timedep.cfg
+  pylith strikeslip_hex8.cfg strikeslip_hex8_1000m.cfg timedep.cfg
 
 hex8 @ 500m resolution
 
-  pylith strikeslip_cubit.cfg strikeslip_hex8_0500m.cfg timedep.cfg
+  pylith strikeslip_hex8.cfg strikeslip_hex8_0500m.cfg timedep.cfg
 
 hex8 @ 250m resolution
 
-  pylith strikeslip_cubit.cfg strikeslip_hex8_0250m.cfg timedep.cfg
+  pylith strikeslip_hex8.cfg strikeslip_hex8_0250m.cfg timedep.cfg
 
 tet4 @ 1000m resolution
 
-  pylith strikeslip_lagrit.cfg strikeslip_tet4_1000m.cfg timedep.cfg
+  pylith strikeslip_tet4.cfg strikeslip_tet4_1000m.cfg timedep.cfg
 
 tet4 @ 500m resolution
 
-  pylith strikeslip_lagrit.cfg strikeslip_tet4_0500m.cfg timedep.cfg
+  pylith strikeslip_tet4.cfg strikeslip_tet4_0500m.cfg timedep.cfg
 
 tet4 @ 250m resolution
 
-  pylith strikeslip_lagrit.cfg strikeslip_tet4_0250m.cfg timedep.cfg
+  pylith strikeslip_tet4.cfg strikeslip_tet4_0250m.cfg timedep.cfg
 
 ======================================================================
 NOTE:  Any of the above problems can be run on more than one processor

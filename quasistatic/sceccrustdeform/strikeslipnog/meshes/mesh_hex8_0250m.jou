@@ -21,4 +21,5 @@ playback 'createbc.jou'
 # ----------------------------------------------------------------------
 # Export exodus file
 # ----------------------------------------------------------------------
+set large exodus off
 export mesh "strikeslip_hex8_0250m.exo" dimension 3 overwrite
