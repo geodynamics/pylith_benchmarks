@@ -20,7 +20,7 @@ mesh volume all
 ${condnum=2.1}
 ${loop(5)}
 cleanup volume all
-volume all smooth scheme condition number beta {condnum} cpu 10
+volume all smooth scheme condition number beta {condnum} cpu 3
 smooth volume all
 ${condnum=condnum-0.1}
 ${endloop}
@@ -33,4 +33,6 @@ playback 'createbc.jou'
 # ----------------------------------------------------------------------
 # Export exodus file
 # ----------------------------------------------------------------------
+set large exodus off
 export mesh "reverseslip_tet4_0250m.exo" dimension 3 overwrite
+
