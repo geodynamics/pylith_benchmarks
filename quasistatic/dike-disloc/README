@@ -1,0 +1,27 @@
+This is a simple benchmark that demonstrates how to model a buried dike.
+The dike has dimensions of 24 km wide by 12 km, and the top edge lies at
+6 km depth. A uniform opening of 3 m is applied, which will taper to zero
+between the inner dike boundary (2 km from the dike edge) and the dike edge.
+We provide both tetrahedral and hexahedral meshes to solve the problem.
+The hexahedral mesh is graded by first creating a uniform resolution mesh and
+by then refining an inner volume. The tetrahedral mesh is graded by setting
+a constant mesh size on the dike itself (2 km resolution) and a constant mesh
+size of 6 km on the outer boundaries.
+
+To run the benchmarks, first generate the meshes by running Cubit/Trelis using
+the mesh_hex8_graded_2000m.jou and mesh_tet4_graded_2000m.jou journal files.
+The simulations may be run from within the parameters directory:
+
+pylith dike-disloc_hex8.cfg dike-disloc_hex8_graded_2000m.cfg -nodes=<np>
+pylith dike-disloc_tet4.cfg dike-disloc_tet4_graded_2000m.cfg -nodes=<np>
+
+The np parameter is the number of processors on which to run.
+
+Time-dependent versions of the simulations (10 years with 0.1 year time steps)
+may be run by simply appending the timedep.cfg filename to the command line:
+
+pylith dike-disloc_hex8.cfg dike-disloc_hex8_graded_2000m.cfg timedep.cfg -nodes=<np>
+pylith dike-disloc_tet4.cfg dike-disloc_tet4_graded_2000m.cfg timedep.cfg -nodes=<np>
+
+Since the lower material is viscoelastic, this will result in viscoelastic
+relaxation following the initial dike opening.

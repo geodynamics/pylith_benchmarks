@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------
 # Generate geometry.
 # ----------------------------------------------------------------------
-playback 'geometry.jou'
+playback 'geometry_tet4.jou'
 
 # ----------------------------------------------------------------------
 # Set mesh discretization.
@@ -16,8 +16,8 @@ mesh volume all
 # ----------------------------------------------------------------------
 # Smooth mesh to improve quality
 # ----------------------------------------------------------------------
-${condnum=2.0}
-${loop(5)}
+${condnum=1.9}
+${loop(4)}
 cleanup volume all
 volume all smooth scheme condition number beta {condnum} cpu 1
 smooth volume all
@@ -27,7 +27,7 @@ ${endloop}
 # ----------------------------------------------------------------------
 # Generate blocks and nodelists.
 # ----------------------------------------------------------------------
-playback 'bc.jou'
+playback 'bc_tet4.jou'
 
 # ----------------------------------------------------------------------
 # Export exodus file.

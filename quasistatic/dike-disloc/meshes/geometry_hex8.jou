@@ -1,0 +1,52 @@
+# ----------------------------------------------------------------------
+# Create outer block.
+# ----------------------------------------------------------------------
+
+# Block is 240 km x 240 km x 120 km
+# -120 km <= x <= 120 km
+# -120 km <= y <= 120 km
+# -120 km <= z <= 0 km
+reset
+brick x 240000 y 240000 z 120000
+
+# Translate block so the top is at z=0.
+volume 1 move x 0 y 0 z -60000
+
+# ----------------------------------------------------------------------
+# Create interface surfaces.
+# ----------------------------------------------------------------------
+create planar surface with plane xplane offset 0
+surface 7 name "dike_surface"
+create planar surface with plane zplane offset -12000
+surface 8 name "material_interface"
+create planar surface with plane yplane offset 0
+surface 9 name "symmetry_plane"
+
+# ----------------------------------------------------------------------
+# Cut outer volume with interfaces.
+# ----------------------------------------------------------------------
+webcut volume all with plane dike_surface
+webcut volume all with plane symmetry_plane
+webcut volume all with plane material_interface
+
+# ----------------------------------------------------------------------
+# Remove surface bodies.
+# ----------------------------------------------------------------------
+delete body 2 3 4 6 7 9 10 12 14 15 17 19
+
+# ----------------------------------------------------------------------
+# Create rectangle representing dike surface to imprint on larger surface.
+# ----------------------------------------------------------------------
+# Dike is 24 km wide by 12 km high, lying on x=0.
+# -12 km <= y <= 12 km
+# -18 km <= z <= -6 km
+create surface rectangle width 12000.0 height 24000.0 xplane
+surface 98 move x 0.0 y 0.0 z -12000.0
+imprint volume all with surface 98
+delete body 21
+
+# ----------------------------------------------------------------------
+# Imprint all volumes, merging surfaces.
+# ----------------------------------------------------------------------
+imprint all
+merge all

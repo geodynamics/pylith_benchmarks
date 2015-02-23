@@ -46,10 +46,15 @@ imprint volume all with surface 98
 delete body 21
 
 # ----------------------------------------------------------------------
+# Create inner rectangle to insure a 2 km rim around edge of dike.
+# ----------------------------------------------------------------------
+create surface rectangle width 8000.0 height 20000.0 xplane
+surface 119 move x 0.0 y 0.0 z -12000.0
+imprint volume all with surface 119
+delete body 22
+
+# ----------------------------------------------------------------------
 # Imprint all volumes, merging surfaces.
 # ----------------------------------------------------------------------
 imprint all
 merge all
-
-
-
