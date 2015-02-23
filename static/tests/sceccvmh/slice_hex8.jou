@@ -24,7 +24,7 @@ block 1 name "elastic"
 # ----------------------------------------------------------------------
 # Create nodeset for fault
 # ----------------------------------------------------------------------
-group "fault" add node in fault_surface
+group "fault" add node in fault_surface@A
 nodeset 10 group fault
 nodeset 10 name "fault"
 
@@ -65,3 +65,4 @@ nodeset 26 name "surf_bottom"
 # Export exodus file
 # ----------------------------------------------------------------------
 export mesh "slice_hex8.exo" dimension 3 overwrite
+
