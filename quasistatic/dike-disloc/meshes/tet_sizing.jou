@@ -1,0 +1,18 @@
+# ----------------------------------------------------------------------
+# Set mesh sizes on dike and on outer boundaries.
+# ----------------------------------------------------------------------
+volume all scheme tetmesh
+surface 99 103 107 112 size 2000
+curve 200 size 2000
+surface 78 54 56 85 66 92 72 94 65 51 59 73 89 77 97 84 44 32 42 26 size 6000
+
+
+# ----------------------------------------------------------------------
+# Set bias sizing functions.
+# ----------------------------------------------------------------------
+curve 65 scheme bias fine size 2000 coarse size 6000 start vertex 38
+curve 211 scheme bias fine size 2000 coarse size 6000 start vertex 123
+curve 60 scheme bias fine size 2000 coarse size 6000 start vertex 38
+curve 199 scheme bias fine size 2000 coarse size 6000 start vertex 119
+curve 224 scheme bias fine size 2000 coarse size 6000 start vertex 131
+

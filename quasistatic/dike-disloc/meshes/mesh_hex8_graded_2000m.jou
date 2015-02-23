@@ -1,0 +1,40 @@
+# ----------------------------------------------------------------------
+# Generate geometry.
+# ----------------------------------------------------------------------
+playback 'geometry.jou'
+
+# ----------------------------------------------------------------------
+# Create initial mesh at constant resolution.
+# ----------------------------------------------------------------------
+volume all size 6000
+mesh volume all
+
+# ----------------------------------------------------------------------
+# Refine region inside inner box.
+# ----------------------------------------------------------------------
+group "inner_box" add hex with x_coord > -24001 and with x_coord < 24001 and with y_coord > -24001 and with y_coord < 24001 and with z_coord > -24001
+refine hex in inner_box depth 1
+
+# ----------------------------------------------------------------------
+# Smooth mesh to improve quality
+# ----------------------------------------------------------------------
+${condnum=3.2}
+${loop(8)}
+volume all smooth scheme condition number beta {condnum} cpu 1
+smooth volume all
+${condnum=condnum-0.2}
+${endloop}
+
+# ----------------------------------------------------------------------
+# Generate blocks and nodelists.
+# ----------------------------------------------------------------------
+playback 'bc.jou'
+
+# ----------------------------------------------------------------------
+# Export exodus file.
+# ----------------------------------------------------------------------
+set large exodus off
+export mesh "dike-disloc_hex8_graded_2000m.exo" dimension 3 overwrite
+
+
+
